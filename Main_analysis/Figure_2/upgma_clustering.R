@@ -5,7 +5,6 @@ library('dendextend')
 library('gplots')
 library('cluster')
 library('RColorBrewer')
-setwd("/env/export/cns_n02_scratch/scratch_TaraOcean/BioAdvection_II/simkaMin")
 
 all_data0 <- readRDS('simkaTG_matrix_sur.rds')
 all_data_arctic0 <- readRDS('simkaTG_matrix_arctic.rds')
@@ -67,7 +66,7 @@ clusts <- function(data, name, maxc){
         csize=0.6
       }
       dend <- UPGMA %>% as.dendrogram
-      pdf(paste('UPGMA_meta',types[j],'_',name,'_', fracs_b[i], '_test.pdf', sep=''), width = 15, height = 12)
+      pdf(paste('UPGMA_meta',types[j],'_',name,'_', fracs_b[i], '.pdf', sep=''), width = 15, height = 12)
       plot(UPGMA, cex=csize)
       pvrect(UPGMA, alpha = 0.85, max.only = F)
       
@@ -84,29 +83,12 @@ clusts <- function(data, name, maxc){
         UPGMA %>% text
         UPGMA %>% pvrect(alpha = 0.85, max.only = F)
       }
-      #       means_sil_width <- NULL
-      #       sil_res <- rep(list(NULL), 10)
-      #       for (k in 2:maxc){
-      #         v <- cutree(UPGMA, k=k)
-      #         u <- silhouette(v, mat)
-      #         sil_res[[k]] <- u
-      #         means_sil_width <- append(means_sil_width, mean(u[,3]))
-      #       }
-      #       plot(2:maxc, means_sil_width, col='red', pch=19, xlab='Number of clusters', ylab='Mean silhouette width')
-      #       
-      #       opt_n<- which.min(means_sil_width)+1
-      #       plot(sil_res[[opt_n]])
-      
-      #       UPGMA %>% as.dendrogram %>% 
-      #       set("branches_k_color", k = opt_n, value = brewer.pal(opt_n, "Dark2")) %>%
-      #       plot(main=paste('k=',opt_n ,' clusters', sep=''))
-      #       UPGMA %>% text
-      #       UPGMA %>% pvrect(alpha = 0.75, max.only = F)
+
       if (grepl('arctic', name)){
         colos <- rep(NA,length(colnames(mat)))
         colos[colnames(mat)>"155SUR"] <- 'blueviolet'
         colos[colnames(mat)<="155SUR"] <- 'darkblue'
-        #colos[colnames(mat)>="155SUR" & colnames(mat)<="163SUR"] <- 'red'
+
       }
       t1 <- pvpick(UPGMA, alpha = 0.75, max.only = F)
       
@@ -121,8 +103,7 @@ clusts <- function(data, name, maxc){
         heatmap.2(mat, trace="none", keysize=1,margins=c(10,22), labCol=colnames(mat), labRow=colnames(mat), col= cols,
                   symkey = F, breaks = br, cexRow = fsize, cexCol = fsize,dendrogram = 'none',
                   Colv = NA, Rowv = NA, main='no cluster, no duplicates')
-      #     heatmap.2(mat,trace="none",hclustfun = function(x){ set.seed(2);pvclust(mat, method.dist="cor", method.hclust="average", nboot=1000)}, keysize=1,margins=c(10,22), labCol=colnames(mat), labRow=colnames(mat), col= cols,
-      #               symkey = F, breaks = br, cexRow = fsize, cexCol = fsize, main='upgma, no duplicates')
+
         heatmap.2(mat,trace="none",Colv = dend, Rowv = dend,  keysize=1,margins=c(10,22), labCol=colnames(mat), labRow=colnames(mat), col= cols,
                   symkey = F, breaks = br, cexRow = fsize, cexCol = fsize, main='upgma, no duplicates')
       
