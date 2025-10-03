@@ -1,2 +1,3 @@
 R scripts to generate figure 2  
 - Figure 2a: `Rscript upgma_clustering.R`, output: `UPGMA_metaT_arctic_uni_bc_sub_GGZZ_test.pdf` (page 5 for fig 2a) and `UPGMA_metaT_arctic_uni_bc_sub_GGZZ_test.pdf`
+- Figure 2b: `Rscript scatter_lagrangian.R T` outputs: `lagrangian_T_ed_all.pdf` `lagrangian_T_sk_GGZZ_Arctic-Arctic.pdf`,`lagrangian_T_bc_GGZZ_all.pdf` , `lagrangian_T_ed_Arctic-Arctic_test.pdf` , `lagrangian_T_sk_GGZZ_Atlantic-Atlantic_test.pdf`, `lagrangian_T_bc_GGZZ_Arctic-Arctic.pdf` ,  `lagrangian_T_ed_Atlantic-Atlantic_test.pdf`,`lagrangian_T_bc_GGZZ_Atlantic-Atlantic.pdf`,  `lagrangian_T_sk_GGZZ_all.pdf`
