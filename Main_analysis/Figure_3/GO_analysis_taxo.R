@@ -51,7 +51,7 @@ barplot_GO <- function(GO_list, fraction, taxo, n_clusts, types, name_list, grou
   n_ty <- length(types)
   GO_data <- rep(list(NULL), n_ty)
   for (i in 1:n_ty){
-    GO_data[[i]] <- readRDS(paste('GO_station_table_',fraction,'_',n_clusts,'_',
+    GO_data[[i]] <- readRDS(paste('../data/GO_station_table_',fraction,'_',n_clusts,'_',
                                   types[i],'_',taxo,bis,'.rds', sep=''))
 
   }
@@ -248,7 +248,7 @@ barplot_GO <- function(GO_list, fraction, taxo, n_clusts, types, name_list, grou
   dev.off()
 }
 
-GO_table <- readRDS('GO_table.rds')
+GO_table <- readRDS('../data/GO_table.rds')
 
 
 tys <- c('T', 'G')
@@ -257,9 +257,9 @@ n_clusts <- commandArgs(trailingOnly = T)[2]
 bis <- commandArgs(trailingOnly = T)[3]
 fractions <-c('GGZZ')
 if (taxo=='taxo_MGT-v2'){
-  col_taxoS <- readRDS('color_table_MGT-v2.rds')
+  col_taxoS <- readRDS('../data/color_table_MGT-v2.rds')
 } else if (taxo=='taxo_groups3'){
-  col_taxoS <- readRDS('color_table_groups3.rds')
+  col_taxoS <- readRDS('../data/color_table_groups3.rds')
 }
 
 
@@ -272,7 +272,7 @@ for (loc in c('arctic', 'atlantic')){
            'Insecta', 'Cryptophyta' , 'Euglenozoa', 'Amoebozoa','Craniata',
            'Fungi', 'Viruses','Archaea' ,'Eukaryota (unclassified)','root' ,paste('other ' , c('Haptophyta', 'Opisthokonta', 'Stramenopiles', 'Alveolata', 'Viridiplantae') , sep='' ))
       for (gr in groups){
-        GOs <- readRDS(paste('GO_representative_',ty,'_',loc,'_', frac,'_' , 
+        GOs <- readRDS(paste('../data/GO_representative_',ty,'_',loc,'_', frac,'_' , 
                              taxo,'_',gr,bis,'.rds', sep=''))
         if (length(GOs)>0){
           barplot_GO(GO_list = GOs, 
@@ -280,12 +280,12 @@ for (loc in c('arctic', 'atlantic')){
                     types = ty, name_list = loc, group = gr, bis=bis)
         }
       }
-      GOs <- readRDS(paste('GO_representative_',ty,'_',loc,'_', frac,'_' , taxo,bis,'.rds', sep=''))
+      GOs <- readRDS(paste('../data/GO_representative_',ty,'_',loc,'_', frac,'_' , taxo,bis,'.rds', sep=''))
       barplot_GO(GO_list = GOs, 
                  fraction = frac, taxo = taxo, n_clusts = n_clusts, 
                  types = ty, name_list = loc, bis=bis)
     } else{
-      GOs <- readRDS(paste('GO_representative_',ty,'_',loc,'_', frac,'_' , taxo,bis,'.rds', sep=''))
+      GOs <- readRDS(paste('../data/GO_representative_',ty,'_',loc,'_', frac,'_' , taxo,bis,'.rds', sep=''))
       barplot_GO(GO_list = GOs, 
                  fraction = frac, taxo = taxo, n_clusts = n_clusts, 
                  types = ty, name_list = loc, bis=bis)
