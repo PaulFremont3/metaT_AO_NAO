@@ -13,10 +13,10 @@ if (bis!='_bis'){
 }
 
 if (tax_id=='taxo_MGT-v2'){
-  colors_taxon <- readRDS('color_table_MGT-v2.rds')
+  colors_taxon <- readRDS('../data/color_table_MGT-v2.rds')
   os=15
 } else if (tax_id=='taxo_groups3'){
-  colors_taxon <- readRDS('color_table_groups3.rds')
+  colors_taxon <- readRDS('../data/color_table_groups3.rds')
   os=15
 }
 
@@ -32,13 +32,13 @@ c=1
 list_to_plot <- list()
 for (c in 1:length(clusts)){
   if (classi %in% c(5,6)) {
-    data0<-readRDS(paste('Meta', clusts[c],'_',tax_id,'_', frac,'_',classi,bis,'.rds', sep=''))
+    data0<-readRDS(paste('../data/Meta', clusts[c],'_',tax_id,'_', frac,'_',classi,bis,'.rds', sep=''))
     if (c==2){
       h <- apply(data0, 2, sum)
       #print(h)
     }
   } else{
-    data0<-readRDS(paste('Meta', clusts[c],'_',tax_id,'_', frac,bis,'.rds', sep=''))
+    data0<-readRDS(paste('../data/Meta', clusts[c],'_',tax_id,'_', frac,bis,'.rds', sep=''))
   }
   list_to_plot[[c]]=data0
   c=c+1
@@ -93,7 +93,7 @@ if (type=='G' & subset == '0'){
   colors_taxon <- rbind(colors_taxon, c('black', 'Not expressed'))
 }
 if (type=='uni_G' & subset == '0'){
-  uni_count <- readRDS(paste('count_unis_metaG_all_',frac,'.rds', sep=''))
+  uni_count <- readRDS(paste('../data/count_unis_metaG_all_',frac,'.rds', sep=''))
   uni_count <- uni_count[!(names(uni_count) %in% c('142SRF','201SRF','205SRF', '206SRF', '208SRF', '209SRF', '210SRF'))]
   data0 <- rbind(data0, uni_count)
   data0[data0<0] <- 0
@@ -195,7 +195,7 @@ for (j in 2:4){
   #print(h)
   if (type %in% c('uni_G', 'G') & subset == '0'){
     if (type=='uni_G'){
-      metaT_data <- readRDS( paste('count_unis_metaG_',clusts0[j],'_',frac,'.rds', sep=''))
+      metaT_data <- readRDS( paste('../data/count_unis_metaG_',clusts0[j],'_',frac,'.rds', sep=''))
       metaT_data <- metaT_data[!(names(metaT_data) %in%
                                 c('142SRF','201SRF','205SRF', '206SRF', '208SRF', '209SRF', '210SRF'))]
     } else{
@@ -299,7 +299,7 @@ if (type %in% c('uni_T', 'uni_G')){
     data0 <- data0[,!(colnames(data0) %in% c('142SRF','201SRF','205SRF', '206SRF', '208SRF', '209SRF', '210SRF'))]
     sts<-colnames(data0) 
     if (type=='uni_G' & subset == '0'){
-      metaT_data <- readRDS(paste('count_unis_metaG_',clusts0[j],'_',frac,'.rds', sep=''))
+      metaT_data <- readRDS(paste('../data/count_unis_metaG_',clusts0[j],'_',frac,'.rds', sep=''))
       metaT_data <- metaT_data[!(names(metaT_data) %in% 
                                   c('142SRF','201SRF','205SRF', '206SRF', '208SRF', '209SRF', '210SRF'))]
       data0 <- rbind(data0, metaT_data)
