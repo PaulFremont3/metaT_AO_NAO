@@ -1,15 +1,13 @@
-# library("rgdal")                                                                                                      
 library("raster")
 library("ggplot2")
-#library('readxl')
 library('gridExtra')
 library('tidyr')
-#library('DT')
+
 library('dplyr')
 library('RColorBrewer')
 library('ggrepel')
-#setwd("~/Groups_metaT")
-setwd('/env/cns/scratch_TaraOcean/BioAdvection_II/MetaT_4/Groups_metaT/Groups_plots/')
+
+
 
 proj <- "+proj=stere +lat_0=90 +lat_ts=70 +lon_0=-45 +k=1 +x_0=0 +y_0=0 +a=6378273 +b=6356889.449 +units=m +no_defs"
 
@@ -49,18 +47,11 @@ arctic_map <- function(longs, lats, cols, sizes, data, colo, lbs, lims, brks,na,
     geom_line(data = data,aes(x=lo, y=la, group=grp, color=dists))+
     scale_colour_gradientn(colors=colorRampPalette(colors = colo)(100),
                            labels=lbs, limits=lims, breaks=brks,
-                           name=na)
-    # scale_colour_gradient2(low = "blue",mid='green', midpoint=0.75,
-    #                        high = "red",name='Tmin\n(years)',
-    #                        labels=c(0,0.5,1,1.5),breaks=c(0,0.5,1,1.5),
-    #                        limits=c(0,1.5)) +
-    
-  # geom_point(aes(x=, y=), shape=19, fill=cols[1], color=cols[1],
-  #            sizes=c(min(sizes),min(sizes)+(max(sizes)-min(sizes))/2, max(sizes)))
+                           name=na))
   return(v)
 }
 
-Tmin1 <- readr::read_tsv("minAijji_tarrive_min_surface_1000.csv") %>% 
+Tmin1 <- readr::read_tsv("../data/minAijji_tarrive_min_surface_1000.csv") %>% 
   rename(Station_1 = ...1) %>% 
   dplyr::select(Station_1, ends_with("_SUR")) %>% 
   filter(grepl("_SUR", Station_1)) %>%     
@@ -73,178 +64,21 @@ Tmin1$Station_2 <- as.character(sapply(Tmin1$Station_2,
                                        FUN = function(x){paste(strsplit(x, split = '_SUR')[[1]],
                                                                collapse = '')}))
 
-#simka <- readRDS('simkaTG_long_arctic.rds')
-env_arctic <- read.table('../env_arctic_3.txt')
+
+env_arctic <- read.table('../data/env_arctic_3.txt')
 env_arctic$Station <- paste(env_arctic$Station, '', sep='')
 stations <- env_arctic$Station
 good_stat <- stations[stations>'142' & stations <'201']
 latis <- env_arctic$Latitude
 lonis <- env_arctic$Longitude
 
-#extract_data <- function(type, frac){
-#  data <- NULL
-#  data_s <- NULL
-#  data_filt <- NULL
-#  count <-1
-#  simk <- simka[[type]][[frac]]
-#  simk <- simk[!grepl('SUR.1', simk$Station_1), ]
-#  simk <- simk[!grepl('SUR.1', simk$Station_2), ]
-#  simk$Station_1 <- as.character(sapply(simk$Station_1,
-#                                       FUN = function(x){paste(strsplit(x, split = 'SUR')[[1]],
-#                                                               collapse = '')}))
-#  simk$Station_2 <- as.character(sapply(simk$Station_2,
-#                                       FUN = function(x){paste(strsplit(x, split = 'SUR')[[1]],
-#                                                               collapse = '')}))
-#  for (i in env_arctic$Station){
-#    for (j in env_arctic$Station){
-#      if (i<j & !is.nan(Tmin1$Tmin[Tmin1$Station_1==i & Tmin1$Station_2==j])){
-#        data <- rbind(data,c(env_arctic$Latitude[env_arctic$Station==i],
-#                        env_arctic$Longitude[env_arctic$Station==i], count, 
-#                        Tmin1$Tmin[Tmin1$Station_1==i & Tmin1$Station_2==j], i,j))
-#        data <- rbind(data,c(env_arctic$Latitude[env_arctic$Station==j],
-#                        env_arctic$Longitude[env_arctic$Station==j], count, 
-#                        Tmin1$Tmin[Tmin1$Station_1==i & Tmin1$Station_2==j],i,j))
-#        if (i %in% unique(simk$Station_1) & j %in% unique(simk$Station_1)){
-#          data_s <- rbind(data_s,c(env_arctic$Latitude[env_arctic$Station==i],
-#                                   env_arctic$Longitude[env_arctic$Station==i], count, 
-#                                   simk$Distance[simk$Station_1==i & simk$Station_2==j], i,j))
-#          data_s <- rbind(data_s,c(env_arctic$Latitude[env_arctic$Station==j],
-#                                   env_arctic$Longitude[env_arctic$Station==j], count, 
-#                                   simk$Distance[simk$Station_1==i & simk$Station_2==j],i,j))
-#          data_filt <- rbind(data_filt,c(env_arctic$Latitude[env_arctic$Station==i],
-#                                         env_arctic$Longitude[env_arctic$Station==i], count, 
-#                                         Tmin1$Tmin[Tmin1$Station_1==i & Tmin1$Station_2==j],i,j))
-#          data_filt <- rbind(data_filt,c(env_arctic$Latitude[env_arctic$Station==j],
-#                                    env_arctic$Longitude[env_arctic$Station==j], count, 
-#                                    Tmin1$Tmin[Tmin1$Station_1==i & Tmin1$Station_2==j],i,j))
-#          
-#        }
-#        count <-count+1
-#      }
-#    }
-#  }
-#  data <- as.data.frame(data)
-#  colnames(data) <- c('la', 'lo', 'grp', 'dists', 'st1', 'st2')
-#  data_filt <- as.data.frame(data_filt)
-#  colnames(data_filt) <- c('la', 'lo', 'grp', 'dists', 'st1', 'st2')
-#  data_s <- as.data.frame(data_s)
-#  colnames(data_s) <- c('la', 'lo', 'grp', 'dists', 'st1', 'st2')
-  
-#  data$dists <- as.numeric(levels(data$dists))[data$dists]
-#  data$la <- as.numeric(levels(data$la))[data$la]
-#  data$lo <- as.numeric(levels(data$lo))[data$lo]
-#  data$st1 <- as.character(levels(data$st1))[data$st1]
-#  data$st2 <- as.character(levels(data$st2))[data$st2]
-#  
-#  data_filt$dists <- as.numeric(levels(data_filt$dists))[data_filt$dists]
-#  data_filt$la <- as.numeric(levels(data_filt$la))[data_filt$la]
-#  data_filt$lo <- as.numeric(levels(data_filt$lo))[data_filt$lo]
-#  data_filt$st1 <- as.character(levels(data_filt$st1))[data_filt$st1]
-#  data_filt$st2 <- as.character(levels(data_filt$st2))[data_filt$st2]
-#  
-#  data_s$dists <- 100-as.numeric(levels(data_s$dists))[data_s$dists]*100
-#  data_s$la <- as.numeric(levels(data_s$la))[data_s$la]
-#  data_s$lo <- as.numeric(levels(data_s$lo))[data_s$lo]
-#  data_s$st1 <- as.character(levels(data_s$st1))[data_s$st1]
-#  data_s$st2 <- as.character(levels(data_s$st2))[data_s$st2]
-#  
-#  data0 <- data[data$dists<=4 & !is.nan(data$dists),]
-#  data1 <- data0[data0$st1 %in% good_stat & data0$st2 %in% good_stat,]
-#  data2 <- data[data$dists>4 & !is.nan(data$dists),]
-#  data3 <- data2[data2$st1 %in% good_stat & data2$st2 %in% good_stat,]
-#  
-#  data_s0 <- data_s[data_filt$dists<=4 & !is.nan(data_filt$dists),]
-#  data_s1 <- data_s0[data_s0$st1 %in% good_stat & data_s0$st2 %in% good_stat,]
-#  data_s2 <- data_s[data_filt$dists>4 & !is.nan(data_filt$dists),]
-#  data_s3 <- data_s2[data_s2$st1 %in% good_stat & data_s2$st2 %in% good_stat,]
-#  
-#  to_return <- list(data, data0, data1, data2, data3, 
-#                    data_s, data_s0, data_s1, data_s2, data_s3)
-#  return(to_return)
-#}
+
 
 data_lines=data.frame(x=rep(seq(-180, 180, 360/999), 3), y=c(rep(35, 1000),rep(55, 1000), rep(75, 1000)),
                       gp=c(rep(1, 1000), rep(2, 1000), rep(3, 1000)))
 
 data_lines_bis=data.frame(x=seq(-180, 180, 360/999), y=25, gp=1)
-#plot_maps <- function(type, frac,mx,colos,i, data0, data1, data2, data3, data_lines, data_lines_bis){
-#  pdf(paste('metagenomic_connection_arctic_meta',type,'_',frac,'.pdf', sep=''))
-#  a <-arctic_map(longs = lonis, lats = latis, cols = rep('black', length(latis)),
-#             sizes = rep(1, length(latis)),data = data0 ,
-#             colo = c(colos[[i]][1], colos[[i]][2],colos[[i]][3], colos[[i]][4]),
-#             lbs = c(0,  mx), lims = c(0, mx), 
-#             brks = c(0, mx),
-#             na = 'Metagenomic similarity', datal=data_lines, datal_bis=data_lines_bis)
-#  b<-arctic_map(longs = lonis, lats = latis, cols = rep('black', length(latis)),
-#             sizes = rep(1, length(latis)),data = data2 ,
-#             colo = c(colos[[i]][1], colos[[i]][2],colos[[i]][3], colos[[i]][4]),
-#             lbs = c(0,  mx), lims = c(0, mx), 
-#             brks = c(0, mx),
-#             na = 'Metagenomic similarity', datal=data_lines, datal_bis=data_lines_bis)
-#  c<-arctic_map(longs = lonis, lats = latis, cols = rep('black', length(latis)),
-#             sizes = rep(1, length(latis)),data = data1 ,
-#             colo = c(colos[[i]][1], colos[[i]][2],colos[[i]][3], colos[[i]][4]),
-#             lbs = c(0,  mx), lims = c(0, mx), 
-#             brks = c(0, mx),
-#             na = 'Metagenomic similarity', datal=data_lines, datal_bis=data_lines_bis)
-#  d<-arctic_map(longs = lonis, lats = latis, cols = rep('black', length(latis)),
-#             sizes = rep(1, length(latis)),data = data3 ,
-#             colo = c(colos[[i]][1], colos[[i]][2],colos[[i]][3], colos[[i]][4]),
-#             lbs = c(0,  mx), lims = c(0, mx), 
-#             brks = c(0, mx),
-#             na = 'Metagenomic similarity', datal=data_lines, datal_bis=data_lines_bis)
-#  print(a)
-#  print(b)
-#  print(c)
-#  print(d)
-#  dev.off()
-#}
 
-#fraction <-c('SSUU', 'QQSS','GGZZ')
-#colos <- list(c('white','wheat','orange', 'orange4'), c('white','thistle1','plum2', 'purple4'),
-#              c('white','lightblue','blue', 'darkblue'))
-#types <- c('T', 'G')
-#for (frac in fraction){
-#  for (type in types){
-#    i <- which(fraction==frac)
-#    v <- extract_data(type, frac)
-#    data0 <- v[[7]]
-#    data1 <- v[[8]]
-#    data2 <- v[[9]]
-#    data3 <- v[[10]]
-#    mx <- ceiling(max(v[[6]]$dists))
-#    plot_maps(type = type, frac = frac, mx = mx, colos = colos, i = i, data0 = data0,
-#              data1 = data1, data2=data2, data3 = data3, data_lines=data_lines, data_lines_bis=data_lines_bis)
-#  }
-#}
-
-
-#data0 <- v[[2]]
-#data1 <- v[[3]]
-#data2 <- v[[4]]
-#data3 <- v[[5]]
-#pdf('lagrangian_connection_arctic.pdf')
-#arctic_map(longs = lonis, lats = latis, cols = rep('black', length(latis)),
-#           sizes = rep(1, length(latis)),data = data0 ,
-#           colo = c('blue', 'green','orange', 'red'),
-#           lbs = c(0, 0.5, 1, 1.5), lims = c(0, 1.5), brks = c(0, 0.5, 1, 1.5),
-#           na = 'Tmin\n(years)', datal=data_lines, datal_bis=data_lines_bis)
-#arctic_map(longs = lonis, lats = latis, cols = rep('black', length(latis)),
-#           sizes = rep(1, length(latis)),data = data2 ,
-#           colo = c('blue', 'green','orange', 'red'),
-#           lbs = c(1.5, 5, 10, 15), lims = c(1.5, 15), brks = c(1.5, 5, 10, 15),
-#           na = 'Tmin\n(years)', datal=data_lines, datal_bis=data_lines_bis)
-#arctic_map(longs = lonis, lats = latis, cols = rep('black', length(latis)),
-#           sizes = rep(1, length(latis)),data = data1 ,
-#           colo = c('blue', 'green','orange', 'red'),
-#           lbs = c(0, 0.5, 1, 1.5), lims = c(0, 1.5), brks = c(0, 0.5, 1, 1.5),
-#           na = 'Tmin\n(years)', datal=data_lines, datal_bis=data_lines_bis)
-#arctic_map(longs = lonis, lats = latis, cols = rep('black', length(latis)),
-#           sizes = rep(1, length(latis)),data = data3 ,
-#           colo = c('blue', 'green','orange', 'red'),
-#           lbs = c(1.5, 5, 10, 15), lims = c(1.5, 15), brks = c(1.5, 5, 10, 15),
-#           na = 'Tmin\n(years)', datal=data_lines, datal_bis=data_lines_bis)
-#dev.off()
 stations <- c("158"  ,"173", "175", "178","180", "188", "189",
                      "193", "194", "196","143", "144", "145", "146", "147", "148", "149", "150" ,
                        "151", "152",'155','163', '168', '191')
@@ -321,9 +155,6 @@ arctic_map_bis <- function(longs, lats, cols, sizes, data, colo, lbs, lims, brks
     colour=data$col,
     size = 1.5
   )  +
-#   scale_colour_gradientn(colors=colo,
-#                          labels=lbs, limits=lims, breaks=brks,
-#                          name=na) +
   geom_label_repel(aes(x=longs, y=lats,label=labels, colour=Ocean), size=3) + 
   scale_colour_manual(values = labs )
   return(v)
@@ -352,7 +183,7 @@ dev.off()
 
 
 
-u=ncdf4::nc_open('../Polar_front/sst.day.mean.2013.nc')
+u=ncdf4::nc_open('../data/sst.day.mean.2013.nc')
 
 sst=ncdf4::ncvar_get(u, 'sst')
 
@@ -383,11 +214,6 @@ lons <- grid_coords$lon
 lats <- grid_coords$lat
 print(min(temp_dat_plot, na.rm = T))
 print(max(temp_dat_plot, na.rm = T))
-#colors <- (temp_dat_plot-
-#             min(temp_dat_plot, na.rm = T))*99/(max(temp_dat_plot, na.rm = T)-
-#                                                  min(temp_dat_plot, na.rm = T))+1
-#col_vec <- jet.colors(100)
-#colors_plot <- col_vec[colors]
 
 arctic_map_front <- function(longs, lats, cols, sizes, data, colo, lbs, lims, brks,na, labels, Ocean, labs, datal, datal_bis, cols_f, lo, la){
   v <- ggplot() +
@@ -428,9 +254,6 @@ arctic_map_front <- function(longs, lats, cols, sizes, data, colo, lbs, lims, br
     colour=data$col,
     size = 1.5
   )  +
-#   scale_colour_gradientn(colors=colo,
-#                          labels=lbs, limits=lims, breaks=brks,
-#                          name=na) +
   geom_label_repel(aes(x=longs, y=lats,label=labels, colour=Ocean), size=3) +
   scale_colour_manual(values = labs )
   return(v)
@@ -439,8 +262,6 @@ arctic_map_front <- function(longs, lats, cols, sizes, data, colo, lbs, lims, br
 sel <- lats>25
 sel1=!is.infinite(temp_dat_plot) & !is.na(temp_dat_plot)
 cols_t=temp_dat_plot[sel & sel1]
-#cols_t[cols_t< -0.5]=NA
-#cols_t[cols_t>3.5]=NA
 pdf('time_current_map_and_front.pdf')
 arctic_map_front(longs = lonis1, lats = latis1, cols = rep('black', length(latis1)),
                sizes = rep(1, length(latis1)),data = init_data ,
