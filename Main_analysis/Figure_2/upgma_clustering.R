@@ -6,14 +6,14 @@ library('gplots')
 library('cluster')
 library('RColorBrewer')
 
-all_data0 <- readRDS('simkaTG_matrix_sur.rds')
-all_data_arctic0 <- readRDS('simkaTG_matrix_arctic.rds')
+#all_data0 <- readRDS('../data/simkaTG_matrix_sur.rds')
+#all_data_arctic0 <- readRDS('../data/simkaTG_matrix_arctic.rds')
 bc_unigenes <- NULL
 frac0 <- c('GGZZ')
 all_data_arctic0_uni <- rep(list(NULL), 2)
 names(all_data_arctic0_uni) <- c('T', 'G')
 for (f in frac0){
-  fi <- readRDS(paste('MetaTG_bray-curtis_unigenes_',f,'.rds', sep=''))
+  fi <- readRDS(paste('../data/MetaTG_bray-curtis_unigenes_',f,'.rds', sep=''))
   all_data_arctic0_uni[['T']][[f]] <- fi[[1]]
   all_data_arctic0_uni[['G']][[f]] <- fi[[2]]
 }
