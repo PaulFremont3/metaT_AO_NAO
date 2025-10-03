@@ -1,32 +1,20 @@
 library('dplyr')
 library('stringr')
 
-frac = commandArgs(trailingOnly = T)[1] #c('SSUU', 'QQSS', 'GGZZ')
+frac = commandArgs(trailingOnly = T)[1] #'GGZZ'
 type = commandArgs(trailingOnly = T)[2] # c('T', 'uni_T', 'G', 'uni_G')
-tax_id = commandArgs(trailingOnly = T)[3] # c('taxo_MGT', 'taxo')
+tax_id = commandArgs(trailingOnly = T)[3] # 'txo_groups3'
 subset = commandArgs(trailingOnly = T)[4] # 0 or 1
-classi = commandArgs(trailingOnly = T)[5] # 2 or 6 (classification of the unigenes (unique atlantic/arctic etc)
-bis = commandArgs(trailingOnly = T)[6]
+classi = commandArgs(trailingOnly = T)[5] # 2 to 6 (classification of the unigenes (unique atlantic/arctic etc)
+bis = commandArgs(trailingOnly = T)[6] #'_bis' or 0
 
 if (bis!='_bis'){
   bis=''
 }
 
-if (tax_id=='taxo_MGT'){
-  colors_taxon <- readRDS('color_table_MGT.rds')
-  os=15
-} else if (tax_id=='taxo'){
-  colors_taxon <- readRDS('color_table_taxo.rds')
-  os=20
-} else if (tax_id=='taxo_MGT-v2'){
+if (tax_id=='taxo_MGT-v2'){
   colors_taxon <- readRDS('color_table_MGT-v2.rds')
   os=15
-} else if (tax_id=='taxo_groups'){
-  colors_taxon <- readRDS('color_table_groups.rds')
-  os=5
-} else if (tax_id=='taxo_groups2'){
-  colors_taxon <- readRDS('color_table_groups2.rds')
-  os=9
 } else if (tax_id=='taxo_groups3'){
   colors_taxon <- readRDS('color_table_groups3.rds')
   os=15
