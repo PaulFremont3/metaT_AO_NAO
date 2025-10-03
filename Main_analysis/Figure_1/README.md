@@ -3,4 +3,5 @@ R dependencies: sp, SDMTools (https://cran.r-project.org/src/contrib/Archive/SDM
 
 - Figure 1a: `Rscript time_current_map.R`, output: `time_current_map_and_front.pdf` (then adapted for the paper in Inkscape)
 - Figure 1b: `Rscript polar_front_temperature_noaa_june.R`, outputs: `polar_front_temperature_noaa_june.pdf` and `legend_gradient_temperature.pdf`, current arrows were drawn in Inkscape
-- Figure 1c: 
+- Figure 1c: `Rscript polar_front_temperature_noaa_june.R chl` output: `polar_front_chl_stanford.pdf` and `legend_chl_stanford.pdf`
+- Figure 1d: `Rscript polar_front_temperature_noaa_june.R npp` output: `polar_front_npp_stanford.pdf` and `legend_npp_stanford.pdf`
