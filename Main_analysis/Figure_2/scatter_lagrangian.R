@@ -1,23 +1,18 @@
-# library("rgdal")                                                                                                      
-# library("raster")
 library('stringr')
 library("ggplot2")
-#library('readxl')
 library('gridExtra')
 library('tidyr')
 library('vegan')
-#library('DT')
 library('dplyr')
 library('RColorBrewer')
 library('viridis')
-#setwd("~/Groups_metaT/Groups_plots/")
-setwd("/env/export/cns_n02_scratch/scratch_TaraOcean/BioAdvection_II/MetaT_4/Groups_metaT/Groups_plots")
+
 source('functions_scatter_plots.R')
 
 type <- commandArgs(trailingOnly=TRUE)[1]
-#Tmin1 <- readr::read_tsv("minAijji_tarrive_min_surface_1000.csv") %>% 
-Tmin1 <- read.table('minAijji_tarrive_min_surface_1000.csv') 
-  #rename(Station_1 = X1) %>% 
+
+Tmin1 <- read.table('../data/minAijji_tarrive_min_surface_1000.csv') 
+
 Station_1 <- rownames(Tmin1)
 Tmin1 <- cbind(Station_1, Tmin1)
 new_names <- lapply(colnames(Tmin1)[2:dim(Tmin1)[2]], function(x){strsplit(x, split = 'X')[[1]][2]})
@@ -103,14 +98,11 @@ for (frac in fractions){
       } else{
         test0 <- test[test$col==colob,]
       }
-      #trans_stats <-c('155SUR', '158SUR', '163SUR')
+
       test0$col[test0$col=='blue']<- 'darkorange'
       test0$col[test0$col=='green']<- 'darkblue'
       test0$col[test0$col=='red']<- 'forestgreen'
-      #test0$col[test0$st1 %in% trans_stats]<-'red'
-      #test0$col[test0$st2 %in% trans_stats]<-'red'
-      
-      #print(sqrt(dim(test0)[1]))
+
       cum_cors <- cum_cor(test0, var=vari)
       cum_cors_ed <- cum_cor_ed(test0, var=vari)
       condu <- which(cum_cors$mt <0.01)
@@ -166,9 +158,7 @@ for (frac in fractions){
           slope <- round(-log(2)/lin_mod$coefficients[2],1)
           pv <- summary(lin_mod)
           pva <- pv$coefficients[8]
-	  #print(as.numeric(slope))
-          #print(pva)
-          #print(summary(lin_mod))
+
           sls <- append(sls, as.numeric(slope))
           sls <- append(sls, my_round(pva))
         }
@@ -243,7 +233,7 @@ for (frac in fractions){
         plot(0,0, col='white', xlim=c(0,17), ylim=c(0, 60), axes=FALSE, frame.plot=F, xlab = '', ylab='')
         mi <- min(test[[vari0]], na.rm=T)
         ma <- max(test[[vari0]], na.rm=T)
-#        SDMTools::legend.gradient(pnt, palette_col, limits=c(mi,ma), title ='Environmental distance' , cex=1) 
+
       }
       dev.off()
     }
