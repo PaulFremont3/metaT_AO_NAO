@@ -30,8 +30,8 @@ Tmin1$Station_2 <- as.character(sapply(Tmin1$Station_2,
                                        FUN = function(x){paste(strsplit(x, split = '_')[[1]],
                                                                collapse = '')}))
 
-simka <- readRDS('simkaTG_long_arctic.rds')
-env_arctic <- read.table('../env_arctic_3.txt', header = T)
+simka <- readRDS('../data/simkaTG_long_arctic.rds')
+env_arctic <- read.table('../data/env_arctic_3.txt', header = T)
 env_arctic$Station <- paste(env_arctic$Station, 'SUR', sep='')
 stations <- env_arctic$Station
 good_stat <- stations[stations>'142SUR' & stations <'201SUR']
@@ -42,9 +42,9 @@ fractions <- c('GGZZ')
 bc_unigenes <- list()
 for (f in fractions){
   if (f!='KKQQ_MMQQ'){
-    bc_file <- readRDS(paste('MetaTG_bray-curtis_unigenes_',f,'.rds', sep=''))
+    bc_file <- readRDS(paste('../data/MetaTG_bray-curtis_unigenes_',f,'.rds', sep=''))
   } else {
-    bc_file <- readRDS('MetaTG_bray-curtis_unigenes_KKQQ.rds')
+    bc_file <- readRDS('../data/MetaTG_bray-curtis_unigenes_KKQQ.rds')
   }
   names(bc_file) <- c('T', 'G')
   bc_unigenes[[f]] <- bc_file
