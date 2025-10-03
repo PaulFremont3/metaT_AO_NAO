@@ -1,7 +1,6 @@
 setwd("/env/cns/scratch_TaraOcean/BioAdvection_II/MetaT_4/Groups_metaT/Polar_front/")
 
-library('ncdf4')
-library("rgdal")                                                                                                      
+library('ncdf4')                                                                                                      
 library("raster")
 library("ggplot2")
 library('readxl')
@@ -14,7 +13,7 @@ library('maptools')
 library('mapproj')
 library('ggrepel')
 
-u=ncdf4::nc_open('sst.day.mean.2013.nc')
+u=ncdf4::nc_open('../data/sst.day.mean.2013.nc')
 
 sst=ncdf4::ncvar_get(u, 'sst')
 
@@ -103,7 +102,7 @@ mx <- max(temp_dat_plot, na.rm = T)
 sel <- lats>50 
 
 
-env <- read.table('../env_arctic_3.txt')
+env <- read.table('../data/env_arctic_3.txt')
 env <- env[env$Station %in% c(155:168),]
 lats1 <- env$Latitude
 lons1 <- env$Longitude
@@ -130,12 +129,13 @@ maxo=mx
 quart1=(mx-mi)/4 +mi
 quart=3*(mx-mi)/4 +mi
 mid=(mx-mi)/2 +mi
-pdf(paste('legend_temperature_june_noaa.pdf', sep=''))
-ggplot(df, aes(x, y, fill = z)) + geom_raster() +
-  scale_fill_gradientn(colours=col_vec,na.value = "transparent",
-                       breaks=c(0,0.25,0.5,0.75,1),labels=c(round(mino, 3), round(quart1, 2),round(mid, 1),
-                                                            round(quart, 1),round(maxo, 0)),
-                       limits=c(0,1))
+
+pdf('legend_gradient_temperature.pdf',width = 5, height = 10)
+pnt=cbind(x =c(0,1,1,0), y =c(0,3,3,0))
+plot(0,0, col='white', xlim=c(0,1.5), ylim=c(0,3 ), axes=FALSE, frame.plot=F, xlab = '', ylab='')
+SDMTools::legend.gradient(pnt, col_vec, limits=c(round(mi,1),round(mx,1)), title = 'Temperature (°C)', cex=1)
 dev.off()
+
+
 
 
