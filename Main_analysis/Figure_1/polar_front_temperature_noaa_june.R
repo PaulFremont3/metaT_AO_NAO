@@ -7,15 +7,12 @@ library("ggplot2")
 library('readxl')
 library('gridExtra')
 library('tidyr')
-#library('DT')
 library('dplyr')
 library('RColorBrewer')
 library('matlab')
 library('maptools')
-#library('rgeos')
 library('mapproj')
 library('ggrepel')
-#library('SDMTools')
 
 u=ncdf4::nc_open('sst.day.mean.2013.nc')
 
@@ -58,30 +55,18 @@ colors_plot <- col_vec[colors]
 proj <- "+proj=stere +lat_0=90 +lat_ts=70 +lon_0=-45 +k=1 +x_0=0 +y_0=0 +a=6378273 +b=6356889.449 +units=m +no_defs"
 
 data("wrld_simpl", package = "maptools")                                                                            
-#rgeos::set_RGEOS_CheckValidity(2L)
 wm_ggplot <- crop(wrld_simpl, extent(-180, 180, 50, 90)) 
 # Defines the x axes required
 x_lines <- seq(-120,180, by = 60)
 
 arctic_map <- function(longs, lats, cols, sizes,  colo, lbs, lims, brks,na, longs1, lats1, cols1,sizes1, labels1, datal, datal_bis){
   v <- ggplot() +
-    #aes(x = longs, y = lats, z = cols) + 
-    #geom_tile(aes(fill=cols)) + 
-    #stat_contour(aes(x = longs, y = lats, z = cols,fill=..level..), geom="polygon", binwidth=1) + 
-    
-    #stat_contour(aes(x = longs, y = lats, z = cols), binwidth=1, colour='black') +
+  
     geom_tile(aes(x = longs, y = lats,fill=cols))+
     scale_fill_gradientn(colours=colo,labels=lbs, limits=lims, breaks=brks,name=na, guide="none")+
     geom_contour(color="black", alpha=0.5) +
     stat_contour(aes(x = longs, y = lats, z = cols), binwidth=1, colour='black') +
-    # geom_contour(geom="polygon", aes(x=longs, y=lats, z=cols, fill= ..level..))+
-    
-    #geom_point(aes(x=longs, y=lats), shape=15, fill=cols, color=cols, 
-    #          size=sizes) +
-    # geom_line(data = data,aes(x=lo, y=la, group=grp, color=dists))+
-    #scale_colour_gradientn(colors=colo,
-    #                       labels=lbs, limits=lims, breaks=brks,
-    #                       name=na) +
+
       geom_polygon(data = wm_ggplot, aes(x = long, y = lat, group = group), fill = "grey", colour = "grey", alpha = 1) +
       geom_line(data=datal, aes(x=x, y=y, group=gp),size = 0.1, linetype = 'dashed')+
       geom_line(data=datal_bis, aes(x=x, y=y, group=gp),size = 1) +      
@@ -109,26 +94,14 @@ arctic_map <- function(longs, lats, cols, sizes,  colo, lbs, lims, brks,na, long
             axis.ticks=element_blank())  +
     geom_point(aes(x=longs1, y=lats1), shape=16, fill=cols1, color=cols1, 
                size=sizes1) 
-    #geom_label_repel(aes(x=longs1, y=lats1,label=labels1), size=5)
-  #                        high = "red",name='Tmin\n(years)',
-  #                        labels=c(0,0.5,1,1.5),breaks=c(0,0.5,1,1.5),
-  #                        limits=c(0,1.5)) +
-  
-  # geom_point(aes(x=, y=), shape=19, fill=cols[1], color=cols[1],
-  #            sizes=c(min(sizes),min(sizes)+(max(sizes)-min(sizes))/2, max(sizes)))
+
   return(v)
 }
 
 mi <- min(temp_dat_plot, na.rm = T)
 mx <- max(temp_dat_plot, na.rm = T)
 sel <- lats>50 
-#sel[seq(1,length(sel), 8)] <- F
-#sel[seq(2,length(sel), 8)] <- F
-#sel[seq(3,length(sel), 8)] <- F
-#sel[seq(4,length(sel), 8)] <- F
-#sel[seq(5,length(sel), 8)] <- F
-#sel[seq(6,length(sel), 8)] <- F
-#sel[seq(7,length(sel), 8)] <- F
+
 
 env <- read.table('../env_arctic_3.txt')
 env <- env[env$Station %in% c(155:168),]
@@ -166,8 +139,3 @@ ggplot(df, aes(x, y, fill = z)) + geom_raster() +
 dev.off()
 
 
-#pdf('legend_gradient_temperature.pdf',width = 5, height = 10)
-#pnt=cbind(x =c(0,1,1,0), y =c(0,3,3,0))
-#plot(0,0, col='white', xlim=c(0,1.5), ylim=c(0,3 ), axes=FALSE, frame.plot=F, xlab = '', ylab='')
-#legend.gradient(pnt, col_vec, limits=c(round(mi,1),round(mx,1)), title = 'Temperature (°C)', cex=1)
-#dev.off()
