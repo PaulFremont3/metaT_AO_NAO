@@ -1,0 +1,1 @@
+This repository contains code and data necessary to replicate the study *Changes in gene expression in eukaryotic phytoplankton at the Atlantic-Arctic polar front* (preprint: https://www.biorxiv.org/content/10.1101/2022.11.01.514737v2)  
