@@ -1,1 +1,1 @@
-Scripts to reproduce figure 4:  
+R scripts to reproduce figure 4:  
