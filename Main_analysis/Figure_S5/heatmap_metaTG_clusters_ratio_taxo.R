@@ -4,7 +4,6 @@ library('viridis')
 library('FactoMineR')
 library('RColorBrewer')
 library('viridis')
-setwd("/env/export/cns_n02_scratch/scratch_TaraOcean/BioAdvection_II/MetaT_4")
 source('vioplot.R')
 
 arctic_stations <- c("158SUR","163SUR","168SUR" ,"173SUR", "175SUR", "178SUR","180SUR", "188SUR", "189SUR","191SUR",
@@ -15,8 +14,8 @@ ty <- 'T'
 ty0 <- 'G'
 tax_id <- 'taxo_groups3'
 frac <-'GGZZ'
-datat <- readRDS(paste('Meta', ty,'_',tax_id,'_', frac,'.rds', sep=''))
-datag <- readRDS(paste('Meta', ty0,'_',tax_id,'_', frac,'.rds', sep=''))
+datat <- readRDS(paste('../data/Meta', ty,'_',tax_id,'_', frac,'.rds', sep=''))
+datag <- readRDS(paste('../data/Meta', ty0,'_',tax_id,'_', frac,'.rds', sep=''))
 datag <- datag[match(rownames(datat), rownames(datag)),]
 clr_func <- function(x){
   log(x/exp(mean(log(x[x>0]))))
@@ -32,7 +31,7 @@ wilc_test <- function(x){
   return(c(na,t, loc))
 }
 
-cols <- readRDS('color_table_groups3.rds')
+cols <- readRDS('../data/color_table_groups3.rds')
 cols$col <- as.character(levels(cols$col))[cols$col]
 
 cond <- colnames(datat_clr) %in% c(arctic_stations, atlantic_stations, '155SUR')
@@ -70,8 +69,7 @@ lr_t <- rbind(lr_t, t(apply(log(datag), 1, logratio_func)))
 
 rownames(lr_t)<-c('metatransciptomes', 'metagenomes')
 pvals <- rbind(test_t0$X3, test_g0$X3)
-#set <-magma(50)
-#set <- colorRampPalette(colors = c("red", "yellow", 'blue'))(50)
+
 set <- colorRampPalette(colors = c("orange4", 'gray', 'darkorchid'))(50)
 pdf(paste('heatmap_metaTG_ratios_', frac,'_' , tax_id,'.pdf',sep=''), height=3)
 heatmap.2(lr_t, trace="none",symm=TRUE, Rowv = NA, Colv = NA,cexRow=0.5, cexCol=0.5,
@@ -90,7 +88,7 @@ clr_t <- rbind(clr_t, t(apply(datag_clr, 1, logratio_func)))
 
 rownames(clr_t)<-c('metatransciptomes', 'metagenomes')
 pvals <- rbind(test_t$X3, test_g$X3)
-#set <-magma(50)
+
 pdf(paste('heatmap_metaTG_clr_ratios_', frac,'_' , tax_id,'.pdf',sep=''), height=3)
 heatmap.2(clr_t, trace="none",symm=TRUE, Rowv = NA, Colv = NA,cexRow=0.5, cexCol=0.5,
           dendrogram = "none", keysize=4, col = set,margins = c(7,5),
