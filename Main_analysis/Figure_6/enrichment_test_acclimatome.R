@@ -1,15 +1,11 @@
-#library(rJava)
 library(UpSetR)
 library(tidyverse)
-#library(venneuler)
 library(grid)
-#library(BioVenn)
 library(gplots)
-setwd("~/docs_from_inti/venn_acclimatome")
 source('vioplot1.R')
-GO_table=readRDS('GO_table.rds')
-table=read.table('training_set_phate_GO_all_GGZZ_physical_clr_T.txt')
-GOs=readLines('training_set_phate_GO_rows_GGZZ_physical_clr_T.txt')
+GO_table=readRDS('../data/GO_table.rds')
+table=read.table('../data/training_set_phate_GO_all_GGZZ_physical_clr_T.txt')
+GOs=readLines('../data/training_set_phate_GO_rows_GGZZ_physical_clr_T.txt')
 GOs=strsplit(GOs, split = "\t")[[1]]
 table=table[!(GOs %in% c('unknown', 'NO_GO')),]
 GOs=GOs[!(GOs %in% c('unknown', 'NO_GO'))]
@@ -17,16 +13,10 @@ sub_GO_table=GO_table[!is.na(match(GO_table[,2], GOs)),]
 sub_GO_table=sub_GO_table[match(GOs, sub_GO_table[,2]),]
 
 
-# GOs=GOs[sub_GO_table[,7]>7]
-# table=table[sub_GO_table[,7]>7,]
 
-baseline=readRDS('baseline_GO_matou_groups3s_GGZZ_subset.rds')
+baseline=readRDS('../data/baseline_GO_matou_groups3s_GGZZ_subset.rds')
 baseline=baseline[!(baseline$Group.2 %in% c('unknown', 'NO_GO')),]
-#baseline=baseline[(baseline$Group.2 %in% GOs),]
-#baseline$x[baseline$x>10]=10
 
-#table[table>0]=1
-#baseline$x[baseline$x>0]=1
 
 
 taxos=c('Bacillariophyta', 'Mamiellales', 'Pelagophyceae', 'Phaeocystales')
@@ -38,9 +28,6 @@ cols= c('Bacillariophyta T_-',	'Bacillariophyta T_+',
 ord=c(1:2, 5:10, 3:4)
 colnames(table)=cols
 table=table[,ord]
-
-#sets <- table 
-#sets$GO= 1:length(GOs)
 
 
 sels_ter=list()
@@ -62,7 +49,6 @@ for (i in taxos_bis){
 }
 
 pvals=NULL
-#pdf('venndiagramm_acclimatome_genes_pairwise_bis.pdf', width = 100, height = 100)
 par(mfrow = c(5, 5))
 c=1
 alg_m_sel = c(2,3,4,8,9, 14)
@@ -134,15 +120,8 @@ for (sel in sels_ter){
   pval=phyper(q,m,n,k, lower.tail = F)
   
   par(cex = 5)
-  # if (paste(sel, collapse='_') %in% passed){
-  #   plot(0,0,xaxt='n', yaxt='n', ylab='', xlab='', col=scales::alpha('white', 0))
-  # } else{
   r1=colnames(table)[sel[1]]
   r2=colnames(table)[sel[2]]
-  #v= venneuler(c("r1"=E1, "r2"=E2 , 'r1&r2'=Es))
-  #plot(v)
-  
-  # print(pval)
   pvals =c(pvals, pval)
   c=c+1
 }
@@ -150,24 +129,18 @@ dev.off()
 pvals_ad=p.adjust(pvals, 'hommel')
 pvals_ad[pvals_ad>0.05]=1
 sig=pvals_ad
-#sig[sig==0]=1e-300
-pvalsm=matrix(sig, nrow=5, byrow = T)
-heatmap.2(pvalsm, dendrogram = 'none', Rowv = NULL, Colv = NULL, trace = 'none', labRow = taxos_bis,
-          labCol = taxos_bis)
-pdf('violin_plot_acclimatome.pdf', width=9)
-par(mar=c(10.1, 4.1, 4.1, 2.1))
-vioplot1(list(alg_m, hex_m,alg_p,  hex_p, alg_mp_sel), col = rep('darkgray',5),
-         names=c('Algae vs Algae T-', 'Algae vs Copepods T-','Algae vs Algae T+',  'Algae vs Copepods T+', 
-         'T- vs T+'), ylab = '% common genes')
-stripchart(list(alg_m, hex_m,alg_p,  hex_p, alg_mp_sel),cex=2, vertical = TRUE, method = "jitter",
-           pch = 19, add = TRUE, col = rep('orange', 5))
-dev.off()
 
-pdf('violin_plot_acclimatome_bis.pdf', width=9)
+pvalsm=matrix(sig, nrow=5, byrow = T)
+#heatmap.2(pvalsm, dendrogram = 'none', Rowv = NULL, Colv = NULL, trace = 'none', labRow = taxos_bis,
+#          labCol = taxos_bis)
+
+
+pdf('violin_plot_acclimatome.pdf', width=9)
 par(mar=c(10.1, 4.1, 4.1, 2.1))
 vioplot1(list(alg_m, alg_p, alg_mp_sel), col = rep('darkgray',5),
          names=c('Algae vs Algae T-','Algae vs Algae T+',
                  'T- vs T+'), ylab = '% common genes')
 stripchart(list(alg_m, alg_p,  alg_mp_sel),cex=2, vertical = TRUE, method = "jitter",
            pch = 19, add = TRUE, col = rep('orange', 5))
+
 dev.off()
