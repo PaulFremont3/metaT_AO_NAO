@@ -1,9 +1,8 @@
-setwd("~/docs_from_inti/violin_plots_metabo")
 library('vioplot')
 library('gplots')
-dat=readRDS('metat_analysis_GGZZ.rds')
-unigenes=readLines('unigenes_phate_GGZZ_0_0_0.txt')
-data_expression=readRDS('to_plot1_phate.rds')
+dat=readRDS('../data/metat_analysis_GGZZ.rds')
+unigenes=readLines('../data/unigenes_phate_GGZZ_0_0_0.txt')
+data_expression=readRDS('../data/to_plot1_phate.rds')
 names(data_expression)=c('delta0', 'phate-1', 'phate-2', 'mean0','atlanticity', 'mean1', 'delta1' )
 data_expression[['delta1']]=-data_expression[['delta1']]
 data_expression[['atlanticity']]=-data_expression[['atlanticity']]
@@ -45,7 +44,6 @@ ferredoxin = c('PF13085', 'PF00111')
 flavodoxin = c('PF00258')
 general_transporters = c('PF01061','PF00005','PF07690' , 'PF00854') #
 iron_transport = c('PF02421')
-#metal_transporter = c('PF04145', 'PF16983', 'PF02535')
 silicon_transporter = c('PF03842')
 phosphate_transp = c('PF01384')
 nitrate_transp = c('PF16974')
@@ -81,16 +79,11 @@ names_pfams_list1 <- c('CET_photosynthesis', 'other_photosynthesis',
 dat <- dat[dat[,111]>4,]
 unigenes <- strsplit(unigenes, ' ')[[1]]
 dat <- dat[dat[,1] %in% unigenes, ]
-#selo=dat[,111]>8
-#dat=dat[selo,]
-#for (i in 1:length(data_expression)){
-#  data_expression[[names(data_expression)[i]]]=data_expression[[names(data_expression)[i]]][selo]
-#}
 
 
 taxo='MGT-v2'
 data_uni_tax <- readRDS(paste('data_uni_',taxo,'.rds', sep=''))
-#data_uni_tax_groups3 <- readRDS(paste('data_uni_','groups3','.rds', sep=''))
+
 tax_unis=readRDS('taxID_uni_all.rds')
 colnames(tax_unis)<-c('geneID', 'taxName')
 tax_unis<- tax_unis[!duplicated(tax_unis$geneID),]
@@ -100,9 +93,7 @@ tax_unis <- tax_unis[tax_unis$geneID %in% unigenes,]
 colnames(data_uni_tax)<-c('taxName', 'geneID')
 data_uni_tax<- data_uni_tax[!duplicated(data_uni_tax$geneID),]
 data_uni_tax <- data_uni_tax[data_uni_tax$geneID %in% unigenes,]
-#if (is.factor(data_uni_tax$taxName)){
-#  data_uni_tax$taxName <- as.character(levels(data_uni_tax$taxName))[data_uni_tax$taxName]
-#}
+
 c_no_pfam <- 'no-Pfam'
 col_not <- c_no_pfam
 metabo <- rep(col_not, length(dat[,1]))
@@ -127,33 +118,6 @@ for (pfam_types in list_all_pfams1){
   h=h+1
 }
 
-#t_test_delt=function(x){
-#  x1=x[9:20]
-#  x2=x[1:8]
-#  #d=mean(x1[x1!=0], na.rm=T)-mean(x2[x2!=0], na.rm=T)
-#  if (length(x1[x1!=0])>3 & length(x2[x2!=0])>3){
-#    p=wilcox.test(x1[x1!=0], x2[x2!=0])
-#    p_val=p$p.value
-#  } else{
-#   p_val=NA
-# }
-# return(p_val)
-#}
-
-#t_test_delta=apply(raw_expr, 1, t_test_delt)
-#t_test_delta[metabo_bis=='no-Pfam']=NA
-#t_test_delta_adj_metabo=p.adjust(t_test_delta, method = 'fdr')
-
-
-#pdf('ao_nao_mamiellales_light_harvest.pdf')
-#vioplot(distrs)
-#abline(h=0)
-#abline(v=8.5)
-#heatmap.2(as.matrix(raw_expr_phot), trace="none",symm=TRUE, Rowv = NA, Colv = NA,cexRow=0.5, cexCol=0.5,
-#          dendrogram = "none", keysize=1,margins = c(7,5),
-#          symkey = F,denscol = 'black',na.color='gray')
-#dev.off()
-#med_stats=apply(raw_expr_phot, 2, function(x){median(x, na.rm=T)})
 
 if (taxo=='groups3'){
   taxos=c('Bacillariophyta', 'Mamiellales', 'Phaeocystales', 'Pelagophyceae')
@@ -187,357 +151,6 @@ if (taxo=='groups3'){
 vals_to_plot=c('mean1', 'atlanticity', 'delta1')
 
 col_table=readRDS(paste('color_table_',taxo,'.rds', sep=''))
-
-# pdf(paste('violin_plots_metabolisms_',taxo,'.pdf', sep=''), height=6)
-# for (func in names_pfams_list){
-#   for (v in vals_to_plot){
-#     to_plot=rep(list(NULL), length(taxos))
-#     names(to_plot)=taxos
-#     for (tx in taxos){
-#       if (func !='all'){
-#         if (tx=="79_Bathycoccaceae"){
-#           dt=data_expression[[v]][metabo==func & taxo_vec==tx | taxo_vec=="439_Bathycoccaceae"]
-#         } else{
-#           dt=data_expression[[v]][metabo==func & taxo_vec==tx ]
-#         }
-#         
-#       } else{
-#         if (tx=="79_Bathycoccaceae"){
-#           dt=data_expression[[v]][taxo_vec==tx | taxo_vec=="439_Bathycoccaceae"]
-#         } else{
-#           dt=data_expression[[v]][taxo_vec==tx]
-#         }
-#         
-#       }
-#       
-#       dt=dt[!is.na(dt)]
-#       if (length(dt)==0){
-#         to_plot[[tx]]=0
-#       } else{
-#         to_plot[[tx]]=dt
-#       }
-#       
-#     }
-#     vec_to_plot=unlist(to_plot)
-#     g_to_plot=NULL
-#     lowercase_alphabet <- letters
-#     for (tx in taxos){
-#       if (length(to_plot[[tx]])>0){
-#         g_to_plot=c(g_to_plot, rep(tx, length(to_plot[[tx]])))
-#       }
-#       
-#     }
-#     
-#     t_test=pairwise.wilcox.test(x = vec_to_plot,g=g_to_plot, p.adjust.method = 'bonferroni')
-#     
-#     if (v=='atlanticity'){
-#       y_max=1.5
-#     } else if (v=='mean1'){
-#       y_max=0.88*max(data_expression[[v]], na.rm=T)
-#       if (func=='all'){
-#         y_max=max(data_expression[[v]], na.rm=T)
-#       }
-#     } else if (v=='delta1'){
-#       y_max=0.8*max(data_expression[[v]], na.rm=T)
-#       if (func=='all'){
-#         y_max=max(data_expression[[v]], na.rm=T)
-#       }
-#     }
-#     #y_max=1.2*max(vec_to_plot, na.rm = T)
-#     
-#     vioplot::vioplot(to_plot, las=2, ylim=c(-y_max, y_max), main=paste(func, v, sep=' '), cex.axis=2)
-#     box(lwd = 3)
-#     stripchart(to_plot,cex=0.1, vertical = TRUE, method = "jitter",
-#                pch = 19, add = TRUE, col = rep('black', length(taxos)))
-#     
-#     
-#     
-#     
-#     lowercase_alphabet <- letters
-#     sigs_x=NULL
-#     sigs_text=NULL
-#     c=1
-#     cs=rep(1,length(taxos))
-#     
-#     if (length(t_test$p.value)!=0){
-#       lowercase_alphabet <- letters
-#       sigs_x=NULL
-#       sigs_text=NULL
-#       c=1
-#       cs=rep(1,length(taxos))
-#       
-#       for (i in 1:dim(t_test$p.value)[1]){
-#         for (j in 1:dim(t_test$p.value)[1]){
-#           if (j<=i){
-#             i_t=match(rownames(t_test$p.value)[i],taxos )
-#             j_t=match(colnames(t_test$p.value)[j],taxos )
-#             ci=cs[i_t]
-#             cj=cs[j_t]
-#             
-#             if (!is.na(t_test$p.value[i,j]) & t_test$p.value[i,j]<0.01){
-# 
-#               sigs_x=c(sigs_x, i_t+sep_vals[ci])
-#               sigs_x=c(sigs_x, j_t+sep_vals[cj])
-#               sigs_text=c(sigs_text, letters[c])
-#               sigs_text=c(sigs_text, letters[c])
-#               c=c+1
-#               cs[i_t]=cs[i_t]+1
-#               cs[j_t]=cs[j_t]+1
-#             }
-#           }
-#         }
-#         
-#       }
-#       if (length(sigs_x)>0){
-#         text(x=sigs_x, y=1.12*max(vec_to_plot), sigs_text, cex=cex_taxo)
-#       }
-#     }
-#     abline(h=0, lwd=2)
-#     p_vals=NULL
-#     signs_m=NULL
-#     for (dt in to_plot){
-#       if (length(dt)>2){
-#         p_val=wilcox.test(dt, mu = 0)
-#         p_vals=c(p_vals,p_val$p.value)
-#       } else{
-#         p_vals=c(p_vals,NA)
-#       }
-#       signs_m=c(signs_m, as.integer(mean(dt)>0)+1)
-#     }
-#     p_vals_adj=p.adjust(p_vals, method = 'bonferroni')
-#     threshs=c(0.001, 0.01, 0.05)
-#     signs=c('***', '**', '*')
-#     co=1
-#     done=NULL
-#     if (v=='mean1'){
-#       colos=c('blue', 'red')
-#     } else {
-#       colos=c('darkorange', 'darkblue')
-#     } 
-#     for (t in threshs){
-#       p_sigs=p_vals_adj<t
-#       signifs=which(p_sigs==T)
-#       cols=signs_m[which(p_sigs==T)]
-#       cols=colos[cols]
-#       for (d in done){
-#         cols=cols[signifs!=d]
-#         signifs=signifs[signifs!=d]
-#       }
-#       #print(cols)
-#       #print(signifs)
-#       text(signifs, y=y_max, signs[co] , cex=4, col=cols)
-#       for (sig in signifs){
-#         done=c(done, sig)
-#       }
-#       co=co+1
-#     }
-#     
-#     
-#   }
-#   # plot phate
-#   to_plot1=rep(list(NULL), length(taxos))
-#   to_plot2=rep(list(NULL), length(taxos))
-#   names(to_plot)=taxos
-#   for (tx in taxos){
-#     dt1=data_expression[['phate-1']][metabo==func & taxo_vec==tx]
-#     dt1=dt1[!is.na(dt1)]
-#     dt2=data_expression[['phate-2']][metabo==func & taxo_vec==tx]
-#     dt2=dt2[!is.na(dt2)]
-#     if (length(dt)==0){
-#       to_plot1[[tx]]=0
-#       to_plot2[[tx]]=0
-#     } else{
-#       to_plot1[[tx]]=dt1
-#       to_plot2[[tx]]=dt2
-#     }
-#     
-#   }
-#   
-#   for (i in 1:length(taxos)){
-#     tx=taxos[i]
-#     if (i==1){
-#       plot(to_plot1[[tx]], to_plot2[[tx]], xlim=c(min(data_expression[['phate-1']]), max(data_expression[['phate-1']])), ylim=c(min(data_expression[['phate-2']]), max(data_expression[['phate-2']])), col=col_table$col[col_table$taxon==tx],
-#            xlab='PHATE 1', ylab='PHATE 2', pch=19)
-#     } else{
-#       points(to_plot1[[tx]], to_plot2[[tx]], col=col_table$col[col_table$taxon==tx], pch=19)
-#     }
-#     
-#   }
-# }
-# dev.off()
-# 
-# pdf(paste('violin_plots_metabolisms_bis_',taxo,'.pdf', sep=''), height = 6)
-# for (func in names_pfams_list1){
-#   for (v in vals_to_plot){
-#     to_plot=rep(list(NULL), length(taxos))
-#     names(to_plot)=taxos
-#     for (tx in taxos){
-#       if (func !='all'){
-#         if (tx=="79_Bathycoccaceae"){
-#           dt=data_expression[[v]][metabo_bis==func & taxo_vec==tx | taxo_vec=="439_Bathycoccaceae"]
-#         } else{
-#           dt=data_expression[[v]][metabo_bis==func & taxo_vec==tx ]
-#         }
-#         
-#       } else{
-#         if (tx=="79_Bathycoccaceae"){
-#           dt=data_expression[[v]][taxo_vec==tx | taxo_vec=="439_Bathycoccaceae"]
-#         } else{
-#           dt=data_expression[[v]][taxo_vec==tx]
-#         }
-#         
-#       }
-#       #dt=data_expression[[v]][metabo_bis==func & taxo_vec==tx]
-#       dt=dt[!is.na(dt)]
-#       if (length(dt)==0){
-#         to_plot[[tx]]=0
-#       } else{
-#         to_plot[[tx]]=dt
-#       }
-#       
-#     }
-#     vec_to_plot=unlist(to_plot)
-#     g_to_plot=NULL
-#     lowercase_alphabet <- letters
-#     for (tx in taxos){
-#       if (length(to_plot[[tx]])>0){
-#         g_to_plot=c(g_to_plot, rep(tx, length(to_plot[[tx]])))
-#       }
-#       
-#     }
-#     
-#     t_test=pairwise.wilcox.test(x = vec_to_plot,g=g_to_plot, p.adjust.method = 'bonferroni')
-#     
-#     #y_max=1.3*max(vec_to_plot, na.rm = T)
-#     if (v=='atlanticity'){
-#       y_max=1.5
-#     } else if (v=='mean1'){
-#       y_max=0.88*max(data_expression[[v]], na.rm=T)
-#     } else if (v=='delta1'){
-#       y_max=0.8*max(data_expression[[v]], na.rm=T)
-#     }
-#     #y_max=1.15*max(
-#     
-#     vioplot::vioplot(to_plot, las=2,  main=paste(func, v, sep=' '), cex.axis=2, ylim=c(-y_max, y_max))
-#     box(lwd = 3) #ylim=c(min(vec_to_plot), y_max),
-#     stripchart(to_plot,cex=0.1, vertical = TRUE, method = "jitter",
-#                pch = 19, add = TRUE, col = rep('black', length(taxos)))
-#     
-#     
-#     
-#     if (length(t_test$p.value)!=0){
-#       lowercase_alphabet <- letters
-#       sigs_x=NULL
-#       sigs_text=NULL
-#       c=1
-#       cs=rep(1,length(taxos))
-#       
-#       for (i in 1:dim(t_test$p.value)[1]){
-#         for (j in 1:dim(t_test$p.value)[1]){
-#           if (j<=i){
-#             i_t=match(rownames(t_test$p.value)[i],taxos )
-#             j_t=match(colnames(t_test$p.value)[j],taxos )
-#             ci=cs[i_t]
-#             cj=cs[j_t]
-#             
-#             if (!is.na(t_test$p.value[i,j]) & t_test$p.value[i,j]<0.01){
-#               #print(i_t)
-#               #print(j_t)
-#               #print(i)
-#               #print(j)
-#               sigs_x=c(sigs_x, i_t+sep_vals[ci])
-#               sigs_x=c(sigs_x, j_t+sep_vals[cj])
-#               sigs_text=c(sigs_text, letters[c])
-#               sigs_text=c(sigs_text, letters[c])
-#               c=c+1
-#               cs[i_t]=cs[i_t]+1
-#               cs[j_t]=cs[j_t]+1
-#             }
-#           }
-#           #print(sigs_x)
-#           #print('')
-#         }
-#         
-#       }
-#       if (length(sigs_x)>0){
-#         text(x=sigs_x, y=1.12*max(vec_to_plot), sigs_text, cex=cex_taxo)
-#       }
-#       abline(h=0, lwd=2)
-#       p_vals=NULL
-#       signs_m=NULL
-#       for (dt in to_plot){
-#         if (length(dt)>2){
-#           p_val=wilcox.test(dt, mu = 0)
-#           p_vals=c(p_vals,p_val$p.value)
-#         } else{
-#           p_vals=c(p_vals,NA)
-#         }
-#         signs_m=c(signs_m, as.integer(mean(dt)>0)+1)
-#       }
-#       p_vals_adj=p.adjust(p_vals, method = 'bonferroni')
-#       threshs=c(0.001, 0.01, 0.05)
-#       signs=c('***', '**', '*')
-#       co=1
-#       done=NULL
-#       if (v=='mean1'){
-#         colos=c('blue', 'red')
-#       } else {
-#         colos=c('darkorange', 'darkblue')
-#       } 
-#       for (t in threshs){
-#         p_sigs=p_vals_adj<t
-#         signifs=which(p_sigs==T)
-#         cols=signs_m[which(p_sigs==T)]
-#         cols=colos[cols]
-#         for (d in done){
-#           cols=cols[signifs!=d]
-#           signifs=signifs[signifs!=d]
-#         }
-#         #print(cols)
-#         #print(signifs)
-#         text(signifs, y=y_max, signs[co] , cex=4, col=cols)
-#         for (sig in signifs){
-#           done=c(done, sig)
-#         }
-#         co=co+1
-#       }
-#     }
-#   }
-#   
-#   # plot phate
-#   to_plot1=rep(list(NULL), length(taxos))
-#   to_plot2=rep(list(NULL), length(taxos))
-#   names(to_plot)=taxos
-#   for (tx in taxos){
-#     dt1=data_expression[['phate-1']][metabo_bis==func & taxo_vec==tx]
-#     dt1=dt1[!is.na(dt1)]
-#     dt2=data_expression[['phate-2']][metabo_bis==func & taxo_vec==tx]
-#     dt2=dt2[!is.na(dt2)]
-#     if (length(dt)==0){
-#       to_plot1[[tx]]=0
-#       to_plot2[[tx]]=0
-#     } else{
-#       to_plot1[[tx]]=dt1
-#       to_plot2[[tx]]=dt2
-#     }
-#     
-#   }
-#   
-#   for (i in 1:length(taxos)){
-#     tx=taxos[i]
-#     if (i==1){
-#       plot(to_plot1[[tx]], to_plot2[[tx]], xlim=c(min(data_expression[['phate-1']]), max(data_expression[['phate-1']])), ylim=c(min(data_expression[['phate-2']]), max(data_expression[['phate-2']])), col=col_table$col[col_table$taxon==tx],
-#            xlab='PHATE 1', ylab='PHATE 2', pch=19)
-#     } else{
-#       points(to_plot1[[tx]], to_plot2[[tx]], col=col_table$col[col_table$taxon==tx], pch=19)
-#     }
-#     
-#   }
-#     
-# }
-# dev.off()
-
-
 
 
 
@@ -591,18 +204,14 @@ for (func in names_pfams_list){
         y_max=max(data_expression[[v]], na.rm=T)
       }
     } else if (v=='delta1'){
-      #y_max=0.8*max(data_expression[[v]], na.rm=T)
-      #if (func=='all'){
+
       y_max=max(data_expression[[v]], na.rm=T)
-      #}
+
     }
-    #y_max=1.2*max(vec_to_plot, na.rm = T)
+
     
     vioplot::vioplot(to_plot, las=2, ylim=c(-y_max, y_max), main=paste(func, v, sep=' '), cex.axis=2, axes=F)
-    #lines(x = c(par("usr")[1], par("usr")[2]), 
-    #      y = c(par("usr")[3], par("usr")[3]), 
-    #      col = "white", lwd = 3)
-    #box(lwd = 3)
+
     stripchart(to_plot,cex=0.1, vertical = TRUE, method = "jitter",
                pch = 19, add = TRUE, col = rep('black', length(taxos)))
     
@@ -652,7 +261,6 @@ for (func in names_pfams_list){
     abline(h=0, lwd=2)
     j=1
     for (tx in taxos){
-      #abline(h=median(data_expression[[v]][taxo_vec==tx], na.rm=T), lwd=2, col=col_table$col[col_table$taxon==tx])
       segments(x0 = j-0.5, x1 = j+0.5, y0 = median(data_expression[[v]][taxo_vec==tx], na.rm=T),y1= median(data_expression[[v]][taxo_vec==tx], na.rm=T), lwd=4, col=col_table$col[col_table$taxon==tx])
       j=j+1
     }
@@ -677,17 +285,10 @@ for (func in names_pfams_list){
     signs_1=c('-', '+')
     signs_2=c('-','+')
     signs_3=c('-', '+')
-    #threshs=c(0.001, 0.01, 0.05)
-    #signs_1=c('---', '+++')
-    #signs_2=c('--','++')
-    #signs_3=c('-', '+')
+
     co=1
     done=NULL
-    #if (v=='mean1'){
-    #  colos=c('blue', 'red')
-    #} else {
-    #  colos=
-    #}
+
     colos=NULL
     for (tx in taxos){
       colos=c(colos, col_table$col[col_table$taxon==tx])
@@ -776,7 +377,6 @@ for (func in names_pfams_list1){
         }
         
       }
-      #dt=data_expression[[v]][metabo_bis==func & taxo_vec==tx]
       dt=dt[!is.na(dt)]
       if (length(dt)==0){
         to_plot[[tx]]=0
@@ -808,10 +408,6 @@ for (func in names_pfams_list1){
     #y_max=1.15*max(
     
     vioplot::vioplot(to_plot, las=2,  main=paste(func, v, sep=' '), cex.axis=2, ylim=c(-y_max, y_max), axes=F)
-    #lines(x = c(par("usr")[1], par("usr")[2]), 
-    #      y = c(par("usr")[3], par("usr")[3]), 
-    #      col = "white", lwd = 3)
-    #box(lwd = 3) #ylim=c(min(vec_to_plot), y_max),
     stripchart(to_plot,cex=0.1, vertical = TRUE, method = "jitter",
                pch = 19, add = TRUE, col = rep('black', length(taxos)))
     
@@ -833,10 +429,6 @@ for (func in names_pfams_list1){
             cj=cs[j_t]
             
             if (!is.na(t_test$p.value[i,j]) & t_test$p.value[i,j]<0.01){
-              #print(i_t)
-              #print(j_t)
-              #print(i)
-              #print(j)
               sigs_x=c(sigs_x, i_t+sep_vals[ci])
               sigs_x=c(sigs_x, j_t+sep_vals[cj])
               sigs_text=c(sigs_text, letters[c])
@@ -846,8 +438,6 @@ for (func in names_pfams_list1){
               cs[j_t]=cs[j_t]+1
             }
           }
-          #print(sigs_x)
-          #print('')
         }
         
       }
@@ -858,7 +448,6 @@ for (func in names_pfams_list1){
       
       j=1
       for (tx in taxos){
-        #abline(h=median(data_expression[[v]][taxo_vec==tx], na.rm=T), lwd=2, col=col_table$col[col_table$taxon==tx])
         segments(x0 = j-0.5, x1 = j+0.5, y0 = median(data_expression[[v]][taxo_vec==tx], na.rm=T),y1= median(data_expression[[v]][taxo_vec==tx], na.rm=T), lwd=4, col=col_table$col[col_table$taxon==tx])
         j=j+1
       }
@@ -887,11 +476,6 @@ for (func in names_pfams_list1){
       signs_3=c('-', '+')
       co=1
       done=NULL
-      #if (v=='mean1'){
-      #  colos=c('blue', 'red')
-      #} else {
-      #  colos=
-      #}
       colos=NULL
       for (tx in taxos){
         colos=c(colos, col_table$col[col_table$taxon==tx])
@@ -908,8 +492,6 @@ for (func in names_pfams_list1){
           signifs=signifs[signifs!=d]
           #print(signs)
         }
-        #print(cols)
-        #print(signifs)
         if (t==0.05 & length(signifs)>0){
           text(signifs, y=0.95*y_max, signs_3[signs] , cex=3, col=cols)
         } else if (t==0.01 & length(signifs)>0){
@@ -1010,19 +592,11 @@ for (func in names_pfams_list){
         y_max=max(data_expression[[v]], na.rm=T)
       }
     } else if (v=='delta1'){
-      #y_max=0.7*max(data_expression[[v]], na.rm=T)
-      #if (func=='all'){
       y_max=max(data_expression[[v]], na.rm=T)
       #}
     }
-    #y_max=1.2*max(vec_to_plot, na.rm = T)
     
     vioplot::vioplot(to_plot, las=2, ylim=c(-y_max, y_max), main=paste(func, v, sep=' '), cex.axis=2, axes=F)
-    #lines(x = c(par("usr")[1], par("usr")[2]), 
-    #      y = c(par("usr")[3], par("usr")[3]), 
-    #      col = "white", lwd = 3)
-    #box(lwd = 3)
-    #if (func!='all'){
     stripchart(to_plot,cex=0.1, vertical = TRUE, method = "jitter",
                  pch = 19, add = TRUE, col = rep('black', length(taxos)))
     #}
@@ -1074,7 +648,6 @@ for (func in names_pfams_list){
     abline(h=0, lwd=2)
     j=1
     for (tx in taxos){
-      #abline(h=median(data_expression[[v]][taxo_vec==tx], na.rm=T), lwd=2, col=col_table$col[col_table$taxon==tx])
       segments(x0 = j-0.5, x1 = j+0.5, y0 = median(data_expression[[v]][taxo_vec==tx], na.rm=T),y1= median(data_expression[[v]][taxo_vec==tx], na.rm=T), lwd=4, col=col_table$col[col_table$taxon==tx])
       j=j+1
     }
@@ -1101,11 +674,6 @@ for (func in names_pfams_list){
     signs_3=c('-', '+')
     co=1
     done=NULL
-    #if (v=='mean1'){
-    #  colos=c('blue', 'red')
-    #} else {
-    #  colos=
-    #}
     colos=NULL
     for (tx in taxos){
       colos=c(colos, col_table$col[col_table$taxon==tx])
@@ -1120,10 +688,7 @@ for (func in names_pfams_list){
         cols=cols[signifs!=d]
         signs=signs[signifs!=d]
         signifs=signifs[signifs!=d]
-        #print(signs)
       }
-      #print(cols)
-      #print(signifs)
       if (func!='all'){
         if (t==0.05 & length(signifs)>0){
           text(signifs, y=0.85*y_max, signs_3[signs] , cex=3, col=cols)
@@ -1171,8 +736,6 @@ for (func in names_pfams_list){
         cols=cols[signifs!=d]
         signifs=signifs[signifs!=d]
       }
-      #print(cols)
-      #print(signifs)
       text(signifs, y=y_max, signs[co] , cex=4, col=cols)
       for (sig in signifs){
         done=c(done, sig)
@@ -1236,7 +799,6 @@ for (func in names_pfams_list1){
         }
         
       }
-      #dt=data_expression[[v]][metabo_bis==func & taxo_vec==tx]
       dt=dt[!is.na(dt)]
       if (length(dt)==0){
         to_plot[[tx]]=0
@@ -1256,8 +818,6 @@ for (func in names_pfams_list1){
     }
     
     t_test=pairwise.wilcox.test(x = vec_to_plot,g=g_to_plot, p.adjust.method = 'bonferroni')
-    
-    #y_max=1.3*max(vec_to_plot, na.rm = T)
     if (v=='atlanticity'){
       y_max=1.5
     } else if (v=='mean1'){
@@ -1268,10 +828,6 @@ for (func in names_pfams_list1){
     #y_max=1.15*max(
     
     vioplot::vioplot(to_plot, las=2,  main=paste(func, v, sep=' '), cex.axis=2, ylim=c(-y_max, y_max), axes=F)
-    #lines(x = c(par("usr")[1], par("usr")[2]), 
-    #      y = c(par("usr")[3], par("usr")[3]), 
-    #      col = "white", lwd = 3)
-    #box(lwd = 3) #ylim=c(min(vec_to_plot), y_max),
     stripchart(to_plot,cex=0.1, vertical = TRUE, method = "jitter",
                pch = 19, add = TRUE, col = rep('black', length(taxos)))
     
@@ -1293,10 +849,6 @@ for (func in names_pfams_list1){
             cj=cs[j_t]
             
             if (!is.na(t_test$p.value[i,j]) & t_test$p.value[i,j]<0.01){
-              #print(i_t)
-              #print(j_t)
-              #print(i)
-              #print(j)
               sigs_x=c(sigs_x, i_t+sep_vals[ci])
               sigs_x=c(sigs_x, j_t+sep_vals[cj])
               sigs_text=c(sigs_text, letters[c])
@@ -1306,8 +858,6 @@ for (func in names_pfams_list1){
               cs[j_t]=cs[j_t]+1
             }
           }
-          #print(sigs_x)
-          #print('')
         }
         
       }
@@ -1318,7 +868,6 @@ for (func in names_pfams_list1){
       
       j=1
       for (tx in taxos){
-        #abline(h=median(data_expression[[v]][taxo_vec==tx], na.rm=T), lwd=2, col=col_table$col[col_table$taxon==tx])
         segments(x0 = j-0.5, x1 = j+0.5, y0 = median(data_expression[[v]][taxo_vec==tx], na.rm=T),y1= median(data_expression[[v]][taxo_vec==tx], na.rm=T), lwd=4, col=col_table$col[col_table$taxon==tx])
         j=j+1
       }
@@ -1347,11 +896,6 @@ for (func in names_pfams_list1){
       signs_3=c('-', '+')
       co=1
       done=NULL
-      #if (v=='mean1'){
-      #  colos=c('blue', 'red')
-      #} else {
-      #  colos=
-      #}
       colos=NULL
       for (tx in taxos){
         colos=c(colos, col_table$col[col_table$taxon==tx])
@@ -1370,9 +914,6 @@ for (func in names_pfams_list1){
           signifs=signifs[signifs!=d]
           #print(signs)
         }
-        #print(cols)
-        #print(signifs)
-        #print(signs)
         if (t==0.05 & length(signifs)>0){
           text(signifs, y=0.85*y_max, signs_3[signs] , cex=3, col=cols)
         } else if (t==0.01 & length(signifs)>0){
@@ -1540,41 +1081,4 @@ for (func in names_pfams_list1){
 }
 dev.off()
 
-# pdf(paste('expression_barplot_stations_',taxo,'.pdf', sep=''))
-# for (func in names_pfams_list1){
-#   for (tx in taxos){
-#     raw_expr_phot=raw_expr[taxo_vec==tx & metabo_bis==func,]
-#     min_x=min(raw_expr)/2
-#     raw_expr_phot[raw_expr_phot==0]=NA#min_x
-#     
-#     distrs=rep(list(NULL), 20)
-#     for ( i in 1:20){
-#       distrs[[i]]=raw_expr_phot[[i]][!is.na(raw_expr_phot[[i]])]
-#       if (length(distrs[[i]])==0){
-#         distrs[[i]]=0
-#       }
-#     }
-#     
-#     medians=apply(raw_expr_phot, 2, function(x){mean(x[!is.na(x)])})
-#     n_genes=apply(raw_expr_phot, 2, function(x){sum(!is.na(x))})
-#     #n_genes=apply(raw_expr_phot, 2, function(x){sum(x!=min_x)})
-#     
-#     if (sum(n_genes)!=0){
-#       norm_vals <- (n_genes - min(n_genes, na.rm=T)) / (max(n_genes, na.rm=T) - min(n_genes, na.rm=T))
-#       if (sum(norm_vals, na.rm=T)!=0){
-#       
-#         colfunc <- colorRamp(c("blue", "red"))
-#         rgb_colors <- rgb(colfunc(norm_vals)/255)
-#         mx=max(abs(medians), na.rm=T)
-#         barplot(medians, col = rgb_colors, ylim=c(-mx, mx), main=paste(tx, func, sep=' '), las=2)
-#         abline(v=9.5)
-#       } else{
-#         mx=max(abs(medians), na.rm=T)
-#         barplot(medians, col = 'red', ylim=c(-mx, mx), main=paste(tx, func, sep=' '), las=2)
-#         abline(v=9.5)
-#       }
-#     }
-#     
-#   }
-# }
-# dev.off()
+
