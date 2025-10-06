@@ -1,11 +1,10 @@
 #!/bin/env/usr/env Rscript
 library('treemap')
-#library("readxl")
 library('gplots')
 library('FactoMineR')
 library('stringr')
 library('RColorBrewer')
-setwd("/env/export/cns_n02_scratch/scratch_TaraOcean/BioAdvection_II/MetaT_4")
+
 
 taxo = commandArgs(trailingOnly = T)[1]
 subset = commandArgs(trailingOnly = T)[2]
@@ -34,9 +33,9 @@ while('#FFFFFF' %in% col_vector1){
 }
 
 if (taxo=='taxo'){
-  data_uni_tax <- readRDS('taxID_uni.rds')
+  data_uni_tax <- readRDS('../data/taxID_uni.rds')
 } else {
-  data_uni_tax <- readRDS(paste('data_uni_',taxo,'.rds', sep=''))
+  data_uni_tax <- readRDS(paste('../data/data_uni_',taxo,'.rds', sep=''))
   colnames(data_uni_tax)<-c('taxName', 'geneID')
   data_uni_tax<- data_uni_tax[!duplicated(data_uni_tax$geneID),]
   if (is.factor(data_uni_tax$taxName)){
@@ -44,8 +43,8 @@ if (taxo=='taxo'){
   }
 } 
 
-GO_table <- readRDS('GO_table.rds')
-pfam2go <- read.table('pfam2go_27_02_20.txt')
+GO_table <- readRDS('../data/GO_table.rds')
+pfam2go <- read.table('../data/pfam2go_27_02_20.txt')
 allg <- as.character(unique(pfam2go$V3))
 go_names <- GO_table[match(allg, GO_table[,1]),2]
 all_gos <- c(go_names, 'unknown', 'NO_GO')
@@ -91,7 +90,7 @@ extract_GO <- function(x){
 barplot_tax <- function(components, name, frac, subset){
   signif_uids_all <- NULL
   for (comp in components){
-    signif_uids <- readRDS(paste('Significant_uids_all_',frac,'_0_05_',comp,'.rds', sep=''))
+    signif_uids <- readRDS(paste('../data/Significant_uids_all_',frac,'_0_05_',comp,'.rds', sep=''))
     signif_uids$taxo <- data_uni_tax$taxName[match(signif_uids$uni, data_uni_tax$geneID)]
     signif_uids$taxo[is.na(signif_uids$taxo)] <- 'unknown'
     if (name %in% c('basins', 'basins_clr')){
@@ -135,23 +134,17 @@ barplot_tax <- function(components, name, frac, subset){
     os <- 17
     dt <- apply(test[(d_ltp-os):d_ltp,], 2, sum)
     data0 <- test[1:(d_ltp-(os+1)),]
-    #rownames(data0) <- rownames(test)[1:(d_ltp-(os+1))]
     data0 <- rbind(data0, dt)
     rownames(data0) <- c(rownames(test)[1:(d_ltp-(os+1))] ,'other')
   } else{
     data0 <- test
   }
-  #print( rownames(data0) )
-  #print( col_list$taxon )
-  #print( match(rownames(data0), col_list$taxon) )
-  #print( col_list$col[match(rownames(data0), col_list$taxon)] )
-  #print( as.character(col_list$col[match(rownames(data0), col_list$taxon)]))
+
   if ('Mamiellales' %in% rownames(data0) & 'Bacillariophyta' %in% rownames(data0) & 'Pelagophyceae' %in% rownames(data0) & 'Phaeocystales' %in% rownames(data0)){
     data1=data0[rownames(data0) %in% c('Mamiellales', 'Bacillariophyta', 'Pelagophyceae', 'Phaeocystales'), ]
     barplot(data1, col=col_list$col[match(rownames(data1), col_list$taxon)], las=1 )
     plot(15,15, col='white', xaxt = 'n', yaxt='n', xlab = '', ylab = '', axes=F)
   
-    #print(rownames(data1))
     legend('topleft',legend = rownames(data1),
            fill=as.character(col_list$col[match(rownames(data1), col_list$taxon)]),
            box.lty=0 ,ncol=3, cex=0.7)
@@ -173,9 +166,9 @@ barplot_tax <- function(components, name, frac, subset){
          fill=as.character(col_list$col[match(rownames(test)[2:tot], col_list$taxon)]), box.lty=0, cex=0.7 )
 
   if (subset=='1'){
-    baseline_matou <- readRDS(paste('baseline_GO_matou_',taxo,'s_',frac,'_subset.rds', sep=''))
+    baseline_matou <- readRDS(paste('../data/baseline_GO_matou_',taxo,'s_',frac,'_subset.rds', sep=''))
   } else{
-    baseline_matou <- readRDS(paste('baseline_GO_matou_',taxo,'s_',frac,'.rds', sep=''))
+    baseline_matou <- readRDS(paste('../data/baseline_GO_matou_',taxo,'s_',frac,'.rds', sep=''))
   }
   if (taxo %in% c('MGT-v2','MGT-v2-phylum')){
     M=15
@@ -235,12 +228,10 @@ barplot_tax <- function(components, name, frac, subset){
         data <- data.frame(value=test2[,i], subgroup=rownames(test2))
         p_values<- sapply(1:dim(data)[1], FUN = hypergeometric_test, data=data, baseline=baseline_matou_tax)
         p_values_adj <- p.adjust(p_values, method = 'hochberg')
-        #p_values_adj[p_values_adj==0]<- min(p_values_adj[p_values_adj !=0])
         if (min(p_values_adj[p_values_adj !=0])==Inf){
           p_values_adj[p_values_adj==0]=0.00001
         } else if (min(p_values_adj[p_values_adj !=0])==-Inf){
 	        p_values_adj[p_values_adj==0]= 0.00001
-         # p_values_adj[p_values_adj==0]= min(p_values_adj[p_values_adj !=0])
         } else{
 	        p_values_adj[p_values_adj==0]= 0.00001
 	      }
@@ -337,9 +328,7 @@ barplot_tax <- function(components, name, frac, subset){
 hypergeometric_test <- function(i, data, baseline){
   q0=data$value[i]
   if (q0!=0){
-    # m0=baseline$value[baseline$subgroup==as.character(data$subgroup[i])]
     m0=sum(baseline$value[baseline$subgroup==as.character(data$subgroup[i])])
-    # n0=sum(baseline$value)-baseline$value[baseline$subgroup==as.character(data$subgroup[i])]
     n0=sum(baseline$value)-sum(baseline$value[baseline$subgroup==as.character(data$subgroup[i])])
     k0=sum(data$value)
     proba<-phyper(q=q0, m=m0, n=n0,k=k0, lower.tail = F, log.p = F)
@@ -348,32 +337,20 @@ hypergeometric_test <- function(i, data, baseline){
   }
   hypergeometric_test<-proba
 }
-comp_list <- list(c('T_clr', 'Sal_clr', 'SSD_clr'), c('Phos_clr', 'Si_clr', 'NO3_clr'),c('Si._clr', 'N._clr', 'Fe_clr'),
-                  c('arctic_clr', 'atlantic_clr'),
-                  c('pca1_pca', 'pca2_pca', 'pca3_pca'), c('T_log', 'Sal_log', 'SSD_log'),
-                  c('Phos_log', 'Si_log', 'NO3_log'), c('Si._log', 'N._log', 'Fe_log'),
-                  c('Environment', 'Travel_time'),c('arctic', 'atlantic'))
-names0 <- c('physical_clr', 'nutrients1_clr', 'nutrients2_clr','basins_clr', 'pca','physical', 'nutrients1', 'nutrients2', 'env_travel-time', 'basins')
+comp_list <- list(c('T_clr', 'Sal_clr', 'SSD_clr'))
+names0 <- c('physical_clr')
 taxons <- c(unique(data_uni_tax$taxName), 'unknown')
 
 col_list <- data.frame(col=col_vector[1:length(taxons)], taxon=sort(taxons))
-#if (taxo=='groups3'){
-#  col_list$col[col_list$taxon=='Mamiellales']='#000AA88'
-#  col_list$col[col_list$taxon=='Pelagophyceae']='#000A000'
-#}
-#print(col_list$col)
-#print(' ')
+
 if (taxo=='groups3'){
-  #col_list$col <- as.character(levels(col_list$col))[col_list$col]
-  #print(col_list$col)
-  #print(' ')
   col_list$col[col_list$taxon=='Cnidaria'] =col_vector[31]
   col_list$col[col_list$taxon=='Tunicata'] =col_vector[34]
   col_list$col[col_list$taxon=='other'] =col_vector[38]
   col_list$col[col_list$taxon=='Mamiellales']='#00AA88'
   col_list$col[col_list$taxon=='Pelagophyceae']='#008000'   
   col_list$col[col_list$taxon=='other Stramenopiles']='#FFC000'
-#col_list$col <- as.factor(col_list$col)
+
 }
 print(col_list$col)
 
@@ -385,7 +362,7 @@ if (taxo=='MGT-v2'){
 saveRDS(col_list, paste('color_table_',taxo,'.rds',sep=''))
 saveRDS(go_colors,  paste('color_table_go.rds',sep=''))
 
-fractions <-c('GGZZ','SSUU',  'QQSS', 'KKQQ')
+fractions <-c('GGZZ')
 results_enriched <- rep(list(NULL), length(fractions))
 results_not_enriched <- rep(list(NULL), length(fractions))
 for(frac in fractions){
@@ -401,7 +378,6 @@ for(frac in fractions){
   }
   results_enriched[[frac]] <- results_enriched_int
   results_not_enriched[[frac]] <- results_not_enriched_int
-  #saveRDS(results_enriched, paste('Significant_uids_GO_annotation_', taxo, '_',frac, '.rds', sep=''))
 }
 saveRDS(results_enriched, paste('Significant_enriched_uids_GO_annotation_', taxo,'_',subset,'.rds', sep=''))
 saveRDS(results_not_enriched, paste('Significant_uids_GO_annotation_', taxo,'_',subset,'.rds', sep=''))
