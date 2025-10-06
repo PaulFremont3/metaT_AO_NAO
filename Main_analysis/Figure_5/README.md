@@ -1,1 +1,1 @@
-Rscripts to generate figure 5
+Rscript to generate figure 5
