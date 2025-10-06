@@ -2,9 +2,9 @@ library('pheatmap')
 library('ALDEx2')
 library('gplots')
 library(gridExtra)
-#setwd("~/Groups_metaT/Distances")
+
 frac <-commandArgs(trailingOnly = T)[1]
-aldex_files<- list.files(pattern=paste('mTG_',frac,'.rds', sep=''))
+aldex_files<- list.files(pattern=paste('../data/mTG_',frac,'.rds', sep=''))
 aldex_files <- aldex_files[!grepl('unigenes', aldex_files)]
 aldex_files <- aldex_files[c(6, 5, 8, 7, 1, 4, 3,9)]
 taxos <- c('All', 'Mamiellales', 'Phaeocystales', 'Pelagophyceae', 'Bacillariophyta', 'Dinophyceae', 'Ciliophora', 'unknown')
@@ -101,7 +101,7 @@ for (f in aldex_files){
   if (tx=='All'){
     tx <-'groups3'
   }
-  vu <- readRDS(paste('unigenes_',tx,'_mTG_',frac,'.rds', sep=''))
+  vu <- readRDS(paste('../data/unigenes_',tx,'_mTG_',frac,'.rds', sep=''))
   
   mg_data[, c] <- v[[4]]$diff.btw[match(all_pfams, rownames(v[[4]]))]
   mt_data[, c] <- v[[2]]$diff.btw[match(all_pfams, rownames(v[[2]]))]
@@ -156,30 +156,8 @@ ut_data <- ut_data[sel0,]
 
 set <- colorRampPalette(colors = c("darkblue", "white", 'darkorange'))(50)
 set_2 <- colorRampPalette(colors = c("chartreuse", "white", 'darkred'))(50)
-#set <-bluered(50)
-pdf(paste('heatmap_pfams_aldex_', frac,'.pdf',sep=''))
-heatmap.2(mg_data, trace="none",symm=TRUE, Rowv = NA, Colv = NA,
-          dendrogram = "none", keysize=1.5, margins = c(10.5,13.5),col = set,
-          symkey = F, cexRow=0.3,
-          br=seq(-max(abs(c(mg_data, mt_data,me_data )), na.rm=T), max(abs(c(mg_data, mt_data,me_data )), na.rm=T),
-                 length.out =  51),
-          denscol = 'black',notecex=0.7,
-          cellnote = ifelse(pvals_g==TRUE, '*', NA),notecol='black', na.color = 'grey')
-heatmap.2(mt_data, trace="none",symm=TRUE, Rowv = NA, Colv = NA,
-          dendrogram = "none", keysize=1.5, margins = c(10.5,13.5),col = set,
-          symkey = F, cexRow=0.3,
-          br=seq(-max(abs(c(mg_data, mt_data,me_data )), na.rm=T), max(abs(c(mg_data, mt_data,me_data )), na.rm=T),
-                 length.out =  51),
-          denscol = 'black',notecex=0.7,
-          cellnote = ifelse(pvals_t==TRUE, '*', NA),notecol='black', na.color = 'grey')
-heatmap.2(me_data, trace="none",symm=TRUE, Rowv = NA, Colv = NA,
-          dendrogram = "none", keysize=1.5, margins = c(10.5,13.5),col = set,
-          symkey = F, cexRow=0.3,
-          br=seq(-max(abs(c(mg_data, mt_data,me_data )), na.rm=T), max(abs(c(mg_data, mt_data,me_data )), na.rm=T),
-                 length.out =  51),
-          denscol = 'black', notecex=0.7,
-          cellnote = ifelse(pvals_e==TRUE, '*', NA),notecol='black', na.color = 'grey')
-dev.off()
+
+
 
 Functionsa <- c(rep('photosynthesis', length(photosynthesis_pfams1)),rep('Nitrogen metabolism', length(nitrogen_pfams1)) ,
            rep('Carbon fixation', length(carbon_fixation_pfams1)),rep('Iron metabolism', length(iron_functions1)),
@@ -274,4 +252,5 @@ for (i in 1:length(unique(Functionsa$Functionsa))){
   g=g+7
 }
 dev.off()
+
 
