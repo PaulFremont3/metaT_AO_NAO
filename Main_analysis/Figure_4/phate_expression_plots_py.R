@@ -50,9 +50,9 @@ if (frac =='GGZZ'){
             193, 194, 196)
 }
 
-dat <- readRDS(paste('metat_analysis_',frac,'.rds',sep= ''))
+dat <- readRDS(paste('../data/metat_analysis_',frac,'.rds',sep= ''))
 dat <- dat[dat[,111]>4,]
-unigenes <- readLines(paste('unigenes_phate_',frac,'_',zeros,'_',norm,'_',sub2,'.txt', sep=''))
+unigenes <- readLines(paste('../data/unigenes_phate_',frac,'_',zeros,'_',norm,'_',sub2,'.txt', sep=''))
 unigenes <- strsplit(unigenes, ' ')[[1]]
 dat <- dat[dat[,1] %in% unigenes, ]
 if (subs=='_subset'){
@@ -73,10 +73,10 @@ if (subs=='_subset'){
   dat <- dat[sums>12,]
 }
 
-data <- read.table(paste('phate_fit_expression_',knn,'_',frac,'_',zeros,'_',norm,'_',sub2 ,'.txt', sep=''))
+data <- read.table(paste('../data/phate_fit_expression_',knn,'_',frac,'_',zeros,'_',norm,'_',sub2 ,'.txt', sep=''))
 
 
-data_uni_tax <- readRDS(paste('data_uni_',taxo,'.rds', sep=''))
+data_uni_tax <- readRDS(paste('../data/data_uni_',taxo,'.rds', sep=''))
 colnames(data_uni_tax)<-c('taxName', 'geneID')
 data_uni_tax<- data_uni_tax[!duplicated(data_uni_tax$geneID),]
 data_uni_tax <- data_uni_tax[data_uni_tax$geneID %in% unigenes,]
@@ -84,7 +84,7 @@ if (is.factor(data_uni_tax$taxName)){
   data_uni_tax$taxName <- as.character(levels(data_uni_tax$taxName))[data_uni_tax$taxName]
 }
 
-cols <- readRDS(paste('color_table_',taxo,'.rds', sep=''))
+cols <- readRDS(paste('../data/color_table_',taxo,'.rds', sep=''))
 if (is.factor(cols$col)){
  cols$col <- as.character(levels(cols$col))[cols$col]
 }
@@ -304,199 +304,7 @@ for (tx in unique(cols$taxon)){
 }
 
 
-sel_bis <- colos_bis==col_not
-pdf(paste('phate_fit_expression_pfams_py_',knn,'_',frac,'_',zeros,'_',norm,'_',sub2,'_',taxo,'.pdf', sep=''), width=5, height=5)
-plot(data[sel_bis,1], data[sel_bis,2], xlab='PHATE 1', ylab='PHATE 2', col=colos_bis[sel_bis], cex=0.2, pch=19, cex.axis=1.3,cex.lab=1.3, xlim=c(a, b), ylim=c(c, d))
-points(data[!sel_bis ,1], data[!sel_bis,2], col=colos_bis[!sel_bis], cex=0.7, pch=16)
-dev.off()
 
-pdf(paste('phate_fit_expression_pfams_py_',knn,'_',frac,'_',zeros,'_',norm,'_',sub2,'_',taxo,'_T.pdf', sep=''), width=5, height=5)
-par(mfrow=c(1,1))
-comp <- 'T'
-signif_uids <- readRDS(paste('Significant_uids_all_',frac,'_0_05_',comp,'_clr.rds', sep=''))
-signif_uids$cor_sign <- as.numeric(signif_uids$cor>0)
-signif_uids$cor_sign[signif_uids$cor_sign==0] <-'-'
-signif_uids$cor_sign[signif_uids$cor_sign==1] <-'+'
-signif_uids_moins <- signif_uids$uni[signif_uids$cor_sign=='-']
-signif_uids_plus <- signif_uids$uni[signif_uids$cor_sign=='+']
-sel_m <- dat[,1] %in%  signif_uids_moins
-sel_p <- dat[,1] %in%  signif_uids_plus
-
-plot(data[sel_bis,1], data[sel_bis,2], xlab='PHATE 1', ylab='PHATE 2', col=colos_bis[sel_bis], cex=0.2, pch=19, cex.axis=1.3,cex.lab=1.3 ,xlim=c(a, b), ylim=c(c, d))
-
-points(data[sel_m &  !sel_bis ,1], data[sel_m & !sel_bis,2], col=colos_bis[sel_m & !sel_bis], cex=0.6)
-points(data[sel_p &  !sel_bis ,1], data[sel_p & !sel_bis,2], col=colos_bis[sel_p & !sel_bis], cex=0.6, pch=6)
-dev.off()
-
-pdf(paste('phate_fit_expression_decomposed_pfams_py_',knn,'_',frac,'_',zeros,'_',norm,'_',sub2,'_',taxo,'.pdf', sep=''), width=5, height=5)
-par(mfrow=c(1,1))
-for (tx in unique(cols$taxon)){
-  selo <- taxos_vec==tx
-  sel_bis <- colos_bis==col_not
-  if (sum(selo)>200){
-    plot(data[selo & sel_bis,1], data[selo & sel_bis,2], xlab='PHATE 1',main=tx, ylab='PHATE 2', col= scales::alpha(colos_bis[selo & sel_bis], 0.2), cex=0.2, pch=19, cex.axis=1.3,cex.lab=1.3, xlim=c(a, b), ylim=c(c, d))
-    points(data[selo & !sel_bis,1], data[selo & !sel_bis,2],pch=16, col=colos_bis[selo & !sel_bis], cex=0.7)
-  }
-}
-dev.off()
-
-# c('green', 'purple', 'firebrick1', 'goldenrod1','darkorange1','deepskyblue')
-my.cols=list(colorRampPalette(brewer.pal(9,"Greens"))(8), colorRampPalette(brewer.pal(9,"Purples"))(8),
-             colorRampPalette(brewer.pal(9,"Reds"))(8), colorRampPalette(brewer.pal(9,"YlOrBr"))(8),
-             colorRampPalette(brewer.pal(9,"Oranges"))(8), colorRampPalette(brewer.pal(9,"PuBu"))(8) )
-
-pdf(paste('phate_fit_density_metabolisms_decomposed_pfams_py_',knn,'_',frac,'_',zeros,'_',norm,'_',sub2,'_',taxo,'.pdf', sep=''), width=5, height=5)
-par(mfrow=c(1,1))
-if (taxo =='groups3'){
-  txs <- unique(cols$taxon)
-} else if (taxo =='MGT-v2'){
-  txs <- sub_taxs
-}
-for (tx in txs){
-  selo <- taxos_vec==tx
-  sel_bis <- colos_bis==col_not
-  contours_list <- rep(list(NULL), 8)
-  centr_list <- rep(list(NULL), 8)
-  for (k in 1:length(cols_pfams)){
-    func <- names_pfams_list[k]
-    sel_pf <- colos_bis==cols_pfams[k]
-    if (sum(selo & sel_pf)>4){
-      xu = data[selo & sel_pf & !sel_bis,1]
-      yu = data[selo & sel_pf & !sel_bis,2]
-      z <- kde2d(xu, yu, n=100)
-      contours_list[[k]] <- z
-      centr_list[[k]] <- append(centr_list[[k]], c(median(xu), median(yu)))
-      plot(xu, yu, xlab='PHATE 1',main= paste(tx,func , sep=' '), ylab='PHATE 2', col=cols_pfams[k], cex=0.2, pch=19, cex.axis=1.3,cex.lab=1.3, xlim=c(a, b), ylim=c(c, d))
-      contour(z, drawlabels=FALSE, nlevels=8, col=my.cols[[k]], add=TRUE)
-    }
-  }
-  plot(0, 0, xlab='PHATE 1',main= tx, ylab='PHATE 2', col=scales::alpha('white', 0), cex=0.2, pch=19, cex.axis=1.3,cex.lab=1.3 ,xlim=c(a, b), ylim=c(c, d))
-  for (k in 1:length(cols_pfams)){
-    if (!is.null(contours_list[[k]])){
-      #points(centr_list[[k]][1] , centr_list[[k]][2], col=cols_pfams[k], pch=19, cex=0.8)
-      contour(contours_list[[k]], drawlabels=FALSE,lwd=1.8, nlevels=4, col=scales::alpha(my.cols[[k]], 0.6), add=TRUE)
-    }
-  }
-  for (k in 1:length(cols_pfams)){
-    if (!is.null(contours_list[[k]])){
-      points(centr_list[[k]][1] , centr_list[[k]][2], col=cols_pfams[k], pch=19, cex=1)
-      #contour(contours_list[[k]], drawlabels=FALSE,lwd=2, nlevels=2, col=my.cols[[k]], add=TRUE)
-    }
-  }
-}
-dev.off()
-
-
-pdf(paste('phate_fit_density_metabolisms_pfams_py_',knn,'_',frac,'_',zeros,'_',norm,'_',sub2,'_',taxo,'.pdf', sep=''), width=5, height=5)
-par(mfrow=c(1,1))
-contours_list <- rep(list(NULL), 8)
-centr_list <- rep(list(NULL), 8)
-for (k in 1:length(cols_pfams)){
-  func <- names_pfams_list[k]
-  sel_pf <- colos_bis==cols_pfams[k] 
-  if (sum(sel_pf)>4){
-    sel_pf <- colos_bis==cols_pfams[k]
-    xu = data[sel_pf & !sel_bis,1]
-    yu = data[sel_pf & !sel_bis,2]
-    z <- kde2d(xu, yu, n=100)
-    contours_list[[k]] <- z
-    centr_list[[k]] <- append(centr_list[[k]], c(median(xu), median(yu)))
-    plot(xu, yu, xlab='PHATE 1',main= func, ylab='PHATE 2', col=cols_pfams[k], cex=0.2, pch=19, cex.axis=1.3,cex.lab=1.3, xlim=c(a, b), ylim=c(c, d))
-    contour(z, drawlabels=FALSE,lwd=2, nlevels=8, col=my.cols[[k]], add=TRUE)
-  }
-}
-plot(0, 0, xlab='PHATE 1',main= 'all', ylab='PHATE 2', col=scales::alpha('white', 0), cex=0.2, pch=19, cex.axis=1.3,cex.lab=1.3, xlim=c(a, b), ylim=c(c, d))
-for (k in 1:length(cols_pfams)){
-  if (!is.null(contours_list[[k]])){
-    #points(centr_list[[k]][1] , centr_list[[k]][2], col=cols_pfams[k], pch=19, cex=0.8)    
-    contour(contours_list[[k]], drawlabels=FALSE,lwd=1.4, nlevels=4, col=scales::alpha(my.cols[[k]], 0.75), add=TRUE)
-  }
-}
-for (k in 1:length(cols_pfams)){
-  if (!is.null(contours_list[[k]])){
-    points(centr_list[[k]][1] , centr_list[[k]][2], col=cols_pfams[k], pch=19, cex=1)
-    #contour(contours_list[[k]], drawlabels=FALSE,lwd=2, nlevels=2, col=my.cols[[k]], add=TRUE)
-  }
-}
-dev.off()
-
-pdf(paste('legend_contours_metabolisms.pdf', sep=''))
-pnt <- cbind(x =c(0,5,5,0), y =c(0,50,50,0))
-plot(0,0, col='white', xlim=c(0,30.5*length(my.cols)), ylim=c(0, 60), axes=FALSE, frame.plot=F, xlab = '', ylab='')
-for (k in 1:length(my.cols)){
-  pnt0 <- pnt
-  pnt0[,1] <- pnt0[,1]+(k-1)*30
-  SDMTools::legend.gradient(pnt0, my.cols[[k]], title =names_pfams_list[k],limits=c('','') , cex=1) 
-}
-dev.off()
-
-pdf(paste('phate_fit_expression_decomposed_pfams_py_',knn,'_',frac,'_',zeros,'_',norm,'_',sub2,'_',taxo,'_T.pdf', sep=''), width=5, height=5)
-par(mfrow=c(1,1))
-for (tx in unique(cols$taxon)){
-  selo <- taxos_vec==tx
-  sel_bis <- colos_bis==col_not
-  if (sum(selo)>200){
-    plot(data[selo & sel_bis,1], data[selo & sel_bis,2], xlab='PHATE 1',main=tx, ylab='PHATE 2', col=scales::alpha(colos_bis[selo & sel_bis], 0.2), cex=0.2, pch=19, cex.axis=1.3,cex.lab=1.3, xlim=c(a, b), ylim=c(c, d))
-
-    points(data[selo & sel_m &  !sel_bis ,1], data[selo & sel_m & !sel_bis,2], col=colos_bis[selo & sel_m & !sel_bis], cex=0.7)
-    points(data[selo & sel_p &  !sel_bis ,1], data[selo & sel_p & !sel_bis,2], col=colos_bis[selo & sel_p & !sel_bis], cex=0.7, pch=6)
-    #plot(data[selo & sel_bis,1], data[selo & sel_bis,2], xlab='PHATE1',main=tx, ylab='PHATE2', col=colos_bis[selo & sel_bis], cex=0.2, pch=19, cex.axis=2, xlim=c(a, b), ylim=c(c, d))
-    #points(data[selo & !sel_bis,1], data[selo & !sel_bis,2], col=colos_bis[selo & !sel_bis], cex=0.6)
-  }
-}
-dev.off()
-
-#comps <- c('T', 'Sal', 'SSD','O2' ,'NO3', 'Phos','Si', 'NO2', 'NH4', 'N.', 'Si.', 'Fe')
-comps <- c('T')
-for (comp in comps){  
-  signif_uids <- readRDS(paste('Significant_uids_all_',frac,'_0_05_',comp,'_clr.rds', sep=''))
-  signif_uids$cor_sign <- as.numeric(signif_uids$cor>0)
-  signif_uids$cor_sign[signif_uids$cor_sign==0] <-'-'
-  signif_uids$cor_sign[signif_uids$cor_sign==1] <-'+'
-  signif_uids_moins <- signif_uids$uni[signif_uids$cor_sign=='-']
-  signif_uids_plus <- signif_uids$uni[signif_uids$cor_sign=='+']
-  sel_m <- dat[,1] %in%  signif_uids_moins
-  sel_p <- dat[,1] %in%  signif_uids_plus
-  x <- data[!sel_m & !sel_p,1]
-  y <- data[!sel_m & !sel_p,2]
-  if (length(x) ==0){
-    x <-0
-    y <- 0
-    alph <- 0
-  } else{
-    alph <- 0.1
-  } 
-  pdf(paste('phate_fit_expression_py_',knn,'_',frac,'_',zeros,'_',norm,'_',sub2,'_',taxo,'_',comp,'.pdf', sep=''))
-  plot(x, y, xlab='PHATE 1',xlim=c(min(data[,1]), max(data[,1])),ylim=c(min(data[,2]), max(data[,2])) , ylab='PHATE 2', col=scales::alpha('black', alph), cex=0.5, pch=19, cex.axis=1.3,cex.lab=1.3, main=comp,
-       cex.main=2, cex.lab=2)
-  points(data[sel_m,1], data[sel_m,2], col=scales::alpha('deepskyblue', 0.7), pch=15, cex=0.6)
-  points(data[sel_p,1], data[sel_p,2], col=scales::alpha('red', 0.7), pch=17, cex=0.6)
-  #plot(data[!sel_p,1], data[!sel_p,2], xlab='PHATE1', ylab='PHATE2', col=scales::alpha('black', 0.1), cex=0.5, pch=19, cex.axis=2, main=paste(comp,'_+', sep=''),
-  #     cex.main=2, cex.lab=2)
-  #points(data[sel_p,1], data[sel_p,2], col=colos[sel_m], pch=19)
-  dev.off()
-  pdf(paste('phate_fit_expression_decomposed_py_',knn,'_',frac,'_',zeros,'_',norm,'_',sub2,'_',taxo,'_',comp,'.pdf', sep=''), width=10, height=10)
-  par(mfrow=c(2,2))
-  for (tx in unique(cols$taxon)){
-    selo <- taxos_vec==tx
-    if (sum(selo & (sel_m | sel_p))>200){
-      plot(data[selo & sel_m,1], data[selo & sel_m,2], xlab='PHATE 1',main=paste(tx, ' ', comp, sep=''), ylab='PHATE 2', col='deepskyblue', cex=0.6, pch=15, cex.axis=1.3,cex.lab=1.3,xlim=c(a, b), ylim=c(c, d))
-      points(data[selo & sel_p,1], data[selo & sel_p,2], pch=17, col= 'red')
-      #plot(data[selo & sel_p,1], data[selo & sel_p,2], xlab='PHATE1',main=paste(tx, ' ', comp, '_p', sep=''), ylab='PHATE2', col=scales::alpha(colos[selo & sel_p], 1), cex=0.6, pch=17, cex.axis=2, xlim=c(a, b), ylim=c(c, d))
-    }
-    #points(data[selo & sel_p,1], data[ selo & sel_p,2], col=scales::alpha(colos[selo & sel_p], 1), pch=17, cex=0.2)
-  }
-  dev.off()
-  #pdf(paste('phate_fit_expression_decomposed_',frac,'_',nd,'_',knn,'_',di,'_',taxo,'_',comp,'_-.pdf', sep=''), width=15, height=15)
-  #par(mfrow=c(3,3))
-  #for (tx in unique(cols$taxon)){
-  #  selo <- colos==cols$col[cols$taxon==tx]
-  #  plot(data[selo & sel_p,1], data[selo & sel_p,2], xlab='PHATE1',main=tx, ylab='PHATE2', col=scales::alpha(colos[selo & sel_p], 1), cex=0.4, pch=17, cex.axis=2,
-  #       xlim=c(a, b), ylim=c(c, d))
-    #points(data[selo & sel_p,1], data[ selo & sel_p,2], col=scales::alpha(colos[selo & sel_p], 1), pch=17, cex=0.2)
-  #}
-  #dev.off()
-}
 
 
 
