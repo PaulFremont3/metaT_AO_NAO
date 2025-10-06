@@ -17,14 +17,14 @@ bis <- commandArgs(trailingOnly = T)[8]
 if (bis=='0'){
  bis=''
 }
-u=read.table(paste('phate_training_expression_',frac,'_',zeros,'_',norm,'_',sub2,'.txt', sep=''))
-v=read.table(paste('phate_fit_expression_',knn,'_',frac,'_',zeros,'_',norm,'_',sub2,'.txt', sep=''))
-unigenes <- readLines(paste('unigenes_phate_',frac,'_',zeros,'_',norm,'_',sub2,'.txt', sep=''))
+u=read.table(paste('../data/phate_training_expression_',frac,'_',zeros,'_',norm,'_',sub2,'.txt', sep=''))
+v=read.table(paste('../data/phate_fit_expression_',knn,'_',frac,'_',zeros,'_',norm,'_',sub2,'.txt', sep=''))
+unigenes <- readLines(paste('../data/unigenes_phate_',frac,'_',zeros,'_',norm,'_',sub2,'.txt', sep=''))
 unigenes <- strsplit(unigenes, ' ')[[1]]
 
 
-u1=readRDS(paste('sub_phate_fit_expression_py_subtax_',knn,'_',frac,'_',zeros,'_',norm,'_',sub2,'_',taxo,'.rds', sep=''))
-tax_pfam_file <- readRDS(paste('sub_phate_pfam_taxo_subtax_', knn,'_',frac,'_',zeros,'_',norm,'_',sub2,'_',taxo,bis,'.rds', sep=''))
+u1=readRDS(paste('../data/sub_phate_fit_expression_py_subtax_',knn,'_',frac,'_',zeros,'_',norm,'_',sub2,'_',taxo,'.rds', sep=''))
+tax_pfam_file <- readRDS(paste('../data/sub_phate_pfam_taxo_subtax_', knn,'_',frac,'_',zeros,'_',norm,'_',sub2,'_',taxo,bis,'.rds', sep=''))
 uni_sel= unigenes %in% tax_pfam_file$uid
 ub=u[uni_sel,]
 vb=v[uni_sel,]
