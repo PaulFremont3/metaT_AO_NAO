@@ -1,4 +1,3 @@
-setwd('~/docs_from_inti/for_github_ao-nao/')
 library('gplots')
 library('matlab')
 
@@ -17,4 +16,5 @@ pdf('lagr_time_matrix.pdf')
 heatmap.2(x = as.matrix(v),trace="none",symm=F, Rowv = NA, Colv = NA,cexRow=1, cexCol=1,
           dendrogram = "none", keysize=1,margins = c(7,5),col=col,
           symkey = F, br=seq(0, max(u, na.rm=T),length.out =  101))
+
 dev.off()
