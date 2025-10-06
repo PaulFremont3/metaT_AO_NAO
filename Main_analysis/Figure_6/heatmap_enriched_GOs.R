@@ -1,7 +1,4 @@
-#library("rgdal")                                                                                                      
-#library("raster")
 library("ggplot2")
-#library('DT')
 library('FactoMineR')
 library('pvclust')
 library('matlab')
@@ -20,10 +17,9 @@ library('phateR')
 library('ecodist')
 library('gridExtra')
 library('ggrepel')
-setwd("/env/cns/scratch_TaraOcean/BioAdvection_II/MetaT_4/Groups_metaT/Expression_plots/")
 
 
-GO_table <- readRDS('GO_table.rds')
+GO_table <- readRDS('../data/GO_table.rds')
 GO_table <- as.data.frame(GO_table)
 GO_table <- data.frame(lapply(GO_table, as.character), stringsAsFactors=FALSE)
 
@@ -46,7 +42,7 @@ upper_class_go <- function(x){
 
 
 prep_data <- function(enriched, taxo, frac, type, vari_s, vari_s0, vari, taxos_sel, count){
-  signif_data <- readRDS(paste('Significant',enriched,'_uids_GO_annotation_',taxo,'_1.rds', sep=''))
+  signif_data <- readRDS(paste('../data/Significant',enriched,'_uids_GO_annotation_',taxo,'_1.rds', sep=''))
   sig_dat <- signif_data[[frac]][[type]]
   sig_dat <- sig_dat[sig_dat$vari_s==vari_s | sig_dat$vari_s==vari_s0,]
   sig_dat <- data.frame(lapply(sig_dat, as.character), stringsAsFactors=FALSE)
@@ -196,13 +192,13 @@ taxos_sel[['QQSS']] <- c( 'unknown', 'Bacillariophyta',
                           'Bacteria', 'Dinophyceae', 'Hexanauplia')
 
 taxo <- 'groups3'
-fracs <- c('GGZZ','SSUU', 'QQSS',  'KKQQ')
-types <- c('physical_clr', 'basins_clr')
-vari_l <- c('T_-', 'arctic_clr_+')
-vari_l0 <-c('T_+', 'atlantic_clr_+')
-varis <- c('T', 'median_basins')
+fracs <- c('GGZZ')
+types <- c('physical_clr')
+vari_l <- c('T_-')
+vari_l0 <-c('T_+')
+varis <- c('T')
 
-GO_classes <- readRDS('GO_classification_hc.rds')
+GO_classes <- readRDS('../data/GO_classification_hc.rds')
 GO_classes$GO_id <- GO_table[match(GO_classes$GO, GO_table[,1]) ,2]
 for (frac in fracs){
   c=1
@@ -215,7 +211,7 @@ for (frac in fracs){
       res0 <- prep_data(enriched='', taxo, frac, type, vari_s, vari_s0, vari, taxos_sel, count)
       res_en <- prep_data(enriched='_enriched', taxo, frac, type, vari_s, 
                           vari_s0, vari, taxos_sel, count)
-      nopt <- readRDS('n_fit.rds')
+      nopt <- readRDS('../data/n_fit.rds')
       pdf(paste('GO_heatmap_', taxo, '_', frac, '_', type, '_', vari,'_',count,'.pdf' , sep=''),
           height = 15, width=10)
       for (i in 3:1){
@@ -314,160 +310,3 @@ for (frac in fracs){
   }
 }
 
-# pca.res <- PCA(t(res0[[1]]), graph = F, ncp = 6)
-# pdf('3D_pca.pdf')
-# par(mfrow=c(2,2))
-# for (i in 3:6){
-#   zz<- scatterplot3d(x = pca.res$ind$coord[,1], y =pca.res$ind$coord[,2] , 
-#                      z= pca.res$ind$coord[,i],
-#                      xlab = "1st dim", ylab = "2nd dim", 
-#                      zlab = paste(i,"th dim", sep='' ))
-#   zz.coords <- zz$xyz.convert(pca.res$ind$coord[,1], pca.res$ind$coord[,2] , 
-#                               pca.res$ind$coord[,i]) 
-#   
-#   text(zz.coords$x, 
-#        zz.coords$y,             
-#        labels=colnames(res0[[1]]) ,              
-#        cex = .5, 
-#        pos = 4) 
-# }
-# dev.off()
-
-
-# stringdistance <- function(x){
-#   stringdist(x, unique_goh,method = 'lv' )
-# }
-# GO_h_dist <- sapply(unique_goh, FUN = stringdistance)
-# n <- length(unique(sig_dat$GO_hierarchy))
-# GO_h_dist_map <- matrix(GO_h_dist, nrow = n, ncol = n, byrow = T)
-# 
-# n <- length(unique_goh)
-# GO_h_dist_map <-log(GO_h_dist)
-# GO_h_dist_map[GO_h_dist_map==-Inf] <- 0
-# 
-# # herarchical clustering
-# res.hc <- pvclust(data=GO_h_dist_map, method.hclust = "average" ,
-#                   method.dist = 'cor', nboot = 1, iseed = 1000)
-# clusts <- pvpick(res.hc, alpha=0.95, max.only = T)
-# clusts <- clusts$clusters
-# grps_hc <- rep(1, length(unique_goh))
-# count <- 2
-# for (c in clusts){
-#   vc <- c
-#   for (goh in vc){
-#     ind <- which(unique_goh==goh)
-#     grps_hc[ind] <- count
-#   }
-#   count <- count+1
-# }
-# dend <- res.hc %>% as.dendrogram
-# lab_dend <-dendextend::get_leaves_attr(dend, attribute ='label' )
-# 
-# set.seed(2)
-# u <- PCA(GO_h_dist_map, graph = F)
-# res.km <- kmeans(u$ind$coord, centers = 20, nstart = 25)
-# grp <- as.factor(res.km$cluster)
-# means_sil_width <- NULL
-# sil_res <- rep(list(NULL), 60)
-# for (k in 2:60){
-#   #v <- cutree(UPGMA, k=k)
-#   res.km <- kmeans(u$ind$coord, centers = k, nstart = 25)
-#   grp <- as.factor(res.km$cluster)
-#   sil <- silhouette(as.numeric(grp), dmatrix = as.matrix(GO_h_dist_map))
-#   sil_res[[k]] <- sil
-#   means_sil_width <- append(means_sil_width, mean(sil[,3]))
-# }
-# plot(2:60, means_sil_width, col='red', pch=19, 
-#      xlab='Number of clusters', ylab='Mean silhouette width')
-# u <- PCA(GO_h_dist_map, graph = F)
-# res.km <- kmeans(u$ind$coord, centers = 16, nstart = 25)
-# grp <- as.factor(res.km$cluster)
-# 
-# x <- u$ind$coord[,1]
-# y <- u$ind$coord[,2]
-# z <- u$ind$coord[,3]
-# u$ind$coord[,1] <- (u$ind$coord[,1]-min(u$ind$coord[,1]))*2/(max(u$ind$coord[,1])-min(u$ind$coord[,1]))-1
-# u$ind$coord[,2] <- (u$ind$coord[,2]-min(u$ind$coord[,2]))*2/(max(u$ind$coord[,2])-min(u$ind$coord[,2]))-1
-# 
-# # plot(x,y)
-# e1 <- u$eig[1]
-# e2 <-u$eig[2]
-# e3 <- u$eig[3]
-# print(e2/e1)
-# e1_var <- e1/sum(u$eig)
-# e2_var <- e2/sum(u$eig)
-# e3_var <- e3/sum(u$eig)
-# print(sum(c(e1_var, e2_var, e3_var)))
-# 
-# dimension =3
-# x_n <- (x/max(abs(x))+1)*255/2
-# print(max(x_n))
-# if (dimension==3 | dimension ==2){
-#   y_n <- ((e2/e1)*y/max(abs(y))+1)*255/2
-# } else{
-#   y_n <- rep(0, length(x))
-# }
-# if (dimension==3){
-#   z_n <- ((e3/e1)*z/max(abs(z))+1)*255/2
-# } else{
-#   z_n <- rep(0, length(x))
-# }
-# colors <-rgb(x_n, y_n, z_n, maxColorValue = 255)
-# 
-# cols <- c('red', 'violet', 'lightblue', 'darkblue', 'darkgreen', 'darkred', 
-#           'orange', 'brown', 'black', 'yellow', 'darkseagreen1', 'goldenrod',
-#           'hotpink', 'lightcoral', 'lightgoldenrod')
-# set.seed(3)
-# qual_col_pals = brewer.pal.info[brewer.pal.info$category == 'div',]
-# col_vector = unlist(mapply(brewer.pal, qual_col_pals$maxcolors, rownames(qual_col_pals)))
-# col_vector <- rep(as.vector(col_vector), 160)
-# col_vector[1] <- 'black'
-# while('#FFFFFF' %in% col_vector){
-#   inds <- which(col_vector=='#FFFFFF')
-#   for(j in inds){
-#     col_vector[j]=sample(col_vector,1)
-#   }
-# }
-# pdf('GO_hierarchy_plots.pdf')
-# plot.PCA(u, axes=c(1, 2), choix="ind", habillage="none", col.ind = cols[grp])
-# plot.PCA(u, axes=c(1, 2), choix="ind", habillage="none", col.ind = colors)
-# heatmap.2(GO_h_dist_map, trace="none",
-#           Rowv = NA, Colv = NA,
-#           dendrogram = "none", keysize=1, cexRow = 0.2)
-# heatmap.2(GO_h_dist_map, trace="none",Colv = dend, Rowv = dend,
-#           labCol=go_unique, labRow=go_unique,
-#           keysize=1,cexRow = 0.2, cexCol = 0.2,
-#           colRow = col_vector[grps_hc],
-#           colCol = col_vector[grps_hc])
-# dev.off()
-# 
-# sig_dat_map <- reshape2::acast(sig_dat, sig_dat$GO~sig_dat$taxo)
-# sig_dat_map0 <- sig_dat_map
-# sig_dat_map0[sig_dat_map0>0] <- 1
-# data.dist <- vegdist(t(sig_dat_map0), method = "euclidean")
-# col.clus <- hclust(data.dist, "aver")
-# data.dist_r <- vegdist(sig_dat_map0, method = "euclidean")
-# row.clus <- hclust(data.dist_r, "aver")
-# pdf('test.pdf')
-# #colos <- cols[grp[match(sig_dat$GO_hierarchy[match(rownames(sig_dat_map),sig_dat$GO)], 
-# #                        unique_goh)]]
-# grps <- grp[match(rownames(sig_dat_map0),go_unique)]
-# colos <- col_vector[grps]
-# # heatmap.2(sig_dat_map0, trace="none",
-# #           Rowv = NA, Colv = as.dendrogram(col.clus),
-# #           dendrogram = "none", keysize=1, margins=c(10,15), cexRow = 0.2,
-# #           colRow = colos)
-# heatmap.2(sig_dat_map0, trace="none",
-#           Rowv = match(go_unique[order(grp_)],rownames(sig_dat_map0)), Colv = as.dendrogram(col.clus),
-#           dendrogram = "none", keysize=1, margins=c(10,15), cexRow = 0.2,
-#           colRow = cols[grp[order(grp)]])
-# 
-# heatmap.2(sig_dat_map0, trace="none",
-#           Rowv = match(go_unique[order(grp)],rownames(sig_dat_map0)), Colv = as.dendrogram(col.clus),
-#           dendrogram = "none", keysize=1, margins=c(10,15), cexRow = 0.2,
-#           colRow = cols[grp[order(grp)]])
-# 
-# heatmap.2(sig_dat_map0, trace="none",
-#           Rowv = as.dendrogram(row.clus), Colv = as.dendrogram(col.clus),
-#           dendrogram = "none", keysize=1, margins=c(10,15), cexRow = 0.2, cexCol = 0.5)
-# dev.off()
