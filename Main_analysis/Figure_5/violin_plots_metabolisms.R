@@ -12,7 +12,7 @@ mi=min(data_expression[['atlanticity']])
 mx=max(data_expression[['atlanticity']])
 data_expression[['atlanticity']]=(data_expression[['atlanticity']]-mi)/(mx-mi)*(new_max-new_min)+new_min
 
-raw_expr=read.table('phate_training_expression_GGZZ_0_0_0.txt')
+raw_expr=read.table('../data/phate_training_expression_GGZZ_0_0_0.txt')
 
 
 
@@ -82,9 +82,9 @@ dat <- dat[dat[,1] %in% unigenes, ]
 
 
 taxo='MGT-v2'
-data_uni_tax <- readRDS(paste('data_uni_',taxo,'.rds', sep=''))
+data_uni_tax <- readRDS(paste('../data/data_uni_',taxo,'.rds', sep=''))
 
-tax_unis=readRDS('taxID_uni_all.rds')
+tax_unis=readRDS('../data/taxID_uni_all.rds')
 colnames(tax_unis)<-c('geneID', 'taxName')
 tax_unis<- tax_unis[!duplicated(tax_unis$geneID),]
 tax_unis <- tax_unis[tax_unis$geneID %in% unigenes,]
@@ -150,7 +150,7 @@ if (taxo=='groups3'){
 
 vals_to_plot=c('mean1', 'atlanticity', 'delta1')
 
-col_table=readRDS(paste('color_table_',taxo,'.rds', sep=''))
+col_table=readRDS(paste('../data/color_table_',taxo,'.rds', sep=''))
 
 
 
@@ -1080,5 +1080,6 @@ for (func in names_pfams_list1){
   
 }
 dev.off()
+
 
 
