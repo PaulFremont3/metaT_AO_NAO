@@ -1,11 +1,8 @@
 library("ggplot2")
-#library('readxl')
 library('gridExtra')
 library('tidyr')
-#library('DT')
 library('dplyr')
 library('RColorBrewer')
-setwd('/env/cns/scratch_TaraOcean/BioAdvection_II/MetaT_4/Groups_metaT/Expression_plots/')
 
 
 
@@ -21,14 +18,13 @@ custom_circle_part <- function(x,y,r,d1,d2,nsteps=nsteps,...){
 
 
 make_expression_plots <- function(frac, name, taxo, vari, type){
-  expr_data <- readRDS(paste('metat_analysis_',frac,'.rds', sep=''))
-  signif_data <- readRDS(paste('../../Significant_',type,'uids_GO_annotation_',taxo,'_1.rds', sep=''))
-  color_table <- readRDS(paste('../../color_table_',taxo,'.rds', sep=''))
-  color_table_go <- readRDS('color_table_go.rds')
+  expr_data <- readRDS(paste('../data/metat_analysis_',frac,'.rds', sep=''))
+  signif_data <- readRDS(paste('../data/Significant_',type,'uids_GO_annotation_',taxo,'_1.rds', sep=''))
+  color_table <- readRDS(paste('../data/color_table_',taxo,'.rds', sep=''))
+  color_table_go <- readRDS('../data/color_table_go.rds')
   colnames(color_table) <- c('col', 'item')
   colnames(color_table_go) <- c('item', 'col')
-  #env_arctic <- read_excel('../Groups_plots/Env_arctic.xlsx')
-  env_arctic <- read.table('env_arctic_3.txt', header=T)
+  env_arctic <- read.table('../data/env_arctic_3.txt', header=T)
   env_arctic <- env_arctic[order(env_arctic$T, decreasing = T),]
   env_arctic <- env_arctic[!(env_arctic$Station %in% c('143', '146', '149', '191')),]
   
@@ -40,7 +36,6 @@ make_expression_plots <- function(frac, name, taxo, vari, type){
   if (is.factor(sig_dat$uid)){
     sig_dat$uid <- as.character(levels(sig_dat$uid))[sig_dat$uid] 
   }
-  #sig_dat$uid <- as.character(levels(sig_dat$uid))[sig_dat$uid]
   sig_dat$uid <- sapply(sig_dat$uid, rem_spaces)
   expressions <- expr_data[expr_data[,1] %in% sig_dat$uid, c(1,49, 110, 112)]
   expr_data_ <- expr_data[expr_data[,1] %in% sig_dat$uid,c(1,49, 110, 112)]
@@ -61,7 +56,6 @@ make_expression_plots <- function(frac, name, taxo, vari, type){
   if (sum(duplicated(sig_dat$uid))>0){
     expressions$go[(n1+1):n2] <- sig_dat$GO[duplicated(sig_dat$uid)]
   }
-  #expressions <- expressions[order(expressions$taxo),]
   count_st <- function(x){
     length(strsplit(as.character(x[2][[1]]), split = '_')[[1]])
   }
@@ -77,20 +71,6 @@ make_expression_plots <- function(frac, name, taxo, vari, type){
     data_to_plot[i, match(stats,colnames(data_to_plot))] <- exprs
   }
   data_to_plot   
-  # count_st_arc <- function(x){
-  #   sum(x[12:54]!=0)
-  # }
-  # data_to_plot0 <- NULL
-  # expressions0 <- NULL
-  # for (t in unique(expressions$taxo)){
-  #   exp <- data_to_plot[expressions$taxo==t,]
-  #   expi <- expressions[expressions$taxo==t,]
-  #   counts <- apply(exp, 1, FUN = count_st_arc)
-  #   expa <- exp[order(counts, decreasing = T), ]
-  #   expia <- expi[order(counts, decreasing = T),]
-  #   data_to_plot0 <- rbind(data_to_plot0, expa)
-  #   expressions0 <- rbind(expressions0, expia)
-  # }
   
   sum_f <- function(x){
     return(sum(x!=0)>0)
@@ -107,7 +87,6 @@ make_expression_plots <- function(frac, name, taxo, vari, type){
     newmin <- 0.1
     NewRange = (newmax - newmin)
     data_to_plot1[j, data_to_plot0[j,]!=0] <- (data_to_plot1[j, data_to_plot0[j,]!=0]-min_ab)*NewRange/OldRange+newmin
-    #list_species[[j-2]]= c(min_ab, max_ab)
   }
   
   
@@ -129,18 +108,12 @@ make_expression_plots <- function(frac, name, taxo, vari, type){
         xo_i <- which(env_arctic$Station==xo)
         
         if (data_to_plot[[st]] >0){
-          # polg <- Polygons(list(custom_circle_part(x = xo_i, y = yo,
-          #                                          d1=2*pi*j/n_sp,d2=2*pi*(j+1)/n_sp,
-          #                                          r = data_to_plot[[st]], nsteps = 1000)),
-          #                  count)
           polg <- custom_circle_part(x = xo_i, y = yo, d1=2*pi*j/n_sp,d2=2*pi*(j+1)/n_sp,r = data_to_plot[[st]],
                                      nsteps = 1000)
           polg_b <- custom_circle_part(x = xo_i*2, y = 1, d1=2*pi*j/n_sp,d2=2*pi*(j+1)/n_sp,r = data_to_plot[[st]],
                                        nsteps = 1000)
           
           polg_t <- c(j, xo_i, data_to_plot[[st]])
-          #polg_t <- custom_circle_part(x = n_sp, y = xo_i, d1=2*pi*j/n_sp,d2=2*pi*(j+1)/n_sp,r = data_to_plot[[st]],
-          #                             nsteps = 1000)pol_data[[count]] <- polg
           
           pol_data[[count]] <- polg
           pol_data_b[[count]] <- polg_b
@@ -162,28 +135,19 @@ make_expression_plots <- function(frac, name, taxo, vari, type){
       n_sp <- dim(data_to_plot)[1]
       for (j in 1:n_sp){
          for (i in 1:dim(data_to_plot)[2]){   
-         #for (j in 1:n_sp){
           xo <- env_arctic$Station[env_arctic$Station==colnames(data_to_plot)[i]]
           yo <- env_arctic$T[env_arctic$Station==colnames(data_to_plot)[i]]
           
           xo_i <- which(env_arctic$Station==xo)
           if (data_to_plot[j,i] >0){
-            # polg <- Polygons(list(custom_circle_part(x = xo_i, y = yo,
-            #                                          d1=2*pi*j/n_sp,d2=2*pi*(j+1)/n_sp,
-            #                                          r = data_to_plot[j,i], nsteps = 20)),
-            #                  count)
             polg <- custom_circle_part(x = xo_i, y = yo, d1=2*pi*j/n_sp,d2=2*pi*(j+1)/n_sp,r = data_to_plot[j,i],
                                        nsteps = 1000)
             polg_b <- custom_circle_part(x = xo_i*2, y = 1, d1=2*pi*j/n_sp,d2=2*pi*(j+1)/n_sp,r = data_to_plot[j,i],
                                        nsteps = 1000)
             polg_t <- c(j, xo_i, data_to_plot[j,i])
-            #polg_4 <- c(j, xo_i, data_to_plot[j,i])
-            #polg_t <- custom_circle_part(x = n_sp, y = xo_i, d1=2*pi*j/n_sp,d2=2*pi*(j+1)/n_sp,r = data_to_plot[j,i],
-          #                             nsteps = 1000)p
             pol_data[[count]] <- polg
             pol_data_b[[count]] <- polg_b
             pol_data_t[[count]] <- polg_t
-            #pol_data_4[[count]] <- polg_4
             if (type=='taxo'){
               colo <- as.character(color_table$col[color_table$item== expressions_tab$taxo[j]])
               items <- append(items, as.character(expressions_tab$taxo[j]))
@@ -199,7 +163,6 @@ make_expression_plots <- function(frac, name, taxo, vari, type){
         functions <- append(functions, expressions_tab$go[j])
       }
     }
-    #data_polygons <- SpatialPolygons(pol_data)
     data_polygons <- pol_data
     return(list(data_polygons, colors_pol, items, title, pol_data_b, pol_data_t, n_sp, functions))
   }
@@ -209,7 +172,6 @@ make_expression_plots <- function(frac, name, taxo, vari, type){
   titles <- c('all', 'known')
   c=3
   for (t in unique(expressions$taxo)){
-    #condi <- expressions$taxo==t
     if (t=='79_Bathycoccaceae'){
       condi <- expressions$taxo==t | expressions$taxo=='439_Bathycoccaceae'
     } else{
@@ -250,19 +212,15 @@ make_expression_plots <- function(frac, name, taxo, vari, type){
   for (cond in conditions){
     dat <- data_to_plot1[cond, ]
     expre <- expressions[cond,]
-    #if (count<3){
-    #  data_pol <- extract_polygons(data_to_plot = dat,expressions_tab =  expre, type = "taxo",
-    #                               title = titles[count])
-    #} else{
+
+
     data_pol <- extract_polygons(data_to_plot = dat,expressions_tab = expre,
                                    type = "taxo",title =  titles[count])
-    #}
+
     all_data[[count]] <- data_pol
     count=count+1
   }
-  #expressions2 <- expressions[!(expressions$taxo %in% c('unknown', 'other')),]
-  #data_pol_known <- extract_polygons(data_to_plot = data_to_plot2,
-  # expressions = expressions2, "taxo")
+
   pdf(paste('Expression_map1_bis_',type,'uids_',frac,'_',
             name,'_', taxo,'_', vari,'.pdf', sep=''))
   for (dt in all_data){
@@ -304,33 +262,7 @@ make_expression_plots <- function(frac, name, taxo, vari, type){
     v <- scatter_plot_expr_bis(data_c = dt[[5]], colors_pol = dt[[2]],
                            title = paste(dt[[4]],' ',vari ,sep=''), envo=env_arctic)
     print(v)
-    #plot(0,0, col='white', xaxt = 'n', yaxt='n', xlab = '', ylab = '', axes=F,
-    #     main=paste('Taxonomy: ' ,dt[[4]],' ',vari, sep=''), cex.main=1)
-    #passed <- NULL
-    #leg <- NULL
-    #col_leg <- NULL
-    #counti=1
-    #for (it in dt[[3]]){
-    #  if (!(it %in% passed)){
-    #    leg <-append(leg, it)
-    #    col_leg <- append(col_leg, dt[[2]][counti])
-    #    passed <- append(passed, it)
-    #  }
-    #  counti=counti+1
-    #}
-    #if (length(leg)>30 & length(leg)<90){
-    #  legend('topleft',legend = leg,
-    #         fill=col_leg,
-    #         box.lty=0 , ncol=4, cex=0.5)
-    #} else if (length(leg)>90){
-    #  legend('topleft',legend = leg,
-    #         fill=col_leg,
-    #         box.lty=0 , ncol=5, cex=0.5)
-    #} else{
-    #  legend('topleft',legend = leg,
-    #         fill=col_leg,
-    #         box.lty=0 ,ncol=2, cex=0.5)
-    #}
+
   }
   dev.off()
   pdf(paste('Expression_map1_bubble_',type,'uids_',frac,'_',
@@ -401,10 +333,10 @@ scatter_plot_expr_bis <- function(data_c, colors_pol, title, envo){
 }
 
 
-fractions <- c('GGZZ')#,'SSUU', 'KKQQ')
-names <- c('nutrients1_clr','nutrients1_clr','physical_clr', 'basins_clr')
+fractions <- c('GGZZ')
+names <- c('physical_clr')
 taxos <- c('groups3','MGT-v2')
-variables <- list(c('NO3_+', 'NO3_-'),c('Phos_+', 'Phos_-') ,c( 'T_-', 'T_+'),c('arctic_clr_+', 'atlantic_clr_+'))
+variables <- list(c( 'T_-', 'T_+'))
 types <- c('enriched_')
 for (frac in fractions){
   for (name in names){
