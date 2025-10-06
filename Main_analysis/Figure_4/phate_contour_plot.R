@@ -1,6 +1,6 @@
-setwd("~/phate_contour_plot")
 
-dat=readRDS('data-phate-contour_plot.rds')
+
+dat=readRDS('../data/data-phate-contour_plot.rds')
 a=min(dat[[1]][,1])
 b=max(dat[[1]][,1])
 c=min(dat[[1]][,2])
@@ -33,6 +33,7 @@ for (t in taxos){
   k=k+1
 }
 dev.off()
+
 
 
 
