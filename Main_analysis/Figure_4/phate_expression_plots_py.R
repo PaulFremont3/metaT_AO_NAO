@@ -14,22 +14,12 @@ taxo <- commandArgs(trailingOnly = T)[7]
 photosynthesis_pfams <- c('PF00504' ,'PF00127','PF11623','PF02276' , 'PF01716','PF00556' ,'PF00124', 'PF03967', 'PF00223', 'PF02605', 'PF07465', 'PF05479', 'PF00737', 'PF02532', 'PF02533', 'PF05151'
                           , 'PF02468', 'PF04725', 'PF01405', 'PF06514', 'PF07123', 'PF06596', 'PF06298' , 'PF00421', 'PF05969', 'PF13326', 'PF00796',
                           'PF02427', 'PF02507', 'PF03244', 'PF01701', 'PF01241', 'PF10657', 'PF11947')
-#nitrogen_pfams <-c('PF04891', 'PF03206', 'PF04319', 'PF06988', 'PF07732', 'PF13473', 'PF00115',
-#                   'PF04879', 'PF02335', 'PF01077','PF03460', 'PF00384',
-#                   'PF01568', 'PF04324', 'PF00174', 'PF13435', 'PF07992', 'PF00355', 'PF02665')
-
 nitrogen_pfams <- c('PF02665', 'PF01077','PF03460','PF08376'
                      ,'PF07732', 'PF00384',
                    'PF01568', 'PF04324', 'PF00174', 'PF07992', 'PF00355') 
-#carbon_fixation_pfams <- c('PF13452', 'PF00485', 'PF00016', 'PF00101', 'PF06240', 'PF07690' , 'PF00194', 'PF00126')
 carbon_fixation_pfams <- c('PF00485', 'PF00016', 'PF00101', 'PF00194')
 iron_functions <- c( 'PF00111',  'PF13085', 'PF00258')
-#other_functions <- c('PF03842', 'PF16867', 'PF00127', 'PF16983','PF11124',  'PF01384', 'PF16974')
 other_functions <- c('PF01061','PF00005', 'PF00854','PF07690', 'PF02421', 'PF04145', 'PF16983', 'PF02535', 'PF03842', 'PF01384','PF16974', 'PF00909')
-#temperature_pfams <- c('PF05971', 'PF01180', 'PF05351', 'PF05035', 'PF01346', 'PF03104', 'PF11999',
-#                       'PF00249', 'PF03259', 'PF02209', 'PF00241', 'PF00626', 'PF01119','PF10551', 'PF01979',
-#                       'PF01964', 'PF02358','PF14249', 'PF02649',
-#                       'PF00313', 'PF05562', 'PF14169')
 temperature_pfams <- c('PF00360','PF03952','PF01786','PF06415',
                        'PF05971', 'PF01180', 'PF05351', 'PF05035', 'PF01346', 'PF03104', 'PF11999',
                        'PF00249', 'PF03259', 'PF02209', 'PF00241', 'PF00626', 'PF01119', 'PF01979',
@@ -68,7 +58,6 @@ if (subs=='_subset'){
   }
   
   sums <- apply(new_data, 1, sum_func)
-  #saveRDS(sums, paste('n_stats_unigenes_',frac,'.rds'))
   new_data <- new_data[sums>12,]
   dat <- dat[sums>12,]
 }
@@ -100,7 +89,6 @@ pdf(paste('phate_fit_expression_py_',knn,'_',frac,'_',zeros,'_',norm,'_',sub2,'_
 
 taxos_vec  <- cols$taxon[match(data_uni_tax$taxName[match(dat[,1], data_uni_tax$geneID)],cols$taxon)]
 taxos_vec[is.na(taxos_vec)] <- 'unknown'
-#taxos_vec <- as.character(levels(taxos_vec))[taxos_vec]
 colos <- cols$col[match(data_uni_tax$taxName[match(dat[,1], data_uni_tax$geneID)],cols$taxon)]
 colos[is.na(colos)] <- cols$col[cols$taxon=='unknown']
 if (is.factor(colos)){
@@ -153,7 +141,7 @@ taxos_sub <- taxos_vec_bis[selection]
 annot <- colos_bis[selection]
 #print(annot)
 annot <- sapply(annot, function(x){names_pfams_list[which(cols_pfams==x)]})
-sig_cor <- readRDS('Significant_uids_all_GGZZ_0_05_clr.rds')
+sig_cor <- readRDS('../data/Significant_uids_all_GGZZ_0_05_clr.rds')
 sig_cor$vari <- as.character(levels(sig_cor$vari))[sig_cor$vari]
 sig_cor <- sig_cor[!(sig_cor$vari %in% c('Metagenome', 'Environment', 'Travel_time')),]
 sig_cor$cor_s <- sign(sig_cor$cor)
@@ -177,13 +165,9 @@ if (length(data[colos_ter=='black',1]) != 0){
 xa=data[colos_ter!='black',1]
 ya=data[colos_ter!='black',2]
 cls=scales::alpha(colos_ter[colos_ter!='black'])
-#print(length(xa))
 set.seed(1)
 shuf=sample.int(length(xa))
 points(xa[shuf], ya[shuf], col=scales::alpha(cls[shuf], 0.5)) 
-#for (co in sub_taxs_cols){
-#  points(data[colos_ter==co,1], data[colos_ter==co,2], col=scales::alpha(colos_ter[colos_ter==co], 0.5) )
-#}
 dev.off()
 
 if (taxo=='groups3'){
@@ -216,7 +200,6 @@ k=1
 for (co in unique(colos)){
   x=data[colos==co,1]
   y=data[colos==co,2]
-  #print(length(x))
   z <- kde2d(x, y, n=1000)
   data_cont[[co]] = z
   contour(z, drawlabels=FALSE, nlevels=8,lwd=3, col= c(rep(no_co, 6), co), add=TRUE)
@@ -226,14 +209,6 @@ for (co in unique(colos)){
 data0 =cbind(data,colos) 
 to_save_cont=list(a,b,unique(colos), data_cont)
 saveRDS(to_save_cont, 'data-phate-contour_plot.rds')
-#df=data.frame(x=data[,1], y=data[,2], z=colos)
-#find_hull <- function(df) df[chull(df$x, df$y), ]
-#hulls <- ddply(df, "z", find_hull)
-#ploto <- ggplot(data = dot, aes(x = x, y = y)) + 
-#geom_polygon(data = hulls, alpha = 0.5) +
-#labs(x = "PHATE 1", y = "PHATE 2") +theme_bw(base_size = 23)
-#plot(0, 0,xlim=c(a,b),ylim=c(a,b), xlab='PHATE 1', ylab='PHATE 2', col=scales::alpha('white', 0), cex=0.5, pch=19, cex.axis=1.3, cex.lab=1.3)
-#Hulls(pts = df[,1:2], df[, 3], centers=T, outliers = F, c.pch=19, usecolors=unique(colos))
 dev.off()
 
 
