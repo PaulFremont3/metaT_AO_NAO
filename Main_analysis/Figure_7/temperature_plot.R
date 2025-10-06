@@ -1,6 +1,6 @@
 
 
-env_arctic <- read.table('env_arctic_3.txt', header=T)
+env_arctic <- read.table('../data/env_arctic_3.txt', header=T)
 env_arctic <- env_arctic[order(env_arctic$T, decreasing = T),]
 env_arctic <- env_arctic[!(env_arctic$Station %in% c('143', '146', '149', '191')),]
 
