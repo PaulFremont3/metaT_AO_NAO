@@ -1,1 +1,1 @@
-Entirely generated manually in Inkscape
+Figure S1 was entirely generated manually in Inkscape
