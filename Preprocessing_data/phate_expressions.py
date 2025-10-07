@@ -71,12 +71,6 @@ if __name__ == '__main__':
 		write_vector(clusters_list[ind_min], 'clusters_phate_fit_expression_'+str(knn)+'_'+frac+'_'+zeros+subs+'_'+norm+'_'+sub2+'.txt', sep=' ')
 	
 		write_vector(sils, 'silhouette_phate_fit_expression_'+str(knn)+'_'+frac+'_'+zeros+subs+'_'+norm+'_'+sub2+'.txt', sep=' ')
-	#pp = PdfPages('silhouette_phate_fit_expression_'+str(knn)+'_'+frac+'_'+zeros+subs+'_'+norm+'_'+sub2+'.pdf')
-	#plt.figure(figsize=(8,8), dpi=300)
-	#plt.scatter(np.array(range(2, 20)), np.array(sils))
-	#plt.xlabel('Number of clusters', fontsize=17)
-	#plt.ylabel('Mean silhouette', fontsize=17)
-	#pp.savefig()
-	#plt.close()
+
 		
 
