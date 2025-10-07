@@ -32,7 +32,7 @@ matou <-as.data.frame(matou)
 Lagr <- readRDS('../../Main_analysis/data/Lagr_distances.rds')
 Lagr <- as.matrix(Lagr)
 
-env_a <- read.table('../../Main_analysis/data/env_arctic_3.txt', header = T)
+env_a <- read.table('../../Main_analysis/data/env_arctic_v3.txt', header = T)
 env_a <- env_a[!(env_a$Station %in% c(142,201,205, 206, 208, 209, 210)),]
 variables1 <- colnames(env_a)[4:13]
 v <- env_a[,c(4:13)]
