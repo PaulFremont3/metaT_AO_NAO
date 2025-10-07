@@ -46,8 +46,7 @@ MASS
 plyr  
 shipunov  
 data.table  
-sm  
-phateR  
+sm    
 ALDEx2  
 tidyr  
 matlab  
@@ -56,4 +55,16 @@ ggrepel
 raster  
 pals  
 viridis  
+
+python dependencies  
+
+matplotlib  
+phate  
+pandas  
+numpy  
+scprep  
+sys  
+seaborn  
+
+
 
