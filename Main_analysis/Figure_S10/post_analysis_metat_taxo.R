@@ -5,21 +5,20 @@ library("gplots")
 library("stringr")
 library('mapproj')
 library('mapplots')
-#library('SDMTools')
 library('RColorBrewer')
 library('ncdf4')
 library('scales')
 library('parallel')
 library('bestglm')
-setwd("/env/export/cns_n02_scratch/scratch_TaraOcean/BioAdvection_II/MetaT_4")
+
 
 frac = commandArgs(trailingOnly = T)[1]
 taxo = commandArgs(trailingOnly = T)[2]
-data <- readRDS(paste('metat_analysis_', frac, '.rds', sep=''))
+data <- readRDS(paste('../data/metat_analysis_', frac, '.rds', sep=''))
 data <- data[data[,111]>4,]
 sel <- !(data[,105] %in% c('arctic', 'atlantic'))
 data <- data[sel,]
-env_a <- read.table('env_arctic_v2.txt', header = T)
+env_a <- read.table('../data/env_arctic_3.txt', header = T)
 env_a <- env_a[!(env_a$Station %in% c(142,201,205, 206, 208, 209, 210)),]
 variables1 <- colnames(env_a)[4:13]
 variables0 <- c('Metagenome', 'Environment', 'Travel_time',variables1)
@@ -54,11 +53,7 @@ make_density_correlation_plots <- function(seq1, seq2, data, name, colo, title, 
     plot(c(5,5), main=titles[i/2], , xlim=c(-1,1), ylim=c(0,max(d$y, d_r$y)), xlab=labels[count],ylab='Density', col='white',cex.main=2, cex.lab=2 ,cex.axis=2)
     polygon(d, col=alpha(colo, 0.5), border=alpha('black', 0.5))
     polygon(d_r, col=alpha("blue", 0.5), border=alpha('black', 0.5))
-    #for (k in 1:length(uids_list)){
-    #   if (count>1){
-    #     abline(v=thresholds[[k]][[u]][[4]], col='darkviolet',lwd=2)
-    #   }
-    # }
+
      n <- length(data0[!is.na(data0[,i]),i])
      legend('topleft', paste('n=',n, sep=''), bty='n', cex=2)
      count=count+1
