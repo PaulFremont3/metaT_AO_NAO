@@ -2,7 +2,7 @@ library('tidyr')
 library('dplyr')
 library('RColorBrewer')
 library('ALDEx2')
-#setwd("~/Groups_metaT/Distances")
+
 source('aldex_bis.R')
 fracs =commandArgs(trailingOnly = T)[1]
 arctic_stations <- paste(156:196, 'SUR', sep='')
@@ -10,8 +10,8 @@ atlantic_stations <- paste(143:155, 'SUR', sep='')
 
 for(frac in fracs){
   if (frac%in% c('GGZZ', 'KKQQ')){
-    #taxis <- c('','_Mamiellales', '_Dinophyceae', '_Bacillariophyta', '_Phaeocystales','_Pelagophyceae', '_Bacteria', '_unknown', '_Ciliophora')
-    taxis <- c('_Ciliophora')
+    taxis <- c('','_Mamiellales', '_Dinophyceae', '_Bacillariophyta', '_Phaeocystales','_Pelagophyceae', '_Bacteria', '_unknown', '_Ciliophora')
+    #taxis <- c('_Ciliophora')
   }  else if (frac %in% c('QQSS', 'SSUU')){
     taxis <- c('','_Hexanauplia', '_unknown', '_Insecta', '_other Opisthokonta', '_Cnidaria')
   }
@@ -143,4 +143,5 @@ delta_R <- median(effec)
 # me0_aldex_clr@analysisData <- e_clr
 # 
 # me0_aldex <- aldex_bis(me0_aldex_clr)
+
 
