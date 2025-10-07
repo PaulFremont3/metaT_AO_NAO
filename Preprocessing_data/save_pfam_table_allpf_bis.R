@@ -95,7 +95,7 @@ if (taxo==0){
   table_pfam <- t(table_pfam)/su
   table_pfam <- t(table_pfam)
   suG <- apply(table_pfamG, 2, sum)
-  saveRDS(su, paste('pfams_sum_G_', fraction,'.rds', sep=''))
+  saveRDS(suG, paste('pfams_sum_G_', fraction,'.rds', sep=''))
   table_pfamG <- t(table_pfamG)/suG
   table_pfamG <- t(table_pfamG)
   saveRDS(table_pfam, paste('pfams_station_table_T_allpf_',fraction,'_bis.rds', sep=''))
