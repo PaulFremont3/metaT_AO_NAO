@@ -1,24 +1,17 @@
 #!/bin/env/usr/env Rscript
-#library("readxl")
-# library("ggplot2")
-# library("reshape2")
 library("gplots")
-# library("plotly")
 library("stringr")
-# library("caret")
 library('mapproj')
 library('mapplots')
-#library('SDMTools')
 library('RColorBrewer')
 library('ncdf4')
 library('scales')
 library('parallel')
-#library('bestglm')
 library('reshape2')
 setwd("/env/export/cns_n02_scratch/scratch_TaraOcean/BioAdvection_II/MetaT_4")
 
-fraction = commandArgs(trailingOnly = T)[1]# 'GGZZ', 'SSUU', 'QQSS'
-taxo = commandArgs(trailingOnly = T)[2] ## '0', 'MGT', 'MGT-v2', 'class', 'groups', 'groups2'
+fraction = commandArgs(trailingOnly = T)[1]# 'GGZZ
+taxo = commandArgs(trailingOnly = T)[2] ##  'groups3'
 if (taxo==0){
   taxo <- ''
 }
