@@ -10,7 +10,8 @@ The repository contains two main folders:
 - `Main_analysis/`: code and data to reproduce the figures
 - `Preprocessing_data/`: code to preprocess data: generate data necessary to reproduce the figures (no need to be run to reproduce the figures as data are available in the `Main_analysis/data/` folder
 
-R dependencies:
+R dependencies:  
+  
 treemap  
 gplots  
 FactoMineR  
