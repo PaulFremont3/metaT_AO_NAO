@@ -3,7 +3,7 @@ setwd("/env/export/cns_n02_scratch/scratch_TaraOcean/BioAdvection_II/MetaT_4")
 
 GO_table <- readRDS('GO_table.rds')
 
-fractions <- c('GGZZ','QQSS', 'SSUU', 'KKQQ')
+fractions <- c('GGZZ')
 n_clusts <- 6
 taxo <- commandArgs(trailingOnly = T)[1]
 bis <- commandArgs(trailingOnly = T)[2]
