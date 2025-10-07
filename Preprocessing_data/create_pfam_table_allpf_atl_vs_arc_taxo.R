@@ -1,11 +1,6 @@
 #!/bin/env/usr/env Rscript
-#library("readxl")
-# library("ggplot2")
-# library("reshape2")
 library("gplots")
-# library("plotly")
 library("stringr")
-# library("caret")
 library('mapproj')
 library('mapplots')
 library('SDMTools')
@@ -17,7 +12,7 @@ library('bestglm')
 library('reshape2')
 setwd("/env/export/cns_n02_scratch/scratch_TaraOcean/BioAdvection_II/MetaT_4")
 
-fraction = commandArgs(trailingOnly = T)[1]# 'GGZZ', 'SSUU', 'QQSS', 'KKQQ'
+fraction = commandArgs(trailingOnly = T)[1]# 'GGZZ'
 n_clusts =  commandArgs(trailingOnly = T)[2]
 n_clusts = as.numeric(n_clusts)
 n=792
@@ -45,7 +40,7 @@ extract_pfam_metaT <- function(arg){
   counts <- as.data.frame(table(matou$geneID))
   counts$Var1 <- as.numeric(levels(counts$Var1))[counts$Var1]
   counts <- counts[order(counts$Var1, decreasing = F),]
-  #counts <- counts[counts$Var1 %in% uids,]
+
   rownames(counts)<-NULL
   
   class_pf <- readRDS(paste("subset_metat_",fraction,"/class_unilist_",n_clusts,"_",fraction, '_',arg,'.rds',sep=''))
