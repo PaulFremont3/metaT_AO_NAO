@@ -14,9 +14,9 @@ knn <- commandArgs(trailingOnly = T)[6]
 taxo <- commandArgs(trailingOnly = T)[7]
 
 
-u=read.table(paste('phate_training_expression_',frac,'_',zeros,'_',norm,'_',sub2,'.txt', sep=''))
-v=read.table(paste('phate_fit_expression_',knn,'_',frac,'_',zeros,'_',norm,'_',sub2,'.txt', sep=''))
-unigenes <- readLines(paste('unigenes_phate_',frac,'_',zeros,'_',norm,'_',sub2,'.txt', sep=''))
+u=read.table(paste('../data/phate_training_expression_',frac,'_',zeros,'_',norm,'_',sub2,'.txt', sep=''))
+v=read.table(paste('../data/phate_fit_expression_',knn,'_',frac,'_',zeros,'_',norm,'_',sub2,'.txt', sep=''))
+unigenes <- readLines(paste('../data/unigenes_phate_',frac,'_',zeros,'_',norm,'_',sub2,'.txt', sep=''))
 unigenes <- strsplit(unigenes, ' ')[[1]]
 
 
@@ -25,7 +25,7 @@ stats <- c(144, 145,  147, 148 ,
              168 ,173, 175, 178,180, 188, 189,
              193, 194, 196)
 
-dat <- readRDS(paste('metat_analysis_',frac,'.rds',sep= ''))
+dat <- readRDS(paste('../data/metat_analysis_',frac,'.rds',sep= ''))
 dat <- dat[dat[,111]>4,]
 
 dat <- dat[,c(1,49, 110, 112)]
@@ -35,7 +35,6 @@ for (j in 1:dim(dat)[1]){
   stts <- as.numeric(strsplit(as.character(dat$V110[j]), '_')[[1]])
   exprs <- as.numeric(strsplit(as.character(dat$V112[j]), '_')[[1]])
   new_data[j, match(stts, stats)] <- exprs
-  #unigenes_ids <- c(unigenes_ids, as.character(dat$V1[j]))
 }
 
 
@@ -82,8 +81,7 @@ b=max(v[,1])
 c=min(v[,2])
 d=max(v[,2])
 
-#col_set3=colorRampPalette(c( "darkblue","blue", "gray", "red", "darkred"))(100)
-#col_set4=c(col_set3, 'black')
+
 
 for (i in 1:dim(u)[2]){
   st=stats[i]
@@ -101,7 +99,6 @@ for (i in 1:dim(u)[2]){
   id=which(is.na(vals2))
   reord2= c(id:length(vals2) , 1:(id-1))
   co2=co2[reord2]
-  #print(co2)
 
   dataf=data.frame(x=v[ord,1], y=v[ord,2], co=co)
   pdf(paste('expression_phate_station_', st, ".pdf", sep=''))
