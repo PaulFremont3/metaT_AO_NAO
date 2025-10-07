@@ -1,0 +1,7 @@
+#!/bin/bash
+END=792
+for i in $(seq 1 $END);
+do
+	echo "TASK pre_metaT_${i}_${1}_0 -c 10 bash -c 'Rscript pre_MetaT_analysis_0.R $1 $i 2> pre_metat_${1}_${i}_0.e'" >> pre_comds_metat_${1}_0.pegasus
+done
+
