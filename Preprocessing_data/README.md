@@ -62,9 +62,13 @@ bis: abundance of all pfams are counted => sum of abundance >1
 - differential abundance analysis: run `Rscript GO_analysis_clusters.R GGZZ _bis`
 - save GO names: run `Rscript save_GO_representative_names.R`
 
-## 13. run the PHATE analysis
-- prepare traing dataset: run `Rscipt prepare_training_phate_expressions.R GGZZ 0 0 0 0`
+## 13. Run the PHATE analysis
+- prepare traing dataset: run `Rscript prepare_training_phate_expressions.R GGZZ 0 0 0 0`
 - run the phate analysis: run `python phate_expressions.py $1 GGZZ 0 0 0 0 500` $1 is the number of cores used
+
+## 14. Run the ALDEx analysis
+- preprocess:  run `Rscript preprocess_ALDEx_taxo.R`
+- run the analysis: run `Rscript ALDEx.R GGZZ`
 
 
 
