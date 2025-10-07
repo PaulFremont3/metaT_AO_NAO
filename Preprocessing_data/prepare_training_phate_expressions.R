@@ -1,4 +1,4 @@
-#library('phateR')
+library('phateR')
 frac <- commandArgs(trailingOnly = T)[1]
 subs <- commandArgs(trailingOnly = T)[2]
 zeros <- commandArgs(trailingOnly = T)[3]
@@ -23,7 +23,6 @@ for (j in 1:dim(dat)[1]){
   stts <- as.numeric(strsplit(as.character(dat$V110[j]), '_')[[1]])
   exprs <- as.numeric(strsplit(as.character(dat$V112[j]), '_')[[1]])
   new_data[j, match(stts, stats)] <- exprs
-  #unigenes_ids <- c(unigenes_ids, as.character(dat$V1[j]))
 }
 sum_func <- function(x){
   sum(!is.na(x))
@@ -58,9 +57,7 @@ if (norm=='0') {
   new_data[is.na(new_data)] <- as.numeric(zeros)
 }
 
-#pdf(paste('expr_distirbution_phate_',frac,'_',zeros,subs,'_',norm,'_',sub2,'.pdf', sep=''))
-#hist(new_data, breaks=30)
-#dev.off()
+
 if (sub2 != '0'){
   taxo <- readRDS('data_uni_groups3.rds')
   if (sub2=='HBMPP'){
@@ -102,12 +99,9 @@ if (sub2 != '0'){
 pdf(paste('expr_distirbution_phate_',frac,'_',zeros,subs,'_',norm,'_',sub2,'.pdf', sep=''))
 hist(new_data, breaks=30)
 dev.off()
-#colnames(new_data) <- stats
-#rownames(new_data) <- unigenes_ids
+
 writeLines(as.character(stats), paste('stations_',frac,'.txt', sep=''), sep=' ')
-#if (subs=='_subset'){
-#  writeLines(as.character(unigenes_ids), 'unigenes_phate_sub.txt', sep=' ')
-#} else{
+
 if (subs=='0'){
   subs = ''
 }
@@ -116,6 +110,6 @@ writeLines(as.character(unigenes_ids), paste('unigenes_phate_',frac,'_',zeros,su
 write.table(new_data,paste('phate_training_expression_',frac,'_',zeros,subs,'_',norm,'_',sub2,'.txt', sep=''),
 	   row.names = F,
             col.names = F )
-#set.seed(1)
-#phate_fit <- phate(new_data, ndim=nd, knn=knn, knn.dist.method = di)
-#saveRDS(phate_fit, paste('phate_fit_expression_',frac,'_',nd,'_',knn,'_',di,'_',zeros,subs,norm,'.rds', sep=''))
+set.seed(1)
+phate_fit <- phate(new_data, ndim=nd, knn=knn, knn.dist.method = di)
+saveRDS(phate_fit, paste('phate_fit_expression_',frac,'_',nd,'_',knn,'_',di,'_',zeros,subs,norm,'.rds', sep=''))
