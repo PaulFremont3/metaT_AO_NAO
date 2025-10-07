@@ -70,6 +70,9 @@ bis: abundance of all pfams are counted => sum of abundance >1
 - preprocess:  run `Rscript preprocess_ALDEx_taxo.R`
 - run the analysis: run `Rscript ALDEx.R GGZZ`
 
+## 15. Calculate the Bray-curtis index based on unigenes abundances
+- run the calculation: `Rscript bray-curtis_unigenes.R GGZZ`
+
 
 
 
