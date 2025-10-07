@@ -1,10 +1,8 @@
 #!/bin/env/usr/env Rscript
-#library("readxl")
 library('scales')
 library('parallel')
 library('dplyr')
 library('stringr')
-setwd("/env/export/cns_n02_scratch/scratch_TaraOcean/BioAdvection_II/MetaT_4")
 pfam2go <- read.table('pfam2go_27_02_20.txt', header = F)
 GO_table <- readRDS('GO_table.rds')
 
