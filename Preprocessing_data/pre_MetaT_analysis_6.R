@@ -1,15 +1,8 @@
 #!/bin/env/usr/env Rscript
 library("gbm")
 library("dismo")
-# library("FactoMineR")
-# library("factoextra")
-#library("readxl")
-# library("ggplot2")
-# library("reshape2")
 library("gplots")
-# library("plotly")
 library("stringr")
-# library("caret")
 library('mapproj')
 library('mapplots')
 library('SDMTools')
@@ -23,8 +16,7 @@ setwd("/env/export/cns_n02_scratch/scratch_TaraOcean/BioAdvection_II/MetaT_4")
 fraction = commandArgs(trailingOnly = T)[1]  # 'GGZZ', 'SSUU', 'QQSS'
 arg = commandArgs(trailingOnly = T)[2] 
 df <- readRDS(paste("subset_metat_",fraction,"/",fraction,"metaTnMetaG_",arg,".rds", sep=''))
-# uids <- readRDS(paste('subset_metat_QQSS/unilist_QQSS_',arg,'.rds', sep=''))
-# df <- df[df$UID %in% uids,]
+
 
 df$MetaT[is.na(df$MetaT)]<-0
 df$MetaG[is.na(df$MetaG)]<-0
@@ -83,17 +75,13 @@ func0 <- function(i){
   uds_split <- sapply(uds, class_genes, df0=df0)
   return(uds_split)
 }
-#start_time <- Sys.time()
-#no_cores <- detectCores()
-#cl <- makeCluster(no_cores)
-#clusterExport(cl=cl, varlist=c("df", 'uids', 'arg', 'fraction','arctic_stations', 'atlantic_stations', 'outlier_stations'))
+
 if (arg != 792){
   uni_list <- lapply(c(1:10),FUN=func0)
 } else{
   uni_list <- lapply(c(1:5),FUN=func0)
 }
-#stopCluster(cl)
-#end_time <- Sys.time()
+
 
 t <- unlist(uni_list)
 saveRDS(t, paste('class_unilist_6_',fraction,'_',arg,'.rds', sep=''))
