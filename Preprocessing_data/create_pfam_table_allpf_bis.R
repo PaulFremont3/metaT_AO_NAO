@@ -1,11 +1,6 @@
 #!/bin/env/usr/env Rscript
-#library("readxl")
-# library("ggplot2")
-# library("reshape2")
 library("gplots")
-# library("plotly")
 library("stringr")
-# library("caret")
 library('mapproj')
 library('mapplots')
 library('SDMTools')
@@ -17,7 +12,7 @@ library('bestglm')
 library('reshape2')
 setwd("/env/export/cns_n02_scratch/scratch_TaraOcean/BioAdvection_II/MetaT_4")
 
-fraction = commandArgs(trailingOnly = T)[1]# 'GGZZ', 'SSUU', 'QQSS'
+fraction = commandArgs(trailingOnly = T)[1]# 'GGZZ'
 n <- 792
 extract_pfam_metaT <- function(arg){
   expr_uds <- readRDS(paste("subset_metat_",fraction,'/expressed_unilist_',fraction,'_',arg,'.rds', sep=''))
@@ -37,12 +32,7 @@ extract_pfam_metaT <- function(arg){
   counts <- as.data.frame(table(matou$geneID))
   
   v<-merge(df, matou, by.x='UID', by.y='geneID', all=T)
-  #v$pfam <-as.character(levels(v$pfam))[v$pfam]
-  #v$pfam[is.na(v$pfam)]<-'Unknown'
-  #v$count <- counts$Freq[match(v$UID,counts$Var1)]
-  #v$count[is.na(v$count)]<-1
-  #v$MetaT <- v$MetaT/v$count
-  #v$MetaG <- v$MetaG/v$count
+
   v$uni <- 1
   v$uni[v$MetaT==0]<-0
   v$uniG <- 1
