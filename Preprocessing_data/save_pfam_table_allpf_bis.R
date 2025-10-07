@@ -8,7 +8,6 @@ library('ncdf4')
 library('scales')
 library('parallel')
 library('dplyr')
-setwd("/env/export/cns_n02_scratch/scratch_TaraOcean/BioAdvection_II/MetaT_4")
 
 fraction = commandArgs(trailingOnly = T)[1]
 taxo = commandArgs(trailingOnly = T)[2]
