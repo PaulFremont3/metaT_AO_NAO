@@ -8,7 +8,7 @@ This will create 792 files GGZZmetaTnMetaG_$i.rds each containing a subset of th
 - create a directory to store them: `mkdir subset_metat_GGZZ/`
 - `mv GGZZmetaTnMetaG_*rds subset_metat_GGZZ/`
 
-## 3. save taxonomy as rds
+## 3. Save taxonomy as rds
 - `Rscript save_taxonomy_rds.R` output: `taxID_uni.rds`
 
 ## 4. Calculate the clr
@@ -16,20 +16,20 @@ This will create 792 files GGZZmetaTnMetaG_$i.rds each containing a subset of th
 - calculate the clr: `Rscript save_geometric_mean_metaTG.R GGZZ`
 - `mv GGZZmetaTnMetaG_*clr.rds subset_metat_GGZZ/`
 
-## 5. save expressed unigenes
+## 5. Save expressed unigenes
 - run `Rscript pre_MetaT_analysis_0.R GGZZ $i` i from 1 to 792. can be done using pegasus on an HPC: `./pre_submit_metat_analysis_0.sh GGZZ`
 - `mv expressed_unilist*GGZZ*rds subset_metat_GGZZ/`
 
-## 6. save taxonomy at the desired level
+## 6. Save taxonomy at the desired level
 - run `Rscript save_data_unis_group.R groups3`, output: `data_uni_groups3.rds`
 - save for the subset: run `Rscript save_rds_taxID_groups3.R GGZZ`
 - `mv TaxID_groups3_*GGZZ*.rds subset_metat_GGZZ/`
 
-## 7. unigenes expressed in more than 4 stations
+## 7. Unigenes expressed in more than 4 stations
 - run `Rscript pre_MetaT_analysis_1.R GGZZ $i` i from 1 to 792. can be done using pegasus on an HPC: `./pre_submit_metat_analysis_1.sh GGZZ`
 - `mv pre_unilist*GGZZ*rds subset_metat_GGZZ/`
 
-## 8. classify unigenes based on basin
+## 8. Classify unigenes based on basin
 - run `Rscript pre_MetaT_analysis_6.R GGZZ $i` i from 1 to 792. can be done using pegasus on an HPC: `./pre_submit_metat_analysis_6.sh GGZZ`
 - `mv class_unilist_6_*GGZZ*rds subset_metat_GGZZ/`
 
@@ -38,7 +38,7 @@ This will create 792 files GGZZmetaTnMetaG_$i.rds each containing a subset of th
 - run `Rscript subset_matou.R GGZZ i1 i2` i1 and i2 allow to treat the 792 files separately: treat files from i1 to i2
 - `mv matou*GGZZ*rds subset_metat_GGZZ/`
 
-## 9. run the main metat analysis (correlation of gene expression with environmental parameters)
+## 9. Run the main metat analysis (correlation of gene expression with environmental parameters)
 - run `./submit_metat_analysis.sh GGZZ` (pegasus), output: `metat_analysis_GGZZ.txt`
 - run `Rscript save_metat_analysis_rds.R GGZZ`, output: `metat_analysis_GGZZ.rds`
 
