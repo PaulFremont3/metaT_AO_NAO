@@ -1,11 +1,6 @@
 #!/bin/env/usr/env Rscript
-#library("readxl")
-# library("ggplot2")
-# library("reshape2")
 library("gplots")
-# library("plotly")
 library("stringr")
-# library("caret")
 library('mapproj')
 library('mapplots')
 library('SDMTools')
@@ -15,9 +10,8 @@ library('scales')
 library('parallel')
 library('bestglm')
 library('reshape2')
-setwd("/env/export/cns_n02_scratch/scratch_TaraOcean/BioAdvection_II/MetaT_4")
 
-fraction = commandArgs(trailingOnly = T)[1]# 'GGZZ', 'SSUU', 'QQSS'
+fraction = commandArgs(trailingOnly = T)[1]# 'GGZZ'
 n <- 792
 extract_values <- function(arg){
   expr_uds <- readRDS(paste("subset_metat_",fraction,'/expressed_unilist_',fraction,'_',arg,'.rds', sep=''))
