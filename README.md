@@ -10,6 +10,8 @@ The repository contains two main folders:
 - `Main_analysis/`: code and data to reproduce the figures
 - `Preprocessing_data/`: code to preprocess data: generate data necessary to reproduce the figures (no need to be run to reproduce the figures as data are available in the `Main_analysis/data/` folder
 
+All preprocessing and analysis were run on the Inti machine at Genoscope
+
 R dependencies:  
   
 treemap  
