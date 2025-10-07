@@ -1,9 +1,9 @@
 library('tidyr')
 library('dplyr')
 library('RColorBrewer')
-#setwd("~/Groups_metaT/Distances")
+
 source('aldex_bis.R')
-fracs =c('GGZZ', 'SSUU', 'QQSS', 'KKQQ')
+fracs =c('GGZZ')
 arctic_stations <- paste(156:196, 'SUR', sep='')
 atlantic_stations <- paste(143:155, 'SUR', sep='')
 types =c('', 'uni_')
