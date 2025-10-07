@@ -1,11 +1,6 @@
 #!/bin/env/usr/env Rscript
-#library("readxl")
-# library("ggplot2")
-# library("reshape2")
 library("gplots")
-# library("plotly")
 library("stringr")
-# library("caret")
 library('mapproj')
 library('mapplots')
 library('SDMTools')
@@ -17,9 +12,9 @@ library('bestglm')
 library('dplyr')
 setwd("/env/export/cns_n02_scratch/scratch_TaraOcean/BioAdvection_II/MetaT_4")
 
-fraction =commandArgs(trailingOnly = T)[1]# c('GGZZ', 'SSUU', 'QQSS', 'GGZZ', 'QQSS')
-n_c = commandArgs(trailingOnly = T)[2]# c(2,2,2,3,3)
-taxo = commandArgs(trailingOnly = T)[3] # c('taxo_groups2', 'taxo_MGTv2', 'taxo_groups3')
+fraction =commandArgs(trailingOnly = T)[1]# c('GGZZ')
+n_c = commandArgs(trailingOnly = T)[2]#6
+taxo = commandArgs(trailingOnly = T)[3] #  'taxo_groups3'
 
 n_clusts <- as.numeric(n_c)
 if (n_clusts==2){
