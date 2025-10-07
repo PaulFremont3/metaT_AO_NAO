@@ -1,5 +1,4 @@
 #!/bin/env/usr/env Rscript
-#library("readxl")
 
 GO_table <- read_excel('GO_table.xlsx', col_names = F)
 
@@ -55,4 +54,3 @@ saveRDS(GO_table2, 'GO_table.rds')
 saveRDS(GO_table3, 'GO_table_pfam.rds')
 colnames(GO_table2) <- c('ID', 'NAME', 'PARENTS_ID', 'PARENTS_NAME', 'PARENTS_LEVELS',  'MAX_LEVEL_PARENT', 'LEVEL')
 write.table(GO_table2,'GO_table_hierarchy.txt', row.names = F)
-#write.table(pfam2go_update, 'pfam2go_update.tab', row.names = F, col.names = F)
