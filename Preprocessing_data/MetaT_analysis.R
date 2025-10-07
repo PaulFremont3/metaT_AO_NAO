@@ -1,15 +1,8 @@
 #!/bin/env/usr/env Rscript
 library("gbm")
 library("dismo")
-# library("FactoMineR")
-# library("factoextra")
-#library("readxl")
-# library("ggplot2")
-# library("reshape2")
 library("gplots")
-# library("plotly")
 library("stringr")
-# library("caret")
 library('mapproj')
 library('mapplots')
 library('SDMTools')
@@ -19,7 +12,6 @@ library('scales')
 library('parallel')
 library('bestglm')
 library('FactoMineR')
-setwd("/env/export/cns_n02_scratch/scratch_TaraOcean/BioAdvection_II/MetaT_4")
 
 fraction = commandArgs(trailingOnly = T)[2] # 'GGZZ', 'SSUU', 'QQSS', 'KKQQ'
 arg = commandArgs(trailingOnly = T)[1]    
@@ -36,12 +28,11 @@ df$MetaG[is.na(df$MetaG)]<-0
 matou <- readRDS(paste("subset_metat_",fraction,"/matou", fraction, '_', arg,'.rds', sep=''))
 colnames(matou)<- c('geneID','pfam','Evalue')
 matou <-as.data.frame(matou)
-# matou <-as.data.frame(matou[-1,])
-# matou<- matou[2:dim(ma)]
-Lagr <- readRDS('Lagr_distances.rds')
+
+Lagr <- readRDS('../../Main_analysis/data/Lagr_distances.rds')
 Lagr <- as.matrix(Lagr)
 
-env_a <- read.table('env_arctic_v3.txt', header = T)
+env_a <- read.table('../../Main_analysis/data/env_arctic_3.txt', header = T)
 env_a <- env_a[!(env_a$Station %in% c(142,201,205, 206, 208, 209, 210)),]
 variables1 <- colnames(env_a)[4:13]
 v <- env_a[,c(4:13)]
@@ -49,7 +40,7 @@ set.seed(1)
 u <- PCA(v[,1:9], graph = F)
 variables_pca <- u$ind$coord[, 1:3]
 
-env_distances <- readRDS('environmental_distances_arctic_0.rds')
+env_distances <- readRDS('../../Main_analysis/data/environmental_distances_arctic_0.rds')
 env_distances <- cbind(env_a$Station, env_distances)
 
 # rho from Erb and Notredame 2016
@@ -225,11 +216,9 @@ correlations <- function(uni){
               if (ok ==1){
                 mt <- append(mt, metat[indt1]-metat[indt])
                 mt_log <- append(mt_log, log10(metat[indt1]+1)-log10(metat[indt]+1))
-                # log_mt <- append(mt, log(metat2[indt1]/metat2[indt]))
               } else{
                 mt <- append(mt, metat[indt]-metat[indt1])
                 mt_log <- append(mt_log, log10(metat[indt]+1)-log10(metat[indt1]+1))
-                # log_mt <- append(mt, log(metat2[indt]/metat2[indt1]))
               }
             }
           }
