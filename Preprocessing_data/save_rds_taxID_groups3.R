@@ -1,7 +1,5 @@
 library('data.table')
-setwd("/env/export/cns_n02_scratch/scratch_TaraOcean/BioAdvection_II/MetaT_4")
-#data_uni <- fread('MATOU-v2.taxonomy.tsv',  select = c(1,3),header = T, sep='\t')
-#saveRDS(data_uni, 'taxID_uni.rds')
+
 data_uni <- readRDS('data_uni_groups3.rds')
 data_uni<- data_uni[!duplicated(data_uni$geneID),]
 fraction <- commandArgs(trailingOnly = T)[1]
@@ -9,8 +7,7 @@ groups <-c('Hexanauplia', 'Bacillariophyta','Pelagophyceae','Crysophyceae' ,'Coc
            'Ciliophora', 'Tunicata','Mamiellales', 'Dinophyceae', 'Bacteria', 'Streptophyta', 'Cnidaria','Rhizaria',
            'Insecta', 'Cryptophyta' , 'Euglenozoa', 'Amoebozoa','Craniata',
            'Fungi', 'Viruses','Archaea' ,'Eukaryota (unclassified)','root' ,paste('other ' , c('Haptophyta', 'Opisthokonta', 'Stramenopiles', 'Alveolata', 'Viridiplantae') , sep='' ))
-#groups <-c('Bacillariophyta','Pelagophyceae','Crysophyceae' ,'Coccosphaerales','Phaeocystales' ,
-#           'Ciliophora', 'Mamiellales', 'Dinophyceae', 'Streptophyta',  'Cryptophyta'  ,paste('other ' , c('Haptophyta', 'Stramenopiles', 'Alveolata', 'Viridiplantae') , sep='' ))
+
 for (arg in 1:792){
   expr_uds <- readRDS(paste("subset_metat_",fraction,'/expressed_unilist_',fraction,'_',arg,'.rds', sep=''))
   df <- readRDS(paste("subset_metat_",fraction,"/",fraction,"metaTnMetaG_",arg,".rds", sep=''))
