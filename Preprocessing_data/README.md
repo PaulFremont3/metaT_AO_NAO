@@ -56,9 +56,11 @@ This will create 792 files GGZZmetaTnMetaG_$i.rds each containing a subset of th
 not bis: abundance of pfam is divided by number of pfam of each unigene
 bis: abundance of all pfams are counted => sum of abundance >1
 
-# 12. Create GO abundances tables
+# 12. Create GO abundances tables and run analyssis of differential abundance
 - pre processing of GO table: run `Rscript GO_table_pre_process.R`
 - create taxo X GO table X station table: run `Rscript create_GO_table_allpf_allGO_taxo.R GGZZ 6 taxo_groups3 _bis`
+- differential abundance analysis: run `Rscript GO_analysis_clusters.R GGZZ _bis`
+- save GO names: run `Rscript save_GO_representative_names.R`
 
 
 
