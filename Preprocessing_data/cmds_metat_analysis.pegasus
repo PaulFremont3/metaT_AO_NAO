@@ -1,0 +1,7 @@
+#!/bin/bash
+END=792
+for i in $(seq 1 $END);
+do
+	echo "TASK metaT_${i}_${1} -c 1 bash -c 'Rscript MetaT_analysis.R $i $1 2> metat_${1}_${i}.e'" >> comds_metat_${1}.pegasus
+done
+
