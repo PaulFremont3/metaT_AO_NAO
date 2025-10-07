@@ -1,10 +1,9 @@
 #!/bin/env/usr/env Rscript
 library('treemap')
-#library("readxl")
 library('gplots')
 library('FactoMineR')
 library('stringr')
-setwd("/env/export/cns_n02_scratch/scratch_TaraOcean/BioAdvection_II/MetaT_4")
+
 
 frac <-commandArgs(trailingOnly = T)[1]
 n <- 792
