@@ -1,5 +1,4 @@
 #!/bin/env/usr/env Rscript
-setwd("/env/export/cns_n02_scratch/scratch_TaraOcean/BioAdvection_II/MetaT_4")
 
 GO_table <- readRDS('GO_table.rds')
 
