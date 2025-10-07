@@ -25,6 +25,23 @@ This will create 792 files GGZZmetaTnMetaG_$i.rds each containing a subset of th
 - save for the subset: run `Rscript save_rds_taxID_groups3.R GGZZ`
 - `mv TaxID_groups3_*GGZZ*.rds subset_metat_GGZZ/`
 
+## 7. unigenes expressed in more than 4 stations
+- run `Rscript pre_MetaT_analysis_1.R GGZZ $i` i from 1 to 792. can be done using pegasus on an HPC: `./pre_submit_metat_analysis_1.sh GGZZ`
+- `mv pre_unilist*GGZZ*rds subset_metat_GGZZ/`
+
+## 8. classify unigenes based on basin
+- run `Rscript pre_MetaT_analysis_6.R GGZZ $i` i from 1 to 792. can be done using pegasus on an HPC: `./pre_submit_metat_analysis_6.sh GGZZ`
+- `mv class_unilist_6_*GGZZ*rds subset_metat_GGZZ/`
+
+## 9. MATOU annotation pfams
+- run `Rscript matou-rds.R`
+- run `Rscript subset_matou.R GGZZ i1 i2` i1 and i2 allow to treat the 792 files separately: treat files from i1 to i2
+- `mv matou*GGZZ*rds subset_metat_GGZZ/`
+
+## 9. run the main metat analysis (correlation of gene expression with environmental parameters)
+- run `./submit_metat_analysis.sh GGZZ` (pegasus), output: `metat_analysis_GGZZ.txt`
+- run `Rscript save_metat_analysis_rds.R GGZZ`, output: `metat_analysis_GGZZ.rds`
+
 
 
 
