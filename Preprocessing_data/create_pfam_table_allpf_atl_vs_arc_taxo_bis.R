@@ -1,11 +1,6 @@
 #!/bin/env/usr/env Rscript
-#library("readxl")
-# library("ggplot2")
-# library("reshape2")
 library("gplots")
-# library("plotly")
 library("stringr")
-# library("caret")
 library('mapproj')
 library('mapplots')
 library('SDMTools')
@@ -13,11 +8,10 @@ library('RColorBrewer')
 library('ncdf4')
 library('scales')
 library('parallel')
-#library('bestglm')
 library('reshape2')
 setwd("/env/export/cns_n02_scratch/scratch_TaraOcean/BioAdvection_II/MetaT_4")
 
-fraction = commandArgs(trailingOnly = T)[1]# 'GGZZ', 'SSUU', 'QQSS', 'KKQQ'
+fraction = commandArgs(trailingOnly = T)[1]# 'GGZZ'
 n_clusts =  commandArgs(trailingOnly = T)[2]
 n_clusts = as.numeric(n_clusts)
 n=792
@@ -39,14 +33,12 @@ extract_pfam_metaT <- function(arg){
   matou <- readRDS(paste("subset_metat_",fraction,"/",'matouUK', fraction, '_', arg,'.rds', sep=''))
   colnames(matou)<- c('geneID','pfam','Evalue')
   matou <-as.data.frame(matou)
-  #matou$geneID <- as.numeric(levels(matou$geneID ))[matou$geneID ]
   matou$geneID <- as.numeric(matou$geneID)
   matou <- matou[matou$geneID %in% uids,]
   
   counts <- as.data.frame(table(matou$geneID))
   counts$Var1 <- as.numeric(levels(counts$Var1))[counts$Var1]
   counts <- counts[order(counts$Var1, decreasing = F),]
-  #counts <- counts[counts$Var1 %in% uids,]
   rownames(counts)<-NULL
   
   class_pf <- readRDS(paste("subset_metat_",fraction,"/class_unilist_",n_clusts,"_",fraction, '_',arg,'.rds',sep=''))
@@ -71,12 +63,7 @@ extract_pfam_metaT <- function(arg){
       matou0 <- matou[matou$geneID %in% ok_uid,]
       v<-merge(df0, matou0, by.x='UID', by.y='geneID', all=T)
       
-      #v$pfam <-as.character(levels(v$pfam))[v$pfam]
-      #v$pfam[is.na(v$pfam)]<-'Unknown'
-      #v$count <- counts$Freq[match(v$UID,counts$Var1)]
-      #v$count[is.na(v$count)]<-1
-      #v$MetaT <- v$MetaT/v$count
-      #v$MetaG <- v$MetaG/v$count
+
       v$uni <- 1
       v$uni[v$MetaT==0]<-0
       v$uniG <- 1
@@ -94,10 +81,7 @@ extract_pfam_metaT <- function(arg){
        
       t5 <- aggregate(v1$uni , by = list(v1$tax,v1$Station, v1$pfam), FUN = sum)
       t6 <- aggregate(v1$uniG , by = list(v1$tax,v1$Station, v1$pfam), FUN = sum)
-      #t1 <- aggregate(v$MetaT , by = list(v$tax,v$Station, v$pfam), FUN = sum)
-      #t2 <- aggregate(v$uni , by = list(v$tax,v$Station, v$pfam), FUN = sum)
-      #t3 <- aggregate(v$MetaG , by = list(v$tax,v$Station, v$pfam), FUN = sum)
-      #t4 <- aggregate(v$uniG , by = list(v$tax,v$Station, v$pfam), FUN = sum)
+
       
       extract_tax_pfam <- function(pfam, t){
         u <- t[t$Group.3==pfam,]
