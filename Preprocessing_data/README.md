@@ -22,7 +22,8 @@ This will create 792 files GGZZmetaTnMetaG_$i.rds each containing a subset of th
 
 ## 6. save taxonomy at the desired level
 - run `Rscript save_data_unis_group.R groups3`, output: `data_uni_groups3.rds`
-- 
+- save for the subset: run `Rscript save_rds_taxID_groups3.R GGZZ`
+- `mv TaxID_groups3_*GGZZ*.rds subset_metat_GGZZ/`
 
 
 
