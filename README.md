@@ -12,7 +12,7 @@ The repository contains two main folders:
 
 All preprocessing and analysis were run on the Inti machine at Genoscope
 
-R dependencies:  
+- R dependencies:  
   
 treemap  
 gplots  
@@ -56,7 +56,7 @@ raster
 pals  
 viridis  
 
-python dependencies  
+- Python dependencies  
 
 matplotlib  
 phate  
