@@ -16,7 +16,7 @@ library('tidyr')
 library('dplyr')
 
 
-env_a <- read.table('Env_arctic.txt', header = T)
+env_a <- read.table('../Main_analysis/data/env_arctic_3.txt', header = T)
 fraction = commandArgs(trailingOnly = T)[1]
 fraction1 = commandArgs(trailingOnly = T)[2]
 stations <- paste(env_a$Station, 'SUR', sep='')
