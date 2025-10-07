@@ -11,7 +11,6 @@ library('ncdf4')
 library('scales')
 library('parallel')
 library('bestglm')
-setwd("/env/export/cns_n02_scratch/scratch_TaraOcean/BioAdvection_II/MetaT_4")
 
 fraction = commandArgs(trailingOnly = T)[1]  #'KKQQ' ,'GGZZ', 'SSUU', 'QQSS'
 arg = commandArgs(trailingOnly = T)[2] 
