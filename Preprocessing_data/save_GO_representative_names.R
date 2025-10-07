@@ -1,8 +1,8 @@
 
 types <-c('T', 'G')
 basins <- c('atlantic', 'arctic')
-frcs <- c('GGZZ', 'QQSS', 'SSUU')
-bis <- c('', '_bis')
+frcs <- c('GGZZ')
+bis <- c('_bis')
 GT <- readRDS('GO_table.rds')
 for (b in bis){
 for (frac in frcs){
