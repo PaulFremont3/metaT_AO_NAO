@@ -1,21 +1,12 @@
 #!/bin/env/usr/env Rscript
-#library("readxl")
-# library("ggplot2")
-# library("reshape2")
 library("gplots")
-# library("plotly")
 library("stringr")
-# library("caret")
 library('mapproj')
-#library('mapplots')
-#library('SDMTools')
 library('RColorBrewer')
 library('ncdf4')
 library('scales')
 library('parallel')
-#library('bestglm')
 library('dplyr')
-setwd("/env/export/cns_n02_scratch/scratch_TaraOcean/BioAdvection_II/MetaT_4")
 
 fraction = commandArgs(trailingOnly = T)[1]
 taxo = commandArgs(trailingOnly = T)[2]
@@ -92,9 +83,7 @@ if (taxo==0){
       if (!is.null(data)){
         na <- rownames(data)
         data <- as.data.frame(data)
-	#for (i in 1:10){
-        #  na <- stringr::str_replace("[:digit:]$", string = na, replace='')
-        #}
+
         data$taxo <- na
         data <- data %>% group_by(taxo) %>% summarise_all(funs(sum))
         data <- as.data.frame(data)
