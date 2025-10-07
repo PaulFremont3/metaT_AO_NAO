@@ -1,4 +1,3 @@
-library('phateR')
 frac <- commandArgs(trailingOnly = T)[1]
 subs <- commandArgs(trailingOnly = T)[2]
 zeros <- commandArgs(trailingOnly = T)[3]
@@ -110,6 +109,4 @@ writeLines(as.character(unigenes_ids), paste('unigenes_phate_',frac,'_',zeros,su
 write.table(new_data,paste('phate_training_expression_',frac,'_',zeros,subs,'_',norm,'_',sub2,'.txt', sep=''),
 	   row.names = F,
             col.names = F )
-set.seed(1)
-phate_fit <- phate(new_data, ndim=nd, knn=knn, knn.dist.method = di)
-saveRDS(phate_fit, paste('phate_fit_expression_',frac,'_',nd,'_',knn,'_',di,'_',zeros,subs,norm,'.rds', sep=''))
+
