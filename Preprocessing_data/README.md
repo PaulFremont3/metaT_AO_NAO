@@ -1,4 +1,4 @@
-This folder contains all codes to preprocess data necessary to generate the figures from the `Main_analysis/` folder:
+This folder contains all codes to preprocess data necessary to generate the figures from the `Main_analysis/` folder. Note that some scripts run using the parallel library of R, you need to set the number of core used.
 
 ## 1. Download raw datasets of MATOU v1.5 and MGT v1.5 at: https://www.genoscope.cns.fr/tara/
 
