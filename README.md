@@ -21,6 +21,7 @@ parallel
 stringr  
 mapproj  
 mapplots  
+maptools  
 SDMTools  
 ncdf4  
 scales  
@@ -45,4 +46,12 @@ shipunov
 data.table  
 sm  
 phateR  
-ALDEx2
+ALDEx2  
+tidyr  
+matlab  
+gridExtra  
+ggrepel  
+raster  
+pals  
+viridis  
+
