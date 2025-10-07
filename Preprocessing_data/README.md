@@ -38,9 +38,20 @@ This will create 792 files GGZZmetaTnMetaG_$i.rds each containing a subset of th
 - run `Rscript subset_matou.R GGZZ i1 i2` i1 and i2 allow to treat the 792 files separately: treat files from i1 to i2
 - `mv matou*GGZZ*rds subset_metat_GGZZ/`
 
-## 9. Run the main metat analysis (correlation of gene expression with environmental parameters)
+## 10. Run the main metat analysis (correlation of gene expression with environmental parameters)
 - run `./submit_metat_analysis.sh GGZZ` (pegasus), output: `metat_analysis_GGZZ.txt`
 - run `Rscript save_metat_analysis_rds.R GGZZ`, output: `metat_analysis_GGZZ.rds`
+
+## 11. Create pfam X taxo X stations tables  
+- create matou baseline (list of unique pfams): run `Rscript matou_baseline.R GGZZ`
+- create pfam station table for each 792 files: run `Rscript create_pfam_table_allpf_taxo.R GGZZ groups3`
+- create pfam station table (bis) for each 792 files: run `Rscript create_pfam_table_allpf_taxo_bis.R GGZZ groups3`
+- create pfam station table atl arc and com for each 792 files: run `Rscriptcreate_pfam_table_allpf_atl_vs_arc_taxo.R GGZZ 6 taxo_groups3`
+- create pfam station table atl arc and com (bis) for each 792 files: run `Rscript create_pfam_table_allpf_atl_vs_arc_taxo_bis.R GGZZ 6 taxo_groups3`
+- concatenate pfam station table: run `Rscript save_pfam_table_allpf.R GGZZ taxo_groups3`
+- concatenate pfam station table (bis): run `Rscript save_pfam_table_allpf_bis.R GGZZ taxo_groups3`
+- concatenate pfam station table atl arc and com: run `Rscript save_pfam_table_allpf_atl_vs_arc.R GGZZ 6 taxo_groups3`
+- concatenate pfam station table atl arc and com (bis): run `Rscript save_pfam_table_allpf_atl_vs_arc_bis.R GGZZ 6 taxo_groups3`
 
 
 
