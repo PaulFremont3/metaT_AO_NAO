@@ -18,6 +18,7 @@ This will create 792 files GGZZmetaTnMetaG_$i.rds each containing a subset of th
 
 ## 5. save expressed unigenes
 - run `Rscript pre_MetaT_analysis_0.R GGZZ $i` i from 1 to 792. can be done using pegasus on an HPC: `./pre_submit_metat_analysis_0.sh GGZZ`
+- `mv expressed_unilist*GGZZ*rds subset_metat_GGZZ/`
 
 ## 6. save taxonomy at the desired level
 - run `Rscript save_data_unis_group.R groups3`, output: `data_uni_groups3.rds`
