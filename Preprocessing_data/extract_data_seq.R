@@ -1,15 +1,8 @@
 #!/bin/env/usr/env Rscript
 library("gbm")
 library("dismo")
-# library("FactoMineR")
-# library("factoextra")
-#library("readxl")
-# library("ggplot2")
-# library("reshape2")
 library("gplots")
-# library("plotly")
 library("stringr")
-# library("caret")
 library('mapproj')
 library('mapplots')
 library('SDMTools')
@@ -21,16 +14,16 @@ library('bestglm')
 library('data.table')
 library('tidyr')
 library('dplyr')
-setwd("/env/export/cns_n02_scratch/scratch_TaraOcean/BioAdvection_II/MetaT_2")
-# env_a <- read_excel('Env_arctic.xlsx')
+
+
 env_a <- read.table('Env_arctic.txt', header = T)
 fraction = commandArgs(trailingOnly = T)[1]
 fraction1 = commandArgs(trailingOnly = T)[2]
 stations <- paste(env_a$Station, 'SUR', sep='')
-headers_G <- read.delim('/env/cns/proj/TaraOcean/scratch/GeneSet-v2/Occurrences/metaG/MATOU-v2.metaG.matrix36.h.long', header=FALSE, stringsAsFactors=FALSE)
+headers_G <- read.delim('MATOU-v2.metaG.matrix36.h.long', header=FALSE, stringsAsFactors=FALSE) # metaG abundance matrix header
 headers_G <- append('UID', headers_G)
 headers_G <- as.character(headers_G)
-headers_T <- read.delim('/env/cns/proj/Taranalyse/TaraEukData/GeneSet-v2/MATOU-v2.metaT.matrix35.h.long', header=FALSE, stringsAsFactors=FALSE)
+headers_T <- read.delim('MATOU-v2.metaT.matrix35.h.long', header=FALSE, stringsAsFactors=FALSE) # metaT abundance matrix header
 headers_T <- append('UID', headers_T)
 headers_T <- as.character(headers_T)
 stations_filter_G <- rep(0, length(headers_G))
@@ -66,10 +59,8 @@ if (length(st_T)<length(st_G)){
   st_T <- substr(headers_T[mT], start = 1, stop=6)
   st_G <- substr(headers_G[mG], start = 1, stop=6)
 }
-metaT_ <- fread('/env/cns/proj/Taranalyse/TaraEukData/GeneSet-v2/MATOU-v2.metaT.matrix35', select = mT, header = F)
-metaG_ <- fread('/env/cns/proj/TaraOcean/scratch/GeneSet-v2/Occurrences/metaG/mg.mode36.matrix',select = mG, header = F)
-# metaT_ <- fread('/env/cns/proj/Taranalyse/TaraEukData/GeneSet-v2/testT.txt', select = mT, header = F)
-# metaG_ <- fread('/env/cns/proj/Taranalyse/TaraEukData/GeneSet-v2/testG.txt',select = mG, header = F)
+metaT_ <- fread('MATOU-v2.metaT.matrix35', select = mT, header = F) # metaT abundance matrix 
+metaG_ <- fread('mg.mode36.matrix',select = mG, header = F)# metaG abundance matrix 
 
 colnames(metaT_) <- st_T
 colnames(metaG_) <- st_G
@@ -103,23 +94,11 @@ subseting <- function(i){
 write(num, paste('count_uni',fraction,'.txt', sep=''))
 
 sequence=seq(1,num, 200000)
-#no_cores <- detectCores()-1
-# Initiate cluster
-#cl <- makeCluster(no_cores)
-#clusterExport(cl=cl, varlist=c("metaT_","metaG_", 'sequence', 'num', 'fraction', 'uids'))
-#cor_list <- parLapply(cl = cl,sequence, fun = subseting)
-#stopCluster(cl)
+
 for (i in sequence){
     subseting(i)
 }
-# metaT_ <- metaT_ %>% gather(key='Station', value='MetaT', -UID)
-# metaG_ <- metaG_ %>% gather(key='Station', value='MetaG', -UID)
-# 
-# #data <- inner_join(metaG_GGZZ, metaT_GGZZ,by=c('Station', 'UID'))
-# data <- merge(metaG_, metaT_, by=c('Station', 'UID'), all=T)
-# data$MetaG[is.na(data$MetaG)] <- 0
-# data$MetaT[is.na(data$MetaT)] <- 0
-# saveRDS(data, paste(fraction, 'metaTnMetaG.rds', sep=''))
+
 
 
 
