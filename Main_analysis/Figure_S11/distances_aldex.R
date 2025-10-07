@@ -1,8 +1,7 @@
 library('tidyr')
 library('dplyr')
 library('RColorBrewer')
-setwd("~/Groups_metaT/Distances")
-fracs =c('GGZZ', 'SSUU', 'QQSS', 'KKQQ')
+fracs =c('GGZZ')
 arctic_stations <- paste(155:196, 'SUR', sep='')
 atlantic_stations <- paste(143:156, 'SUR', sep='')
 
@@ -114,10 +113,11 @@ for (frac in fracs){
   sigs <- p.adjust(sigs, method = 'holm')
   cols <- colorRampPalette(c('blue', 'white', 'red'))(11)
   pdf(paste('distances_ratio_plot_pfams_aldex_', frac, '.pdf', sep=''))
-  plot(data_T[sigs<=0.05], data[sigs<=0.05], xlab = 'Median temperature of the bin (°C)', ylab='Abundance-based distance / Expression-based distance',
+  plot(data_T[sigs<=0.05], data[sigs<=0.05], xlab = 'Median temperature of the bin (Â°C)', ylab='Abundance-based distance / Expression-based distance',
        col=cols[perc_d*10+1][sigs<=0.05], pch=20, ylim = c(0.6, 1.1), cex=3, xlim = c(min(data_T), max(data_T)), cex.lab=1.5, cex.axis=1.5)
   points(data_T[sigs>0.05], data[sigs>0.05],  pch=23, ylim = c(0.6, 1.2), cex=3, bg=cols[perc_d*10+1][sigs>0.05], col=cols[perc_d*10+1][sigs>0.05])
   abline(h=1, lty=5, lwd=3)
   dev.off()
 }
+
 
