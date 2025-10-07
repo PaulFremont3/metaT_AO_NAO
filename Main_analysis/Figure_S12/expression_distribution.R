@@ -1,7 +1,5 @@
-setwd("~/expression_distribution")
-
-dat=read.table('phate_training_expression_GGZZ_0_0_0.txt')
-env=read.table('../chl_arctic/env_arctic_4.txt')
+dat=read.table('../data/phate_training_expression_GGZZ_0_0_0.txt')
+env=read.table('../data/env_arctic_3.txt')
 env =env[!(c(env$Station %in% c(143, 146,149,191))),]
 
 new_dat=NULL
@@ -49,4 +47,5 @@ pdf('bias-plot.pdf')
 plot(1:length(env$Station), means, xaxt='n', pch=19)
 axis(1,at = 1:length(env$Station), labels = env$Station, las=2)
 abline(h = 0, lty=2)
+
 dev.off()
