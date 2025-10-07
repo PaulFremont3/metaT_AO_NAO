@@ -1,11 +1,6 @@
 #!bin/usr/bin/env Rscript
-#library("readxl")
-# library("ggplot2")
-# library("reshape2")
 library("gplots")
-# library("plotly")
 library("stringr")
-# library("caret")
 library('mapproj')
 library('mapplots')
 library('SDMTools')
@@ -14,20 +9,13 @@ library('ncdf4')
 library('scales')
 library('parallel')
 library('bestglm')
-setwd("/env/export/cns_n02_scratch/scratch_TaraOcean/BioAdvection_II/MetaT_4")
 
 fraction <- commandArgs(trailingOnly = T)[1]
 
 prod_arg <- function(arg){
   df <- readRDS(paste("subset_metat_",fraction,"/",fraction,"metaTnMetaG_",arg,".rds", sep=''))
   good_stats <- unique(df$Station)
-  #if (fraction=='GGZZ'){
-  #  good_stat <- stations[stations != '191SUR']
-  #} else{
-  #  good_stat <- stations
-  #}
-  #good_stat <- good_stat[!(good_stat %in% c('142SUR','201SUR','205SUR', '206SUR', '208SUR', '209SUR', '210SUR'))]
-  #df <- df[df$Station %in% good_stat,] 
+
   df$MetaT[is.na(df$MetaT)]<-0
   df$MetaG[is.na(df$MetaG)]<-0
   n_stats <- length(good_stats)
