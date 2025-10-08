@@ -47,13 +47,13 @@ This will create 792 files GGZZmetaTnMetaG_$i.rds each containing a subset of th
 - create pfam station table no taxo (bis) for each 792 files: `Rscript create_pfam_table_allpf_bis.R GGZZ`
 - create pfam station table for each 792 files: run `Rscript create_pfam_table_allpf_taxo.R GGZZ groups3`
 - create pfam station table (bis) for each 792 files: run `Rscript create_pfam_table_allpf_taxo_bis.R GGZZ groups3`
-- create pfam station table atl arc and com for each 792 files: run `Rscriptcreate_pfam_table_allpf_atl_vs_arc_taxo.R GGZZ 6 taxo_groups3`
+- create pfam station table atl arc and com for each 792 files: run `Rscript create_pfam_table_allpf_atl_vs_arc_taxo.R GGZZ 6 taxo_groups3`
 - create pfam station table atl arc and com (bis) for each 792 files: run `Rscript create_pfam_table_allpf_atl_vs_arc_taxo_bis.R GGZZ 6 taxo_groups3`
 - concatenate pfam station table: run `Rscript save_pfam_table_allpf.R GGZZ taxo_groups3`
 - concatenate pfam station table (bis): run `Rscript save_pfam_table_allpf_bis.R GGZZ taxo_groups3`
 - concatenate pfam station table atl arc and com: run `Rscript save_pfam_table_allpf_atl_vs_arc.R GGZZ 6 taxo_groups3`
-- concatenate pfam station table atl arc and com (bis): run `Rscript save_pfam_table_allpf_atl_vs_arc_bis.R GGZZ 6 taxo_groups3`
-not bis: abundance of pfam is divided by number of pfam of each unigene
+- concatenate pfam station table atl arc and com (bis): run `Rscript save_pfam_table_allpf_atl_vs_arc_bis.R GGZZ 6 taxo_groups3`  
+not bis: abundance of pfam is divided by number of pfam of each unigene  
 bis: abundance of all pfams are counted => sum of abundance >1
 
 ## 12. Create GO abundances tables and run analyssis of differential abundance
