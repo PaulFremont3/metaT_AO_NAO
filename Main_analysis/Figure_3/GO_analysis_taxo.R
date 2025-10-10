@@ -2,8 +2,8 @@
 #setwd("/env/export/cns_n02_scratch/scratch_TaraOcean/BioAdvection_II/MetaT_4")
 library('stringr')
 library('vioplot')
-setwd('~/docs_from_inti/GO_analysis/')
-#source('vioplot.R')
+
+
 
 barplot_scaled<-function(t0, exponent, col_vec, title, legend=F, mfrow=F){
   maxy <- apply(t0^(exponent),2, sum)
@@ -45,31 +45,8 @@ atlantic_stations <- c("142SRF","143SRF" ,"144SRF", "145SRF","146SRF" , "147SRF"
 transition <- c('')
 
 barplot_GO <- function(GO_list, fraction, taxo, n_clusts, types, name_list, group=NULL, bis){
-  #if (fraction=='SSUU'){
-  #  arctic_stations <- c("158SRF"  ,"173SRF", "175SRF", "178SRF","180SRF", "188SRF", "189SRF",
-  #                       "193SRF", "194SRF", "196SRF")
-  #  atlantic_stations <- c("143SRF", "144SRF", "145SRF", "146SRF", "147SRF", "148SRF", "149SRF", "150SRF" ,
-  #                         "151SRF", "152SRF")
-  #  outlier_stations <-c('155SRF','163SRF', '168SRF')
-  #} else if (fraction=='QQSS'){
-  #  arctic_stations <- c( "158SRF"   ,"168SRF" ,"173SRF", "175SRF", "178SRF","180SRF", "188SRF", "189SRF", "191SRF",
-  #                        "193SRF", "194SRF", "196SRF")
-  #  atlantic_stations <- c("142SRF", "143SRF", "144SRF","145SRF","146SRF", "147SRF", "148SRF", "149SRF", "150SRF" ,
-  #                         "151SRF" ,"152SRF" ,"155SRF")
-  #  outlier_stations <-c('')
-  #} else if (fraction=='GGZZ'){
-  #  arctic_stations <- c( "168SRF" ,"173SRF", "175SRF", "178SRF","180SRF", "188SRF", "189SRF",
-  #                        "193SRF", "194SRF", "196SRF")
-  #  atlantic_stations <- c("142SRF", "144SRF", "145SRF",  "147SRF", "148SRF" ,
-  #                         "151SRF", "152SRF")
-  #  outlier_stations <-c('155SRF',"158SRF",'168SRF', "150SRF")
-  #} else if (fraction=='KKQQ'){
-  #  arctic_stations <- c("155SRF" ,"158SRF","168SRF" ,"173SRF", "175SRF", "178SRF","180SRF", "188SRF", "189SRF",
-  #                       "193SRF", "194SRF")
-  #  atlantic_stations <- c("142SRF","143SRF" ,"144SRF", "145SRF","146SRF" , "147SRF", "148SRF","149SRF" ,"150SRF" ,
-  #                         "151SRF", "152SRF")
-  #  outlier_stations <-c('196SRF')
-  #}
+ 
+
   arctic_stations <- c("158SRF","163SRF","168SRF" ,"173SRF", "175SRF", "178SRF","180SRF", "188SRF", "189SRF","191SRF",
                        "193SRF", "194SRF", "196SRF")
   atlantic_stations <- c("142SRF","143SRF" ,"144SRF", "145SRF","146SRF" , "147SRF", "148SRF","149SRF" ,"150SRF" ,
@@ -78,16 +55,15 @@ barplot_GO <- function(GO_list, fraction, taxo, n_clusts, types, name_list, grou
   
   n_ty <- length(types)
   GO_data <- rep(list(NULL), n_ty)
-  # GO_data0 <- rep(list(NULL), n_ty)
+
   for (i in 1:n_ty){
     GO_data[[i]] <- readRDS(paste('GO_station_table_',fraction,'_',n_clusts,'_',
                                   types[i],'_',taxo,bis,'.rds', sep=''))
-    #     GO_data0[[i]] <- readRDS(paste('GO_station_table_',fraction,'_1_',
-    #                              types[i],'_',taxo,'.rds', sep=''))
+
   }
   
   GO_data1 <- GO_data[[1]][GO_list]
-  # GO_data2 <- GO_data0[[1]][GO_list]
+
   if (is.null(group)){
     pdf(paste('GO_meta',types,'_',name_list,'_',fraction,'_',taxo,'_',n_clusts,bis,'.pdf', sep=''),
         width=15, height=15)
@@ -274,11 +250,7 @@ barplot_GO <- function(GO_list, fraction, taxo, n_clusts, types, name_list, grou
           }
         }
         leg <- unique(leg)
-        #if (!is.null(leg)){
-        #  plot(0,0, col='white', xaxt = 'n', yaxt='n', xlab = '', ylab = '', axes=F, main=title)
-        #  legend('topleft',legend = leg, 
-        #         fill=as.character(col_taxoS$col[match(leg, col_taxoS$taxon)]), box.lty=0 , ncol = 3, cex=0.7)
-        #}
+
       }
     }
   }
@@ -330,4 +302,5 @@ for (loc in c('arctic', 'atlantic')){
   }
 }
 }
+
 
