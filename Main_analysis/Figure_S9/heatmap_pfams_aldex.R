@@ -4,7 +4,7 @@ library('gplots')
 library(gridExtra)
 
 frac <-commandArgs(trailingOnly = T)[1]
-aldex_files<- list.files(pattern=paste('../data/mTG_',frac,'.rds', sep=''))
+aldex_files<- list.files(pattern=paste('mTG_',frac,'.rds', sep=''))
 aldex_files <- aldex_files[!grepl('unigenes', aldex_files)]
 aldex_files <- aldex_files[c(6, 5, 8, 7, 1, 4, 3,9)]
 taxos <- c('All', 'Mamiellales', 'Phaeocystales', 'Pelagophyceae', 'Bacillariophyta', 'Dinophyceae', 'Ciliophora', 'unknown')
@@ -252,5 +252,6 @@ for (i in 1:length(unique(Functionsa$Functionsa))){
   g=g+7
 }
 dev.off()
+
 
 
