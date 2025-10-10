@@ -1,5 +1,6 @@
 #!/bin/env/usr/env Rscript
 library('stringr')
+source('vioplot.R')
 
 barplot_scaled<-function(t0, exponent, col_vec, title, legend=F, mfrow=F){
   maxy <- apply(t0^(exponent),2, sum)
