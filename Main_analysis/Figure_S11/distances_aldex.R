@@ -1,7 +1,7 @@
 library('tidyr')
 library('dplyr')
 library('RColorBrewer')
-#setwd("~/Groups_metaT/Distances")
+
 fracs =c('GGZZ')#, 'SSUU', 'QQSS', 'KKQQ')
 arctic_stations <- paste(155:196, 'SUR', sep='')
 atlantic_stations <- paste(143:156, 'SUR', sep='')
@@ -92,10 +92,6 @@ for (frac in fracs){
   
   
   
-  #to_keep <- colnames(mean_r) %in% env$Station  
-  #mean_r <- mean_r[to_keep,to_keep]
-  #env <- env[env$Station %in% colnames(mean_r), ]
-  
   d_ratios<- as_tibble(mean_r, rownames = "Station_1") %>% 
     gather(-Station_1, key = "Station_2", value = "ratiodist") %>% 
     ## Keep only upper triangular part
@@ -126,4 +122,5 @@ for (frac in fracs){
   abline(h=1, lty=5, lwd=3)
   dev.off()
 }
+
 
