@@ -2,7 +2,7 @@ This repository contains code and data necessary to replicate the study *Changes
   
 Preprint: https://www.biorxiv.org/content/10.1101/2022.11.01.514737v2  
   
-The catalog of unigenes (fasta and abundance files) of MATOU v1.5 and the MGT v1.5 are available at https://www.genoscope.cns.fr/tara/
+The catalog of unigenes (fasta and abundance files) of MATOU v1.5 and the MGT v1.5 are available at https://www.genoscope.cns.fr/tara/. They include fasta files, taxonomy and abundance tables.
 
 Large .rds files necessary to generate the figures are available on Zenodo at: https://doi.org/10.5281/zenodo.17316416. They must be placed in the folder `Main_analysis/data` to be able to regenerate the figures.
 
