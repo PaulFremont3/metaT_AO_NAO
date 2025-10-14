@@ -1,1 +1,1 @@
-Jupyter notebook to generate figure S3
+Jupyter notebook and data to generate figure S3
