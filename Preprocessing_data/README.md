@@ -60,7 +60,7 @@ bis: abundance of all pfams are counted => sum of abundance >1 (then renormalize
 ## 12. Create GO abundances tables and run analyssis of differential abundance
 - pre processing of GO table: run `Rscript GO_table_pre_process.R`
 - create taxo X GO table X station table: run `Rscript create_GO_table_allpf_allGO_taxo.R GGZZ 6 taxo_groups3 _bis`
-- differential abundance analysis: run `Rscript GO_analysis_clusters.R GGZZ _bis`
+- differential abundance analysis: run `Rscript GO_analysis_clusters.R taxo_groups3 _bis`
 - save GO names: run `Rscript save_GO_representative_names.R`
 
 ## 13. Run the PHATE analysis
