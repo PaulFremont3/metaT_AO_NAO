@@ -57,22 +57,26 @@ This will create 792 files GGZZmetaTnMetaG_$i.rds each containing a subset of th
 *not bis: abundance of pfam is divided by number of pfam of each unigene  
 bis: abundance of all pfams are counted => sum of abundance >1 (then renormalized)
 
-## 12. Create GO abundances tables and run analyssis of differential abundance
+## 12. Create GO abundances tables and run analysis of differential abundance
 - pre processing of GO table: run `Rscript GO_table_pre_process.R`
 - create taxo X GO table X station table: run `Rscript create_GO_table_allpf_allGO_taxo.R GGZZ 6 taxo_groups3 _bis`
 - differential abundance analysis: run `Rscript GO_analysis_clusters.R taxo_groups3 _bis`
 - save GO names: run `Rscript save_GO_representative_names.R`
 
-## 13. Run the PHATE analysis
+## 13. Run GO enrichment tests
+- run enrichment test for taxo groups: `./run_correlation_analysis_MetaT_taxo.sh groups3 1`
+- run enrichment test for MGTs: `./run_correlation_analysis_MetaT_taxo.sh MGT-v2 1`
+
+## 14. Run the PHATE analysis
 - prepare traing dataset: run `Rscript prepare_training_phate_expressions.R GGZZ 0 0 0 0`
 - run the phate analysis: run `python phate_expressions.py $1 GGZZ 0 0 0 0 500` $1 is the number of cores used
 
-## 14. Run the ALDEx analysis
+## 15. Run the ALDEx analysis
 - preprocess:  run `Rscript preprocess_ALDEx_taxo.R`
 - number of unigenes comparison: `Rscript number_unigenes_comparison.R`
 - run the analysis: run `Rscript ALDEx.R GGZZ`
 
-## 15. Calculate the Bray-curtis index based on unigenes abundances
+## 16. Calculate the Bray-curtis index based on unigenes abundances
 - run the calculation: `Rscript bray-curtis_unigenes.R GGZZ`
 
 
