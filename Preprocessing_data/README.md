@@ -1,5 +1,7 @@
 This folder contains all codes to preprocess data necessary to generate the figures from the `Main_analysis/` folder. Note that some scripts run using the parallel library of R, you need to set the number of core used.
 
+Analysis were run on the inti cluster of the genoscope. We provide R commands to launch scripts but generally given computing times, we recommend using HPC (slurm). Particularly, some pipelines are run in parallel using pegasus: https://pegasus.isi.edu/
+
 ## 1. Download raw datasets of MATOU v1.5 and MGT v1.5 at: https://www.genoscope.cns.fr/tara/
 
 ## 2. Parse the file to select stations of interest
@@ -64,8 +66,8 @@ bis: abundance of all pfams are counted => sum of abundance >1 (then renormalize
 - save GO names: run `Rscript save_GO_representative_names.R`
 
 ## 13. Run GO enrichment tests
-- run enrichment test for taxo groups: `./run_correlation_analysis_MetaT_taxo.sh groups3 1`
-- run enrichment test for MGTs: `./run_correlation_analysis_MetaT_taxo.sh MGT-v2 1`
+- run enrichment test for taxo groups: `Rscript correlation_analysis_MetaT_taxo.R groups3 1`
+- run enrichment test for MGTs: `Rscript correlation_analysis_MetaT_taxo.R MGT-v2 1` 
 
 ## 14. Run the PHATE analysis
 - prepare traing dataset: run `Rscript prepare_training_phate_expressions.R GGZZ 0 0 0 0`
