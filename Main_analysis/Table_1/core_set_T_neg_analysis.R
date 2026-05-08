@@ -1,6 +1,6 @@
 
 taxo=commandArgs(trailingOnly = T)[1]
-u=readRDS(paste('Significant_enriched_uids_GO_annotation_',taxo,'_1.rds', sep=''))
+u=readRDS(paste('../data/Significant_enriched_uids_GO_annotation_',taxo,'_1.rds', sep=''))
 # 1. Filter dataset
 df <- u$GGZZ$physical_clr[
   u$GGZZ$physical_clr$taxo == "MBPP" &
