@@ -5,11 +5,10 @@ library('gplots')
 library('FactoMineR')
 library('stringr')
 library('RColorBrewer')
-# setwd("~/Groups_metaT")
-#setwd("/env/export/cns_n02_scratch/scratch_TaraOcean/BioAdvection_II/MetaT_4/Groups_metaT/")
+
 
 n_var <- 9
-env_data <- read.table('env_arctic_3.txt', header = T)
+env_data <- read.table('../data/env_arctic_3.txt', header = T)
 colnames(env_data)[11:13] <- c('Si*', 'N*', 'Iron_PISCESv2')
 env_data <- env_data[,c(-6,-11, -12,-14,-15 )]
 
