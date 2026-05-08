@@ -5,7 +5,6 @@ library('gplots')
 library('FactoMineR')
 library('stringr')
 library('RColorBrewer')
-setwd("/env/export/cns_n02_scratch/scratch_TaraOcean/BioAdvection_II/MetaT_4")
 print('h0')
 
 taxo = commandArgs(trailingOnly = T)[1]
@@ -457,9 +456,9 @@ saveRDS(col_list, paste('color_table_',taxo,'.rds',sep=''))
 saveRDS(go_colors,  paste('color_table_go.rds',sep=''))
 
 if (taxo=='MGT-v2'){
-	fractions <-c('GGZZ','SSUU',  'QQSS')
+	fractions <-c('GGZZ')
 } else{
-	fractions <-c('GGZZ','SSUU',  'QQSS', 'KKQQ')
+	fractions <-c('GGZZ')
 }
 results_enriched <- rep(list(NULL), length(fractions))
 results_not_enriched <- rep(list(NULL), length(fractions))
