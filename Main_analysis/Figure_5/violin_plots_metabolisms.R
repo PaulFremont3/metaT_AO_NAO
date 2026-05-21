@@ -186,7 +186,7 @@ for (func in names_pfams_list){
     }
     vec_to_plot=unlist(to_plot)
     g_to_plot=NULL
-    lowercase_alphabet <- letters
+    uppercase_alphabet <- LETTERS
     for (tx in taxos){
       if (length(to_plot[[tx]])>0){
         g_to_plot=c(g_to_plot, rep(tx, length(to_plot[[tx]])))
@@ -218,14 +218,14 @@ for (func in names_pfams_list){
     
     
     
-    lowercase_alphabet <- letters
+    uppercase_alphabet <- LETTERS
     sigs_x=NULL
     sigs_text=NULL
     c=1
     cs=rep(1,length(taxos))
     
     if (length(t_test$p.value)!=0){
-      lowercase_alphabet <- letters
+      uppercase_alphabet <- LETTERS
       sigs_x=NULL
       sigs_text=NULL
       c=1
@@ -243,8 +243,8 @@ for (func in names_pfams_list){
               
               sigs_x=c(sigs_x, i_t+sep_vals[ci])
               sigs_x=c(sigs_x, j_t+sep_vals[cj])
-              sigs_text=c(sigs_text, letters[c])
-              sigs_text=c(sigs_text, letters[c])
+              sigs_text=c(sigs_text, LETTERS[c])
+              sigs_text=c(sigs_text, LETTERS[c])
               c=c+1
               cs[i_t]=cs[i_t]+1
               cs[j_t]=cs[j_t]+1
@@ -387,7 +387,7 @@ for (func in names_pfams_list1){
     }
     vec_to_plot=unlist(to_plot)
     g_to_plot=NULL
-    lowercase_alphabet <- letters
+    uppercase_alphabet <- LETTERS
     for (tx in taxos){
       if (length(to_plot[[tx]])>0){
         g_to_plot=c(g_to_plot, rep(tx, length(to_plot[[tx]])))
@@ -414,7 +414,7 @@ for (func in names_pfams_list1){
     
     
     if (length(t_test$p.value)!=0){
-      lowercase_alphabet <- letters
+      uppercase_alphabet <- LETTERS
       sigs_x=NULL
       sigs_text=NULL
       c=1
@@ -431,8 +431,8 @@ for (func in names_pfams_list1){
             if (!is.na(t_test$p.value[i,j]) & t_test$p.value[i,j]<0.01){
               sigs_x=c(sigs_x, i_t+sep_vals[ci])
               sigs_x=c(sigs_x, j_t+sep_vals[cj])
-              sigs_text=c(sigs_text, letters[c])
-              sigs_text=c(sigs_text, letters[c])
+              sigs_text=c(sigs_text, LETTERS[c])
+              sigs_text=c(sigs_text, LETTERS[c])
               c=c+1
               cs[i_t]=cs[i_t]+1
               cs[j_t]=cs[j_t]+1
@@ -574,7 +574,7 @@ for (func in names_pfams_list){
     }
     vec_to_plot=unlist(to_plot)
     g_to_plot=NULL
-    lowercase_alphabet <- letters
+    uppercase_alphabet <- LETTERS
     for (tx in taxos){
       if (length(to_plot[[tx]])>0){
         g_to_plot=c(g_to_plot, rep(tx, length(to_plot[[tx]])))
@@ -605,14 +605,14 @@ for (func in names_pfams_list){
     
     
     
-    lowercase_alphabet <- letters
+    uppercase_alphabet <- LETTERS
     sigs_x=NULL
     sigs_text=NULL
     c=1
     cs=rep(1,length(taxos))
     
     if (length(t_test$p.value)!=0){
-      lowercase_alphabet <- letters
+      uppercase_alphabet <- LETTERS
       sigs_x=NULL
       sigs_text=NULL
       c=1
@@ -630,8 +630,8 @@ for (func in names_pfams_list){
               
               sigs_x=c(sigs_x, i_t+sep_vals[ci])
               sigs_x=c(sigs_x, j_t+sep_vals[cj])
-              sigs_text=c(sigs_text, letters[c])
-              sigs_text=c(sigs_text, letters[c])
+              sigs_text=c(sigs_text, LETTERS[c])
+              sigs_text=c(sigs_text, LETTERS[c])
               c=c+1
               cs[i_t]=cs[i_t]+1
               cs[j_t]=cs[j_t]+1
@@ -809,7 +809,7 @@ for (func in names_pfams_list1){
     }
     vec_to_plot=unlist(to_plot)
     g_to_plot=NULL
-    lowercase_alphabet <- letters
+    uppercase_alphabet <- LETTERS
     for (tx in taxos){
       if (length(to_plot[[tx]])>0){
         g_to_plot=c(g_to_plot, rep(tx, length(to_plot[[tx]])))
@@ -834,7 +834,7 @@ for (func in names_pfams_list1){
     
     
     if (length(t_test$p.value)!=0){
-      lowercase_alphabet <- letters
+      uppercase_alphabet <- LETTERS
       sigs_x=NULL
       sigs_text=NULL
       c=1
@@ -851,8 +851,8 @@ for (func in names_pfams_list1){
             if (!is.na(t_test$p.value[i,j]) & t_test$p.value[i,j]<0.01){
               sigs_x=c(sigs_x, i_t+sep_vals[ci])
               sigs_x=c(sigs_x, j_t+sep_vals[cj])
-              sigs_text=c(sigs_text, letters[c])
-              sigs_text=c(sigs_text, letters[c])
+              sigs_text=c(sigs_text, LETTERS[c])
+              sigs_text=c(sigs_text, LETTERS[c])
               c=c+1
               cs[i_t]=cs[i_t]+1
               cs[j_t]=cs[j_t]+1
